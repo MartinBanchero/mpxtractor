@@ -1,11 +1,15 @@
 Package: mipledxtractor
 Type: Package
 Title: Extract data from microplate readear output files into tidy dataframe.
-Version: 0.1.0
-Author: Martin Banchero
-Maintainer: The package maintainer <martinbbanchero@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Version: 0.0.0.9000
+Authors@R: person("Martin", "Banchero", email = "martinbbanchero@gmail.com",
+role = c("aut", "cre"))
+URL: https://github.com/MartinBanchero/mpxtractor
+BugReports: https://github.com/MartinBanchero/mpxtractor/issues
+Description: Extract data from microplate output files into tidy dataframe. This package is focus in process
+    output files from spectraMax, multiscanGO and fluorStar machines.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    dplyr (>= 0.8.4)
