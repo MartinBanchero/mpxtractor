@@ -1,0 +1,22 @@
+---
+title: "mpxtractor"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{read_spectraMax_data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(mipledxtractor)
+```
+
+## 1. Overview
+The main function of this package is to provide a simple method that is able to represent the data staore in an output file of a microplate reader into a tidy data frame. This is a critical point in severals reasearch lines link to molecular biolgy. This package main contribution is orientated to save time and get fast into the analysis of the data.
