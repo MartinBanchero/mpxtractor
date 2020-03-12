@@ -10,7 +10,7 @@ cleanfile_to_df(cleanfile)
 \item{cleanfile}{A string}
 }
 \value{
-Dataframe
+tidy dataframe
 }
 \description{
 \code{cleanfile_to_df} takes a clean file which is a string type and using

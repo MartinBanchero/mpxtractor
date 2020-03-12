@@ -14,5 +14,5 @@
 #'  The ...
 #'
 #'  @docType package
-#'  @name mipladxtractor
+#'  @name mpxtractor
 NULL
