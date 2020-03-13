@@ -26,6 +26,6 @@ The ....
 
 \section{read_multiple_files function}{
 
-The ...
+The .
 }
 

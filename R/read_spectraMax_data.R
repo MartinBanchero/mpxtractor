@@ -1,5 +1,5 @@
-#' Function specific to read output files from spectraMax readers.
-#'
+#' Function specific to read output .txt files from spectraMax readers.
+#' \code{read_spectraMax_data} returns the data in the .txt as tibble data frame
 #' @export
 
 # Main function
