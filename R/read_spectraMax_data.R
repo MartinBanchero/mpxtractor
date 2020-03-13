@@ -1,6 +1,18 @@
 #' Function specific to read output .txt files from spectraMax readers.
+#'
 #' \code{read_spectraMax_data} returns the data in the .txt as tibble data frame
+#'
 #' @export
+#' @examples
+#' file_path <- system.file("extdata", "spectraM", package = "plater")
+#'
+#' # Data are stored in plate-shaped form
+#' data <- read_plate(
+#'    file = file_path,
+#'    well_ids_column = "Wells")
+#'
+#' # Now data are tidy
+#' head(data)
 
 # Main function
 read_spectraMax_data <- function(file)

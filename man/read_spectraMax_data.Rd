@@ -2,10 +2,10 @@
 % Please edit documentation in R/read_spectraMax_data.R
 \name{read_spectraMax_data}
 \alias{read_spectraMax_data}
-\title{Function specific to read output files from spectraMax readers.}
+\title{Function specific to read output .txt files from spectraMax readers.}
 \usage{
 read_spectraMax_data(file)
 }
 \description{
-Function specific to read output files from spectraMax readers.
+\code{read_spectraMax_data} returns the data in the .txt as tibble data frame
 }
