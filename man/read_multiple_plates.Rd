@@ -2,9 +2,10 @@
 % Please edit documentation in R/read_multiple_plates.R
 \name{read_multiple_plates}
 \alias{read_multiple_plates}
-\title{Multple plates files}
+\title{Multiple plates files}
 \usage{
 read_multiple_plates(
+  reader_type = NULL,
   dirFiles = NULL,
   file_pattern = NULL,
   filesname = NULL,
@@ -12,5 +13,5 @@ read_multiple_plates(
 )
 }
 \description{
-Multple plates files
+Multiple plates files
 }

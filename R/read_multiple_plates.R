@@ -1,7 +1,7 @@
-#' Multple plates files
+#' Multiple plates files
 #'
 #' @export
-read_multiple_plates <- function(dirFiles = NULL, file_pattern = NULL, filesname = NULL,
+read_multiple_plates <- function(reader_type = NULL, dirFiles = NULL, file_pattern = NULL, filesname = NULL,
   plate_names = NULL)
   {
   files <- get_input_read_multifiles(folder = dirFiles, pattern = file_pattern,
@@ -14,6 +14,15 @@ read_multiple_plates <- function(dirFiles = NULL, file_pattern = NULL, filesname
   if (length(files) != length(plate_names))
   {
     stop("files and plate_names must have the same length.")
+  }
+  if (is.null(reader_type)) {
+    stop("Sorry, one reader type must to be specified.")
+  }
+  if (toupper(reader_type) != toupper("spectramax")  &&
+      toupper(reader_type) != toupper("multiscango") &&
+      toupper(reader_type) != toupper("fluorstar") )
+  {
+    stop("Sorry, the micro-plate readers must to be spectramax, multiscango or fluorstar.")
   }
   list_of_data_frames <- Map(f = function(file, plate_name)
   {

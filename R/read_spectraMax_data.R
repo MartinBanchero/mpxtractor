@@ -4,14 +4,13 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "spectraM", package = "plater")
+#' file_path <- system.file("extdata", "spectraMax_1stplate.txt", package = "mpxtractor")
 #'
-#' # Data are stored in plate-shaped form
-#' data <- read_plate(
-#'    file = file_path,
-#'    well_ids_column = "Wells")
+#' # Data is store as a tibble
+#' data <- read_spectraMax_data(
+#'    file = file_path)
 #'
-#' # Now data are tidy
+#' # Now data is tidy
 #' head(data)
 
 # Main function
