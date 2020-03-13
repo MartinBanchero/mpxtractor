@@ -11,7 +11,7 @@
 #' @section read_fluorStar_data function:
 #' The ....
 #' @section read_multiple_files function:
-#' The ...
+#' The .
 #'
 #' @docType package
 #' @name mpxtractor
