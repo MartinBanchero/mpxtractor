@@ -14,6 +14,8 @@ read_spectraMax_data <- function(file)
   result_df
 }
 
+# Readlines of the raw file and remove empty lines and lines with more than 3 \t
+#
 get_raw_file_clean_spectraMax <- function(file)
 {
   raw_file <- readLines(file, warn = FALSE, encoding = "latin1")
@@ -23,3 +25,30 @@ get_raw_file_clean_spectraMax <- function(file)
   cleanfile <- trimws(raw_file_clean, which = "right", whitespace = "[\t]")
 }
 
+# Transform the dataframe to the standar data frame for microplate data
+#
+std_format_df <- function(df)
+{
+  # Format the df
+  well_ids <- 3:ncol(df)
+  df[, well_ids] <- as.numeric(sub(",", ".", as.character(unlist(df[, well_ids]))))
+
+  # Apply dplyr
+  df <- tidyr::gather(df, key = "Wells", value = "Measurement", c(-1, -2))
+
+  df$Wells <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", df$Wells)
+
+  df_measurements <- dplyr::select(df, Wells, everything())  #Swap the well column to the first column
+  df_result <- tidyr::as_tibble(df_measurements)
+  return(df_result)
+}
+
+# Takes a clean file
+# @return a df
+#
+cleanfile_to_df <- function(cleanfile)
+{
+  df <- utils::read.table(textConnection(cleanfile), header = TRUE, sep = "\t",
+                          stringsAsFactors = FALSE, colClasses = "character", comment.char = "")
+  return(df)
+}
