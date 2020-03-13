@@ -92,8 +92,8 @@ type_of_reader <- function(file, reader_type)
   }
   if (toupper(reader_type) == toupper("multiscango"))
   {
-    # p <- read_multiscanGO_data(file) #One function for each machine
-    print("multiscanGO")
+    p <- read_multiscanGO_data(file) #One function for each machine
+    return(p)
   }
   if (toupper(reader_type) == toupper("fluorStar"))
   {
