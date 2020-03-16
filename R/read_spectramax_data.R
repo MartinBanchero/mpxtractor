@@ -14,9 +14,9 @@
 #' head(data)
 
 # Main function
-read_spectraMax_data <- function(file)
+read_spectramax_data <- function(file)
 {
-  check_that_only_one_file_is_provided(file)
+  check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)
   clean_file <- get_raw_file_clean_spectraMax(file)
