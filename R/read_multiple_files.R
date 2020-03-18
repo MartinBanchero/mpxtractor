@@ -1,29 +1,20 @@
 #' Multiple plates files
 #'
 #' @export
-read_multiple_files <- function(reader_type = NULL,
-                                 dirFiles = NULL,
-                                 file_pattern = NULL,
-                                 filesname = NULL,
-                                 plate_names = NULL) {
-
-  files <- get_input_read_multifiles(folder = dirFiles,
-                                     pattern = file_pattern,
+read_multiple_files <- function(reader_type = NULL, dirFiles = NULL,
+                                file_pattern = NULL,
+                                filesname = NULL,
+                                plate_names = NULL) {
+  check_type_of_reader(reader_type)
+  files <- get_input_read_multifiles(folder = dirFiles, pattern = file_pattern,
                                      filebyname = filesname)
+
   lapply(files, check_file_path)
-  if (is.null(plate_names))  {
+  if (is.null(plate_names)) {
     plate_names <- generate_plate_names(files)
   }
   if (length(files) != length(plate_names)) {
     stop("files and plate_names must have the same length.")
-  }
-  if (is.null(reader_type)) {
-    stop("Sorry, one reader type must to be specified.")
-  }
-  if (toupper(reader_type) != toupper("spectramax") && toupper(reader_type) !=
-      toupper("multiscango") && toupper(reader_type) != toupper("fluorstar")) {
-    stop("Sorry,
-    the micro-plate readers must to be spectramax, multiscango or fluorstar.")
   }
   list_of_data_frames <- Map(f = function(file, plate_name) {
     tryCatch(expr = {
@@ -37,7 +28,7 @@ read_multiple_files <- function(reader_type = NULL,
   }, files, plate_names)
   result <- dplyr::bind_rows(list_of_data_frames)
   rownames(result) <- NULL
-  result <- dplyr::select_(result, "Plate", ~dplyr::everything())
+  result <- dplyr::select_(result, "Plate", ~ dplyr::everything())
   result
 }
 
@@ -49,8 +40,10 @@ get_files <- function(folder, pattern = NULL) {
     lst_files <- list.files(path = folder, recursive = TRUE, full.names = TRUE)
     return(lst_files)
   }
-  lst_files <- list.files(path = folder, pattern = pattern, recursive = TRUE,
-                          full.names = TRUE)
+  lst_files <- list.files(
+    path = folder, pattern = pattern, recursive = TRUE,
+    full.names = TRUE
+  )
   return(lst_files)
 }
 
