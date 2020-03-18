@@ -1,11 +1,11 @@
 #' Multiple plates files
 #'
 #' @export
-read_multiple_plates <- function(reader_type = NULL,
+read_multiple_files <- function(reader_type = NULL,
                                  dirFiles = NULL,
                                  file_pattern = NULL,
                                  filesname = NULL,
-                                 plate_names = NULL){
+                                 plate_names = NULL) {
 
   files <- get_input_read_multifiles(folder = dirFiles,
                                      pattern = file_pattern,
@@ -41,26 +41,6 @@ read_multiple_plates <- function(reader_type = NULL,
   result
 }
 
-# Get input to give to the function that read multiple files @return filenames
-# string
-get_input_read_multifiles <- function(folder = NULL, pattern = NULL, filebyname = NULL) {
-  if (is.null(folder) && !is.null(pattern) && is.null(filebyname)) {
-    stop(paste0("Sorry, dirFiles must to be given."))
-  }
-  if (!is.null(folder) && !is.null(pattern) && !is.null(filebyname)) {
-    stop(paste0("Sorry, filebyname cannnot be used with dirFiles or pattern"))
-  }
-  if (!is.null(folder)) {
-    lst_files <- do.call(get_files, list(folder, pattern))
-    return(lst_files)
-  }
-  if (!is.null(filebyname)) {
-    lst_files <- filebyname
-    return(lst_files)
-  }
-
-}
-
 
 # List the files present in the given folder and if pattern is given look for
 # files with that pattern
@@ -87,8 +67,8 @@ type_of_reader <- function(file, reader_type) {
     return(p)
   }
   if (toupper(reader_type) == toupper("fluorStar")) {
-    # p <- read_fluorstar_data(file) #One function for each machine
-    print("fluorStar")
+    p <- read_fluorstar_data(file) #One function for each machine
+    return(p)
   }
-
 }
+

@@ -7,13 +7,13 @@
 read_spectramax_data(file)
 }
 \description{
-\code{read_spectraMax_data} returns the data in the .txt as tibble data frame
+\code{read_spectramax_data} returns the data in the .txt as tibble data frame
 }
 \examples{
 file_path <- system.file("extdata", "spectraMax_1stplate.txt", package = "mpxtractor")
 
 # Data is store as a tibble
-data <- read_spectraMax_data(
+data <- read_spectramax_data(
    file = file_path)
 
 # Now data is tidy

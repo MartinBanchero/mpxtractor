@@ -7,7 +7,7 @@
 read_multiscango_data(file)
 }
 \description{
-\code{read_multiscanGO_data} returns the data in the .txt as tibble
+\code{read_multiscango_data} returns the data in the .txt as tibble
 data frame
 }
 \examples{

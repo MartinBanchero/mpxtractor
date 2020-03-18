@@ -1,21 +1,20 @@
 #' Function specific to read output .txt files from spectraMax readers.
 #'
-#' \code{read_spectraMax_data} returns the data in the .txt as tibble data frame
+#' \code{read_spectramax_data} returns the data in the .txt as tibble data frame
 #'
 #' @export
 #' @examples
 #' file_path <- system.file("extdata", "spectraMax_1stplate.txt", package = "mpxtractor")
 #'
 #' # Data is store as a tibble
-#' data <- read_spectraMax_data(
+#' data <- read_spectramax_data(
 #'    file = file_path)
 #'
 #' # Now data is tidy
 #' head(data)
 
 # Main function
-read_spectramax_data <- function(file)
-{
+read_spectramax_data <- function(file){
   check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)

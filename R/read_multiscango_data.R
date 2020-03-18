@@ -1,6 +1,6 @@
 #' Function specific to read output .txt files from multiscanGO readers.
 #'
-#' \code{read_multiscanGO_data} returns the data in the .txt as tibble
+#' \code{read_multiscango_data} returns the data in the .txt as tibble
 #' data frame
 #'
 #' @export
@@ -46,6 +46,8 @@ format_df <- function(clean_file){
   wd <- diff(c(which(idx), length(idx) + 1)) - 1
   #Assign reading to corresponding values
   df <- cbind(Reading = rep(clean_file[idx], wd), df)
+  df <- cbind(Well_Row = rep(LETTERS[1:wd[1]], length(wd)), df)
+
   # Leave only the number of Readings
   num_read <- gsub("\\tReading:", "\\1", df$Reading)
   # Add column reading with the number of reading as numeric
@@ -55,26 +57,25 @@ format_df <- function(clean_file){
 # Header
 add_header <- function(df)
 {
-  df2 <- df[-1]
-  colnames(df2) <- LETTERS[1:ncol(df2)]
-  df3 <- cbind(Reading = df[, 1], df2)
+  df2 <- df[c(-1,-2)]
+  colnames(df2) <- 1:ncol(df2)
+  df3 <- cbind(df[, c(1,2)], df2)
 }
 
 final_format_df <- function(df3)
 {
-  df_tmp <- df3 %>% tidyr::gather(Col, Measurement, -Reading) %>%
-    dplyr::group_by(Reading, Col) %>%
-    dplyr::mutate(rowID = seq_along(Col)) %>%
+  df_tmp <- df3 %>% tidyr::gather(Well_Col, Measurement, -c(Well_Row, Reading)) %>%
+    dplyr::group_by(Well_Col, Reading) %>%
+    dplyr::mutate(rowID = seq_along(Well_Col)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(name = interaction(Col, rowID, sep = ""), Col = NULL, rowID = NULL) %>%
-    tidyr::spread(name, Measurement)
-  df_tmp2 <- tidyr::gather(df_tmp, key = "Wells", value = "Measurement", -Reading)
+    dplyr::mutate(Wells = interaction(Well_Row, Well_Col, sep = ""), Well_Row = NULL, Well_Col = NULL)
 }
 
-set_well_ids <- function(df_tmp2)
+set_well_ids <- function(df_tmp)
 {
-  wells <- df_tmp2$Wells
+  wells <- df_tmp$Wells
   wellsname <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", wells)
-  df_tmp2$Wells <- wellsname
-  df_result <- dplyr::select(df_tmp2, Wells, everything())  #Swap the well column to the first column
+  df_tmp$Wells <- wellsname
+  df_result <- df_tmp %>% dplyr::select(Wells, everything(), -rowID) %>%
+                dplyr::arrange(Reading)
 }
