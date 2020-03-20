@@ -1,5 +1,9 @@
 #'Function specific to read layout files .csv .
 #'
+#'This function recive as argument a dataframe (data) which is given for
+#'one of the functions(read_spectramax_data, read_multiscango_data,
+#'read_fluorstar_data)
+#'
 #' \code{read_layout_files} returns the data in the .csv as tibble
 #' data frame
 #'
@@ -9,8 +13,8 @@
 #' package = "mpxtractor")
 #'
 #' # Data is store as a tibble
-#' data <- read_layout_files(
-#'    file = file_path)
+#' data_layout <- read_layout_files(data, reader_type ="spectramax"
+#'    layout_files = file_path)
 #'
 #' # Now data is tidy
 #' head(data)
@@ -19,6 +23,7 @@ read_layout_files <- function(data, reader_type = NULL, dir_lyout_files = NULL,
                               layout_file_pattern = NULL,
                               layout_files = NULL,
                               plate_names = NULL) {#Cheack how to wrapp the param
+
   files_layout <- get_input_read_multifiles( folder = dir_lyout_files,
                                              pattern = layout_file_pattern,
                                              filebyname = layout_files)
@@ -47,20 +52,35 @@ read_layout_files <- function(data, reader_type = NULL, dir_lyout_files = NULL,
 
 
 join_multiscango_and_layout <- function(list_of_data_frames){
-  result <- purrr::reduce(list_of_data_frames,
-                          full_join,
-                          by = c("Wells","Readings", "Measurement"))
+   result <- purrr::reduce(list_of_data_frames,
+                           dplyr::full_join,
+                           by = c("Wells","Reading", "Measurement"))
+
   rownames(result) <- NULL
-  df_result <- result %>% dplyr::select_("Plate", everything())
-  return(df_result)
+  return(result)
 }
 
 join_spectramax_and_layout <- function(list_of_data_frames){
-  print("Hi spec")
+  result <- purrr::reduce(list_of_data_frames,
+                          dplyr::full_join,
+                          by = c("Wells",
+                                 "Time(hh:mm:ss)",
+                                 "Temperature(°C)",
+                                 "Measurement"))
+
+  rownames(result) <- NULL
+  return(result)
 }
 
 join_fluorstar_and_layout <- function(list_of_data_frames){
-  print("Hi flu")
+  result <- purrr::reduce(list_of_data_frames,
+                          dplyr::full_join,
+                          by = c("Wells",
+                                   "Content",
+                                 "Time",
+                                 "Measurement"))
+  rownames(result) <- NULL
+  return(result)
 }
 
 # Receive the name of the machine and call the specific function to read the

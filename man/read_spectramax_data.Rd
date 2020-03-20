@@ -7,6 +7,10 @@
 read_spectramax_data(file)
 }
 \description{
+This function recive one output file that a microplate reader produce and generate
+a tibble.
+}
+\details{
 \code{read_spectramax_data} returns the data in the .txt as tibble data frame
 }
 \examples{

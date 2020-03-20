@@ -14,6 +14,11 @@ read_layout_files(
 )
 }
 \description{
+This function recive as argument a dataframe (data) which is given for
+one of the functions(read_spectramax_data, read_multiscango_data,
+read_fluorstar_data)
+}
+\details{
 \code{read_layout_files} returns the data in the .csv as tibble
 data frame
 }
@@ -22,8 +27,8 @@ file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
 package = "mpxtractor")
 
 # Data is store as a tibble
-data <- read_layout_files(
-   file = file_path)
+data_layout <- read_layout_files(data, reader_type ="spectramax"
+   layout_files = file_path)
 
 # Now data is tidy
 head(data)

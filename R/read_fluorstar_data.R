@@ -42,8 +42,8 @@ generate_format_df_fluorstar <- function(clean_file) {
   names <-  grep(x = clean_file, pattern = '*Sample*', invert = T ,value = T,
                  useBytes = T)
 
-  df_samples <- read.table(text = samples, sep = '\t')
-  df_names <-  read.table(text = names, sep = '\t', stringsAsFactors = FALSE )
+  df_samples <- utils::read.table(text = samples, sep = '\t')
+  df_names <-  utils::read.table(text = names, sep = '\t', stringsAsFactors = FALSE )
 
   col_names_df <- data.frame(lapply(df_names, function(x) {
     gsub("\\n", " ", x)
@@ -52,8 +52,14 @@ generate_format_df_fluorstar <- function(clean_file) {
   colnames(df_samples) <- as.character(unlist(col_names_df[1,]))
   df_samples$`Well Col` <- sprintf("%02d", as.numeric(df_samples$`Well Col`))
 
-  df_result <- df_samples %>%
-                tidyr::unite(Wells, c(`Well Row`,`Well Col`), sep = '') %>%
-                tidyr::gather(key = 'Time', value = 'Measurement', starts_with('Raw'))
+  df_tmp <- tidyr::unite(df_samples,
+                            Wells,
+                            c(`Well Row`,`Well Col`),
+                            sep = '')
+
+  df_result <- tidyr::gather(df_tmp, key = 'Time',
+                             value = 'Measurement',
+                             starts_with('Raw'))
+
 }
 

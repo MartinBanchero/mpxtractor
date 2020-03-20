@@ -1,5 +1,8 @@
 #' Function specific to read output .txt files from spectraMax readers.
 #'
+#'This function recive one output file that a microplate reader produce and generate
+#'a tibble.
+#'
 #' \code{read_spectramax_data} returns the data in the .txt as tibble data frame
 #'
 #' @export
@@ -48,7 +51,7 @@ std_format_df <- function(df)
 
   df$Wells <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", df$Wells)
 
-  df_measurements <- dplyr::select(df, Wells, everything())  #Swap the well column to the first column
+  df_measurements <- dplyr::select(df, Wells, everything())
   df_result <- tidyr::as_tibble(df_measurements)
   return(df_result)
 }
@@ -58,7 +61,9 @@ std_format_df <- function(df)
 #
 cleanfile_to_df <- function(cleanfile)
 {
-  df <- utils::read.table(textConnection(cleanfile), header = TRUE, sep = "\t",
-                          stringsAsFactors = FALSE, colClasses = "character", comment.char = "")
-  return(df)
+  df <- utils::read.table(textConnection(cleanfile), header = FALSE, sep = "\t",
+                          stringsAsFactors = FALSE,
+                          colClasses = "character", comment.char = "")
+  names(df) <- as.character(unlist(df[1,]))
+  return(df[-1,])
 }
