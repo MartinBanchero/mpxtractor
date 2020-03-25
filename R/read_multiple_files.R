@@ -11,7 +11,7 @@ read_multiple_files <- function(reader_type = NULL, dirFiles = NULL,
 
   lapply(files, check_file_path)
   if (is.null(plate_names)) {
-    plate_names <- generate_plate_names(files)
+    plate_names <- generate_plate_names_data_files(files)
   }
   if (length(files) != length(plate_names)) {
     stop("files and plate_names must have the same length.")
@@ -28,7 +28,7 @@ read_multiple_files <- function(reader_type = NULL, dirFiles = NULL,
   }, files, plate_names)
   result <- dplyr::bind_rows(list_of_data_frames)
   rownames(result) <- NULL
-  result <- dplyr::select_(result, "Plate", ~ dplyr::everything())
+  result <- dplyr::select_(result, "Wells", ~ dplyr::everything())
   result
 }
 

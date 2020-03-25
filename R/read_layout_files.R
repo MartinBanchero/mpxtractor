@@ -37,7 +37,7 @@ read_layout_files <- function(data, reader_type = NULL, dir_lyout_files = NULL,
   }
   list_of_data_frames <- Map(f = function(file, plate_name) {
     tryCatch(expr = {
-      p <- plater::add_plate(data, file, well_ids_column = "Wells")
+      p <- add_plate_file(data, file, well_ids_column = "Wells")
       p$Plate <- plate_name
       p
     }, error = function(e) {

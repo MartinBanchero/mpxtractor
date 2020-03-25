@@ -2,22 +2,44 @@
 % Please edit documentation in R/read_multiscango_data.R
 \name{read_multiscango_data}
 \alias{read_multiscango_data}
-\title{Function specific to read output .txt files from multiscanGO readers.}
+\title{Function specific to read output files (.txt) produced by multisccanGo readers.}
 \usage{
 read_multiscango_data(file)
 }
-\description{
-\code{read_multiscango_data} returns the data in the .txt as tibble
-data frame
+\arguments{
+\item{file}{The path to a proper .txt file formatted by the multiscanGO machine.}
 }
+\value{
+Returns a tibble data frame whith four columns. The first column is
+"Wells" this containe the names for each well (A01, A02..). The second column
+represent "Time" at wich the measurements were done, the format is in hh:mm:ss.
+The third column is "Temperature", this is the temperature at which the
+experiment was performed. The fourth column containe the measured values.
+}
+\description{
+This function recive one output file from multiscanGO microplate reader and
+generate a tibble dataframe.
+}
+\section{\code{file} format}{
+
+To simplify the number of tasks that the user have to apply before load the
+data in R, \code{read_spectramax_data()} receive as a .txt the file that the
+spectraMax reader return after the measurements. In this case the problem
+related to different file formats, like .csv, .xlsx and versions is simplified
+by using only .txt files.
+}
+
 \examples{
-file_path <- system.file("extdata", "multiscanGO_1streading.txt",
-package = "mpxtractor")
+file_path <- system.file("extdata", "spectraMax_1stplate.txt",
+                         package = "mpxtractor")
 
 # Data is store as a tibble
-data <- read_multiscanGO_data(
-   file = file_path)
+data <- read_spectramax_data(
+  file = file_path
+)
 
 # Now data is tidy
 head(data)
+
+# Main function
 }

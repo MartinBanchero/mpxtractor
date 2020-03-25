@@ -1,0 +1,30 @@
+---
+title: "platetools"
+author: "Martin"
+date: "3/24/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(viridis)
+library(dplyr)
+```
+
+```{r}
+
+df_sp <- mpxtractor::read_spectramax_data(file = "./inst/extdata/spectraMax_1stplate.txt")
+df_zero <- filter(df_sp, `Time(hh:mm:ss)` == "0:00")
+head(df_sp)
+```
+
+```{r}
+platetools::raw_map(data = df_zero$Measurement,
+        well = df_zero$Wells,
+        plate = 384) +
+    ggtitle("Example 384-well plate spectraMax time = 0:00") +
+    theme_dark() +
+    scale_fill_viridis()
+
+```

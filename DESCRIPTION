@@ -13,7 +13,8 @@ LazyData: true
 Imports: 
     dplyr (>= 0.8.4),
     tidyverse (>= 1.3.0),
-    plater (>= 1.0.1)
+    plater (>= 1.0.1),
+    ggplot2 (>= 3.2.1)
 RoxygenNote: 7.0.2
 Suggests: 
     knitr,

@@ -2,17 +2,33 @@
 % Please edit documentation in R/read_spectramax_data.R
 \name{read_spectramax_data}
 \alias{read_spectramax_data}
-\title{Function specific to read output .txt files from spectraMax readers.}
+\title{Function specific to read output files (.txt) produced by spectraMax readers.}
 \usage{
 read_spectramax_data(file)
 }
+\arguments{
+\item{file}{The path to a proper .txt file formatted by the spectraMax machine.}
+}
+\value{
+Returns a tibble data frame whith four columns. The first column is
+"Wells" this containe the names for each well (A01, A02..). The second column
+represent "Time" at wich the measurements were done, the format is in hh:mm:ss.
+The third column is "Temperature", this is the temperature at which the
+experiment was performed. The fourth column containe the measured values.
+}
 \description{
-This function recive one output file that a microplate reader produce and generate
-a tibble.
+This function recive one output file from spectraMax microplate reader and
+generate a tibble dataframe.
 }
-\details{
-\code{read_spectramax_data} returns the data in the .txt as tibble data frame
+\section{\code{file} format}{
+
+To simplify the number of tasks that the user have to apply before load the
+data in R, \code{read_spectramax_data()} receive as a .txt the file that the
+spectraMax reader return after the measurements. In this case the problem
+related to different file formats, like .csv, .xlsx and versions is simplified
+by using only .txt files.
 }
+
 \examples{
 file_path <- system.file("extdata", "spectraMax_1stplate.txt", package = "mpxtractor")
 
