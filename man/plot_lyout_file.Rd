@@ -2,21 +2,27 @@
 % Please edit documentation in R/plot_layout_file.R
 \name{plot_lyout_file}
 \alias{plot_lyout_file}
-\title{Function plot the layout file given in a correct format.}
+\title{Function to plot layout files.}
 \usage{
-plot_lyout_file(file, var_shape, var_colour, name_plate_layout)
+plot_lyout_file(file, var_shape, var_colour, name_plate_layout = NULL)
 }
 \arguments{
 \item{file}{The path to a proper .csv layout file.}
+
+\item{var_shape}{Assign shape to represent one variable}
+
+\item{var_colour}{Assign colour to other variable}
+
+\item{name_plate_layout}{This argument is optional, add the title.}
 }
 \value{
 Returns a plot that represents the microplate with the given layout.The
-plot shows in the x-axis the number of columns and in the y-axis the letter for
-identified with the row. The variables are distinguish by shape and by colour.
+plot shows in the x-axis the number of columns and in the y-axis the letter to
+identified the row.
 }
 \description{
 This function recive one file which is the .csv layout file and generate a
-a plot that represents the designed layout of the microplate.
+plot that represents the designed layout of the microplate.
 }
 \section{\code{file} format}{
 
@@ -30,7 +36,8 @@ package = "mpxtractor")
 
 # Data is store as a tibble
 plot_plate <- plot_layout_file(
-   file = file_path)
+   file = file_path, var_shape = "basic", var_colour = "condition",
+   name_plate_layout = "My experiment" )
 
 # Show the plot
 plot_plate

@@ -66,3 +66,13 @@ check_type_of_reader <- function(reader_type) {
       the micro-plate readers must to be spectramax, multiscango or fluorstar.")
   }
 }
+
+
+check_one_file_provided <- function(file) {
+  if (length(file) > 1) {
+    stop(paste0(
+      "Sorry, only one file should be provided, but you provided ",
+      "multiple."
+    ), call. = FALSE)
+  }
+}

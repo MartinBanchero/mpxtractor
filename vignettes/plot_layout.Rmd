@@ -10,7 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-plot_plate <- mpxtractor::plot_lyout_file(file = "../inst/extdata/spectraMax_layout_plate1.csv", var_shape = "strain", var_colour = "condition", name_plate_layout = "My plate exp")
+ go_data <- mpxtractor::read_multiple_files(reader_type = "multiscango", filesname = c("../inst/extdata/multiscanGO_1streading.txt", "../inst/extdata/multiscanGO_2ndreadings.txt"))
+
+head(go_data)
+```
+
+
+```{r}
+plot_plate <- mpxtractor::plot_lyout_file(file = "../inst/extdata/spectraMax_layout_plate1.csv", var_shape = "basic", var_colour = "condition", name_plate_layout = "Plate experiment")
 plot_plate
 ```
 
@@ -19,7 +26,7 @@ n_col <- length(unique(platemap$Column))
 n_row <- length(unique(platemap$Row))
 
 
-ggplot(data = platemap, aes(x = Column, y = Row)) +
+ggplot2::ggplot(data = platemap, aes(x = Column, y = Row)) +
 geom_point(data = expand.grid(seq(1, n_col ), 
                               seq(1, n_row)), 
                               aes(x = Var1, y = Var2),
@@ -59,7 +66,7 @@ theme(legend.box = "horizontal", plot.margin = margin(3, 0, 2, 0, "cm"),
 ```{r}
 d <- plater::read_plate("../inst/extdata/spectraMax_layout_plate1.csv")
 
-platemap <- mutate(d,
+platemap <- dplyr::mutate(d,
                    Row = as.numeric(match(toupper(substr(Wells, 1, 1)), LETTERS)),
                    Column = as.numeric(substr(Wells, 2, 5)))
 

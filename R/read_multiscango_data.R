@@ -14,8 +14,8 @@
 #'
 #' @section \code{file} format:
 #' To simplify the number of tasks that the user have to apply before load the
-#' data in R, \code{read_spectramax_data()} receive as a .txt the file that the
-#' spectraMax reader return after the measurements. In this case the problem
+#' data in R, \code{read_multiscango_data()} receive as a .txt the file that the
+#' multiscanGO reader return after the measurements. In this case the problem
 #' related to different file formats, like .csv, .xlsx and versions is simplified
 #' by using only .txt files.
 #'
@@ -24,11 +24,11 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "spectraMax_1stplate.txt",
+#' file_path <- system.file("extdata", "multiscanGO_1streading.txt",
 #'                          package = "mpxtractor")
 #'
 #' # Data is store as a tibble
-#' data <- read_spectramax_data(
+#' data <- read_multiscango_data(
 #'   file = file_path
 #' )
 #'
@@ -41,10 +41,10 @@ read_multiscango_data <- function(file) {
   check_file_path(file)
   check_that_file_is_non_empty(file)
   processed_file <- get_raw_file_clean_multiscango(file)
-  df <- intermediate_df(processed_file)
-  df_tmp <- add_col_names(df)
-  final_df <- final_format_df(df_tmp)
-  df_result <- set_well_ids(df_final_format)
+  df_tmp <- intermediate_df(processed_file)
+  df_intermediate <- add_col_names(df_tmp)
+  df_final_tmp <- final_df(df_intermediate)
+  df_result <- set_well_ids(df_final_tmp)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
 }
@@ -73,51 +73,61 @@ get_raw_file_clean_multiscango <- function(file) {
 #
 intermediate_df <- function(processed_file) {
   idx <- grepl("Reading", processed_file)
-  df <- read.table(text = processed_file[!idx])
+  df_tmp <- read.table(text = processed_file[!idx])
   wd <- diff(c(which(idx), length(idx) + 1)) - 1
   # Assign reading to corresponding values
-  df <- cbind(Reading = rep(processed_file[idx], wd), df)
-  df <- cbind(Well_Row = rep(LETTERS[1:wd[1]], length(wd)), df)
+  df_tmp <- cbind(Reading = rep(processed_file[idx], wd), df_tmp)
+  df_tmp <- cbind(Well_Row = rep(LETTERS[1:wd[1]], length(wd)), df_tmp)
 
   # Leave only the number of Readings from the string
-  num_read <- gsub("\\tReading:", "\\1", df$Reading)
+  num_read <- gsub("\\tReading:", "\\1", df_tmp$Reading)
 
-    df$Reading <- as.numeric(num_read)
-  return(df_intermediate)
+    df_tmp$Reading <- as.numeric(num_read)
+    return(df_tmp)
 }
 
 # Add numbers as colname to the columns with measurements.
 #
 # The argument is a dataframe.
 # Return dataframe with the name of columns indicating the number of well col.
-add_col_names <- function(df_intermediate) {
-  df2 <- df_intermediate[c(-1, -2)]
+add_col_names <- function(df_tmp) {
+  df2 <- df_tmp[c(-1, -2)]
   colnames(df2) <- 1:ncol(df2)
-  df_intermediate <- cbind(df_intermediate[, c(1, 2)], df2)
+  df_intermediate <- cbind(df_tmp[, c(1, 2)], df2)
 }
 
 # Transform the dataframe to a more tidy dataframe.
 #
-# The argument is
+# The argument is the dataframe output of the function add_col_names.
 # return a tidy dataframe
 
-final_df <- function(df3) {
-  df_tmp <- df3 %>%
-    tidyr::gather(Well_Col, Measurement, -c(Well_Row, Reading)) %>%
-    dplyr::group_by(Well_Col, Reading) %>%
-    dplyr::mutate(rowID = seq_along(Well_Col)) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(Wells = interaction(Well_Row, Well_Col, sep = ""),
-                  Well_Row = NULL,
-                  Well_Col = NULL)
+final_df <- function(df_intermediate) {
+  df_final_tmp <- tidyr::gather(df_intermediate,
+                                Well_Col, Measurement,
+                                -c(Well_Row, Reading))
+  df_final_tmp <- dplyr::group_by(df_final_tmp, Well_Col, Reading)
+  df_final_tmp <- dplyr::mutate(df_final_tmp, rowID = seq_along(Well_Col))
+  df_final_tmp <- dplyr::ungroup(df_final_tmp)
+  df_final_tmp <- dplyr::mutate(df_final_tmp,
+                                Wells = interaction(Well_Row, Well_Col, sep = ""),
+                                Well_Row = NULL,
+                                Well_Col = NULL)
+  df_final_tmp
+
 }
 
+# Reformat the output of the function final_df()
+#
+#  This function reformat the wells id, put the column Wells in the first column
+# amd arrange by the column Reading.
+#
+# The argument is the dataframe output of the function add_col_names.
+# return a tidy dataframe
 
-set_well_ids <- function(df_tmp) {
-  wells <- df_tmp$Wells
-  wellsname <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", wells)
-  df_tmp$Wells <- wellsname
-  df_result <- df_tmp %>%
-    dplyr::select(Wells, everything(), -rowID) %>%
-    dplyr::arrange(Reading)
+set_well_ids <- function(df_final_tmp) {
+ wells <- df_final_tmp$Wells
+ wellsname <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", wells)
+ df_final_tmp$Wells <- wellsname
+ df_result <- dplyr::select(df_final_tmp, Wells, everything(), -rowID)
+ df_result <- dplyr::arrange(df_result, Reading)
 }

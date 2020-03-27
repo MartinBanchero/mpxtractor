@@ -23,18 +23,18 @@ generate a tibble dataframe.
 \section{\code{file} format}{
 
 To simplify the number of tasks that the user have to apply before load the
-data in R, \code{read_spectramax_data()} receive as a .txt the file that the
-spectraMax reader return after the measurements. In this case the problem
+data in R, \code{read_multiscango_data()} receive as a .txt the file that the
+multiscanGO reader return after the measurements. In this case the problem
 related to different file formats, like .csv, .xlsx and versions is simplified
 by using only .txt files.
 }
 
 \examples{
-file_path <- system.file("extdata", "spectraMax_1stplate.txt",
+file_path <- system.file("extdata", "multiscanGO_1streading.txt",
                          package = "mpxtractor")
 
 # Data is store as a tibble
-data <- read_spectramax_data(
+data <- read_multiscango_data(
   file = file_path
 )
 
