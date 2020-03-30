@@ -16,9 +16,9 @@ plot_lyout_file(file, var_shape, var_colour, name_plate_layout = NULL)
 \item{name_plate_layout}{This argument is optional, add the title.}
 }
 \value{
-Returns a plot that represents the microplate with the given layout.The
-plot shows in the x-axis the number of columns and in the y-axis the letter to
-identified the row.
+Returns a plot that represents the microplate with the given layout.
+The plot shows in the x-axis the number of columns and in the y-axis the
+letter to identified the row.
 }
 \description{
 This function recive one file which is the .csv layout file and generate a

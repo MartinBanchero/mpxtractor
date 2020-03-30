@@ -76,3 +76,4 @@ plot_layout <- mpxtractor::plot_lyout_file(file = file_path_layout,
 # Microplate plot
 plot_layout
 ```
+  

@@ -8,9 +8,9 @@
 #' @param var_colour Assign colour to other variable
 #' @param name_plate_layout This argument is optional, add the title.
 #'
-#' @return Returns a plot that represents the microplate with the given layout.The
-#' plot shows in the x-axis the number of columns and in the y-axis the letter to
-#' identified the row.
+#' @return Returns a plot that represents the microplate with the given layout.
+#' The plot shows in the x-axis the number of columns and in the y-axis the
+#' letter to identified the row.
 #'
 #'
 #' @section \code{file} format:
@@ -32,9 +32,12 @@
 #' plot_plate
 
 # Main function
-plot_lyout_file <- function(file, var_shape, var_colour, name_plate_layout = NULL) {
- platemap_df <- platemap_for_ggplot(file)
- generate_platemap(platemap_df, var_shape, var_colour, name_plate_layout )
+plot_lyout_file <- function(file,
+                            var_shape,
+                            var_colour,
+                            name_plate_layout = NULL) {
+  platemap_df <- platemap_for_ggplot(file)
+  generate_platemap(platemap_df, var_shape, var_colour, name_plate_layout)
 }
 
 
@@ -49,10 +52,13 @@ platemap_for_ggplot <- function(file) {
 }
 
 
-generate_platemap <- function(platemap_df, var_shape, var_colour, name_plate_layout){
+generate_platemap <- function(platemap_df,
+                              var_shape,
+                              var_colour,
+                              name_plate_layout){
+
  n_col <- length(unique(platemap_df$Column))
  n_row <- length(unique(platemap_df$Row))
-
 
  ggplot2::ggplot(data = platemap_df, ggplot2::aes(x = Column, y = Row)) +
  ggplot2::geom_point(data = expand.grid(seq(1, n_col ), seq(1, n_row)),
@@ -64,11 +70,15 @@ generate_platemap <- function(platemap_df, var_shape, var_colour, name_plate_lay
  ggplot2::scale_x_continuous(breaks = seq(1, n_col), position = "top") +
  ggplot2::labs(title = name_plate_layout) +
 
- ggplot2::geom_point(ggplot2::aes_string(shape = var_shape, colour = var_colour), size = 3) +
+ ggplot2::geom_point(ggplot2::aes_string(shape = var_shape, colour = var_colour),
+                     size = 3) +
 
  ggplot2::theme(legend.box = "horizontal",
-        plot.margin = ggplot2::unit(c(1,1,1,1), "cm"),
-        text = ggplot2::element_text(size = 10),
-        axis.text.x = ggplot2::element_text(angle = 0, hjust = 0.5)) +
+                plot.margin = ggplot2::unit(c(1,1,1,1), "cm"),
+                text = ggplot2::element_text(size = 10),
+                axis.text.x = ggplot2::element_text(angle = 0, hjust = 0.5),
+                panel.border = ggplot2::element_rect(colour = "black",
+                                                     fill = NA,
+                                                     size = 1)) +
  ggplot2::scale_colour_viridis_d()
 }

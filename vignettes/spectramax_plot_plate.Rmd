@@ -14,9 +14,22 @@ library(dplyr)
 
 ```{r}
 
-df_sp <- mpxtractor::read_spectramax_data(file = "./inst/extdata/spectraMax_1stplate.txt")
-df_zero <- filter(df_sp, `Time(hh:mm:ss)` == "0:00")
-head(df_sp)
+df_sp <- mpxtractor::read_spectramax_data(file = "../inst/extdata/spectraMax_1stplate.txt")
+to_growth <- df_sp[,-3]
+to_plot <- to_growth[1:481,]
+
+grow <- tidyr::spread(to_growth, Wells, Measurement )
+test <- grow[1:5,]
+test
+```
+
+```{r}
+test$Time_HH <- as.numeric(gsub("([^:]+).*", "\\1", test$`Time(hh:mm:ss)`)) + 
+    
+    as.numeric(gsub(".*:([0-9]{2}:+).*", "\\1", test$`Time(hh:mm:ss)`))/60
+
+grow %>% dplyr::select(Time_HH, everything())
+
 ```
 
 ```{r}

@@ -1,0 +1,189 @@
+---
+title: "growth_rate"
+author: "Martin"
+date: "3/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+
+```
+
+```{r}
+sp_data <- mpxtractor::read_spectramax_data(file = "../inst/extdata/spectraMax_2ndplate.txt")
+head(sp_data)
+
+# Format time
+time_test <- sp_data$`Time(hh:mm:ss)`
+sp_data$Time_HH <- get_time_in_minutes(time_test)
+
+# log transform of Measurements
+sp_data$log_measurements <- log(sp_data$Measurement)
+test <- sp_data[,c(1,5,6)]
+
+# Calculate growth rate
+growth_rate = test %>%
+  # first sort by year
+  arrange(Wells) %>%
+  mutate(Diff_time = Time_HH - lag(Time_HH),  # Difference in time (just in case there are gaps)
+         Diff_growth = log_measurements - lag(log_measurements), # Difference in route between years
+         Rate = (Diff_growth / (Diff_time + 1))/lag(log_measurements) * 100) # growth rate in percent
+
+gr_test <- growth_rate %>% 
+  mutate(Diff_time = ifelse(Time_HH == 0 , NA, Diff_time),
+         Diff_growth = ifelse(Time_HH == 0, NA , Diff_growth),
+         Rate = ifelse(Time_HH == 0, NA, Rate )
+         )
+
+gr_fil <- gr_test %>%
+  filter(Wells == "A01")
+gr_fil
+
+ # Plot each well
+ggplot(data = gr_fil, aes(x = Time_HH, y = Rate)) + geom_point() +
+    facet_wrap(~Wells)
+```
+
+```{r}
+Time.Training <- sp_data$`Time(hh:mm:ss)`
+
+sp_data$log_measurements <- log(sp_data$Measurement)
+test <- sp_data[,c(1,5,6)]
+
+
+
+get_time_in_minutes <- function(time.col){
+ sapply(strsplit(time.col, ":"), function(x) {
+        x <- as.numeric(x)
+        if (length(x) <= 2) {
+          x[1]/60 + x[2]/3600
+        }
+        else {
+          x[1] + x[2]/60 + x[3]/3600
+        }
+ })
+}
+
+```
+
+```{r}
+rolling_summary <- function(DF, time_col, fun, window_size, step_size, min_window=min(DF[, time_col])) {
+    # time_col is name of time column
+    # fun is function to apply to the subsetted data frames
+    # min_window is the start time of the earliest window
+
+    times <- DF[, time_col]
+
+    # window_starts is a vector of the windows' minimum times
+    window_starts <- seq(from = min_window, to = max(times), by = step_size)
+
+    # The i-th element of window_rows is a vector that tells us the row numbers of
+    # the data-frame rows that are present in window i 
+    window_rows <- lapply(window_starts, function(x) { which(times >= x & times < x + window_size) })
+
+    window_summaries <- sapply(window_rows, function(w_r) fun(DF[w_r, ]))
+    data.frame(start_time = window_starts, 
+               end_time = window_starts + window_size,
+               summary = window_summaries)
+}
+
+ws <- rolling_summary(DF = gr_fil,
+                time_col = "Time_HH",
+                fun = function(DF) mean(DF$Rate),
+                window_size = 2,
+                step_size = 1,
+                min_window = -1)
+
+ggplot(data = ws, aes(x = start_time, y = summary)) + geom_point()
+```
+
+```{r load_data, include=FALSE}
+# Load project settings
+source(here::here("settings.R"))
+
+source(file.path(data.raw.dir, "design.R"))
+
+# load turbi data
+source(file.path(data.raw.dir, "turbidostat.R"))
+
+# load time management related functions
+source(file.path(functions.dir, "time.R"))
+
+# load joining functions
+source(file.path(functions.dir, "join_multicultivator_design.R"))
+
+```
+
+```{r}
+plan(multiprocess)
+
+# function used to calculate growth rates
+f_growth <- function(d, .f=turbidostat_growth, method=regression.method, ...) {
+  
+  f_g <- function(.x) {
+    future( .f(.x, time_h, OD, method=method, ...))
+  }
+  
+  d %>% 
+    # remove data from before turbidostat was enabled
+    filter(!is.na(decision)) %>%
+    # don't estimate growth rates when lights are off
+    filter(intensity > 0.1) %>%
+    group_by(year, turbidostat_datafile, multicultivator, channel) %>%
+    nest() %>%
+    # nest so we can use future with map
+    mutate(
+      # use future to create a process for each time map makes a call
+      rates = map(data, f_g ),
+      # use values to retrieve the data
+      rates = values(rates)
+    ) %>%
+    unnest(rates) %>%
+    left_join(
+      d %>% select(year, turbidostat_datafile, multicultivator, channel, time_h, time),
+      by = c("year", "turbidostat_datafile", "multicultivator", "channel", "time_h")
+    )
+}
+
+```
+
+
+```{r df.growth.rates}
+# calculate growth rates from normal turbidostat data
+df.growth.rates <- df.turbidostat %>% 
+  f_growth() %>% 
+  # join with part of the design file to get the date and time of dusk and dawn
+  join_multicultivator_design(., df.design) %>% 
+  # calculate the regime time based on the real time and time of dusk and dawn
+  mutate(
+     regime_length = as.numeric(difftime(regime_dusk, regime_dawn, units = "hours")),
+     regime_distance =  as.numeric(difftime(time, (regime_dawn - (regime_length/2) * 3600), units="hours")),
+     regime_growth_time = regime_distance %% (regime_length*2)  %>% round(., 4)
+  ) %>%
+  filter(ymd_hms(time) >= regime_start)
+# 
+```
+
+
+## Export
+
+```{r save_growth_rates}
+# load output 
+source(file.path(functions.dir, "output.R"))
+
+turbidostat.output.path <- df.growth.rates %>% 
+  select(year, dataset, multicultivator, channel, time_h, time, slope, r.squared, regime_growth_time) %>% 
+  # TODO: reconsider naming of files
+  write_output_csv("turbidostat", "turbidostat_growth_rates")
+```
+
+Data was exported to `r turbidostat.output.path`
