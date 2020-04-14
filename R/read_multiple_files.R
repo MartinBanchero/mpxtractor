@@ -1,6 +1,7 @@
 #' Multiple plates files
 #'
 #' @export
+
 read_multiple_files <- function(reader_type = NULL, dirFiles = NULL,
                                 file_pattern = NULL,
                                 filesname = NULL,

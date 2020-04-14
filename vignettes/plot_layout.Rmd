@@ -22,7 +22,7 @@ platemap <- dplyr::mutate(platemap_df,
 
 Layout spectraMax
 ```{r}
-plot_plate <- mpxtractor::plot_lyout_file(file = "../inst/extdata/spectraMax_layout_plate1.csv", var_shape = "basic", var_colour = "condition", name_plate_layout = "Plate experiment")
+plot_plate <- mpxtractor::plot_lyout_file(file = "../inst/extdata/spectraMax_layout_plate2.csv", var_shape = "basic", var_colour = "condition", name_plate_layout = "Plate experiment")
 plot_plate
 ```
 
@@ -83,7 +83,7 @@ platemap_df <- dplyr::mutate(platemap_df,
 
 ggplot(data = platemap, aes(x = Column, y = Row)) +
 
-  geom_point(data = expand.grid(seq(1, 24), seq(1, 16)), aes(x = Var1, y = Var2),
+geom_point(data = expand.grid(seq(1, 24), seq(1, 16)), aes(x = Var1, y = Var2),
            color = "grey", fill = "white", shape = 21, size = 5) +
   
   
