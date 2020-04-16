@@ -45,28 +45,36 @@ microplate_spectramax_gr_plot <- function(spectramax_data,
   sp_data_layout <- format_time(sp_data_layout, time)
   sp_data_layout <- background_correction_impute(sp_data_layout)
   sp_data_layout <- calculate_growth_rate(sp_data_layout, windowsize)
-  df_sub_plots_well <- generate_subplots_by_well(sp_data_layout)
-  df_sub_plots_well <- subplots_with_coordinates(df_sub_plots_well)
-  df_sub_plots_well <- subplots_annotated(df_sub_plots_well)
-  color_con <- color_by_condition(sp_data_layout, var_to_col)
-  microplate_with_plots <- plot_gr_in_plate(df_sub_plots_well)
+  sp_data_layout <- factor_to_color(sp_data_layout, var_to_col)
 
-  save_gr_microplate(microplate_with_plots)
+  df_sub_plots_well <- generate_subplots_by_well(sp_data_layout, var_to_col)
+  df_sub_plots_well <- subplots_with_coordinates(df_sub_plots_well)
+  df_sub_plots_well <- subplots_annotated(df_sub_plots_well, sp_data_layout)
+  all_wells_plot  <- plot_gr_in_plate(df_sub_plots_well, exp_title, var_to_col)
+  all_wells_plot
 }
 
-generate_subplots_by_well <- function(sp_data_layout) {
-  sp_data_layout$condition_fc <- factor(sp_data_layout$condition,
-    levels = unique(sp_data_layout$condition)
+factor_to_color <- function(sp_data_layout, var_to_col) {
+  sp_data_layout$condition_fc <- factor(sp_data_layout[[var_to_col]],
+    levels = unique(sp_data_layout[[var_to_col]])
   )
-  # generte color scale
-  colors_fact <- rev(viridis(length(unique(sp_data_layout$condition))))
-  names(colors_fact) <- levels(sp_data_layout$condition_fc)
-  colScale <- scale_colour_manual(name = "condition_fc", values = colors_fact)
+  return(sp_data_layout)
+}
 
+# generte color scale
+generate_color_scale <- function(sp_data_layout, var_to_col) {
+  colors_fact <- rev(viridis(length(unique(sp_data_layout[[var_to_col]]))))
+  names(colors_fact) <- levels(sp_data_layout[["condition_fc"]])
+  colScale <- scale_colour_manual(name = "condition_fc", values = colors_fact)
+  return(colScale)
+}
+
+generate_subplots_by_well <- function(sp_data_layout, var_to_col) {
+  colScale <- generate_color_scale(sp_data_layout, var_to_col)
   # generate subplots
-  sp_data_layout <- dplyr::group_by(sp_data_layout, Wells)
-  df_sub_plots_well <- do(
-    subplots = ggplot2::ggplot(sp_data_layout, aes(x = Time, y = mu)) +
+  sp_data_layout_group <- dplyr::group_by(sp_data_layout, Wells)
+  df_sub_plots_well <- dplyr::do(sp_data_layout_group,
+    subplots = ggplot2::ggplot(., aes(x = Time, y = mu)) +
       ggplot2::geom_line(aes(colour = condition_fc), size = 1) +
       colScale +
       ggplot2::theme_void() +
@@ -75,8 +83,8 @@ generate_subplots_by_well <- function(sp_data_layout) {
         panel.border = element_rect(colour = "black", fill = NA, size = 0.5)
       )
   )
+  return(df_sub_plots_well)
 }
-
 
 cut_into_coordinates <- function(variable, ngroups) {
   seq_all <- seq(min(variable) - 0.5, max(variable) + 0.5, by = 1)
@@ -87,7 +95,7 @@ cut_into_coordinates <- function(variable, ngroups) {
   )
 }
 
-subplots_with_coordinates <- function(df_sub_plots_well) {
+add_rows_and_columns <- function(df_sub_plots_well) {
   # Add column and row to the table sub_subplots
   df_sub_plots_well <- dplyr::mutate(df_sub_plots_well,
     Row = as.numeric(match(
@@ -96,17 +104,22 @@ subplots_with_coordinates <- function(df_sub_plots_well) {
     )),
     Column = as.numeric(substr(Wells, 2, 5))
   )
+  return(df_sub_plots_well)
+}
 
-  df_sub_plots_well$Row <- rev(df_sub_plots_well$Row)
+
+subplots_with_coordinates <- function(df_sub_plots_well) {
+  df_sub_plots_well <- add_rows_and_columns(df_sub_plots_well)
+  df_sub_plots_well$Row <- rev(df_sub_plots_well[["Row"]])
 
   # Function cut_into_coordinates() to generate the coordinates x-y for each subplot.
   df_sub_plots_well$group_x <- cut_into_coordinates(
-    df_sub_plots_well$Column,
-    length(unique(platemap$Column))
+    df_sub_plots_well[["Column"]],
+    length(unique(df_sub_plots_well[["Column"]]))
   )
   df_sub_plots_well$group_y <- cut_into_coordinates(
-    df_sub_plots_well$Row,
-    length(unique(platemap$Row))
+    df_sub_plots_well[["Row"]],
+    length(unique(df_sub_plots_well[["Row"]]))
   )
 
   df_sub_plots_well <- tidyr::separate(df_sub_plots_well, group_x,
@@ -120,76 +133,61 @@ subplots_with_coordinates <- function(df_sub_plots_well) {
   )
 }
 
-
 # Function grobfun() generate the graphical objects with the coordinates x-y to plot
 #in the background plot.
-grobfun <- function(min_x, max_x, min_y, max_y, subplots) {
+grobfun <- function(subplots, min_x, max_x, min_y, max_y) {
   annotation_custom(ggplotGrob(subplots),
     xmin = min_x, ymin = min_y,
     xmax = max_x, ymax = max_y
   )
 }
 
-
-subplots_annotated <- function(df_sub_plots_well) {
-  df_sub_plots_well <- dplyr::select(
-    df_sub_plots_well,
-    min_x, max_x, min_y,
-    max_y, subplots
+subplots_annotated <- function(df_sub_plots_well, sp_data_layout) {
+  df_sub_plots_well <- dplyr::mutate(df_sub_plots_well,
+    grobs = purrr::pmap(
+      subset(
+        df_sub_plots_well,
+        select = -c(Wells, Row, Column)
+      ),
+      grobfun
+    )
   )
-  df_sub_plots_well <- dplyr::mutate(df_sub_plots_well, grobs = pmap(., grobfun))
-
-
   df_sub_plots_well <- dplyr::inner_join(df_sub_plots_well,
-    unique(df_sub_plots_well[, c("Wells", "condition_fc")]),
+    unique(sp_data_layout[, c("Wells", "condition_fc")]),
     by = "Wells"
   )
 }
 
 
-color_by_condition <- function(sp_data_layout, var_to_col) {
-  colors_fact <- rev(viridis(length(unique(sp_data_layout$var_to_col))))
-  color_con <- stack(colors_fact)
+color_factor_condition <- function(df_sub_plots_well) {
+  colors_fact_cond <- rev(viridis(
+    length(unique(df_sub_plots_well[["condition_fc"]]))
+  ))
+  names(colors_fact_cond) <- levels(df_sub_plots_well[["condition_fc"]])
+  color_con <- stack(colors_fact_cond)
 }
 
 
+plot_gr_in_plate <- function(df_sub_plots_well, exp_title, var_to_col) {
 
-plot_gr_in_plate <- function(df_sub_plots_well, color_con) {
-  n_col <- length(unique(df_sub_plots_well$Column))
-  n_row <- length(unique(df_sub_plots_well$Row))
+  n_col <- length(unique(df_sub_plots_well[["Column"]]))
+  n_row <- length(unique(df_sub_plots_well[["Row"]]))
+  color_con <- color_factor_condition(df_sub_plots_well)
 
   background_plot <- ggplot2::ggplot(
     data = df_sub_plots_well,
-    aes(
-      x = Column,
-      y = Row,
-      fill = condition_fc
-    )
-  ) +
+    aes(x = Column, y = Row, fill = condition_fc)) +
     ggplot2::geom_blank() +
     ggplot2::theme_classic() +
     ggplot2::theme(panel.border = element_rect("transparent")) +
     ggplot2::scale_x_continuous(breaks = seq(1, n_col), position = "top") +
     ggplot2::scale_y_continuous(
       breaks = seq(1, n_row),
-      labels = LETTERS[n_row:1],
-      position = "left"
+      labels = LETTERS[n_row:1], position = "left"
     ) +
     ggplot2::geom_col(aes(Inf, Inf)) +
-    ggplot2::scale_fill_manual(name = var_col, values = color_con$values) +
+    ggplot2::scale_fill_manual(name = "condition", values = color_con[["values"]]) +
     ggplot2::labs(title = exp_title)
 
-  allwells <- background_plot + allgrobs$grobs
+   all_wells_plot <- background_plot + df_sub_plots_well[["grobs"]]
 }
-
-
-save_gr_microplate <- function(allwells, path = NULL) {
-  ggsave(
-    path = path,
-    plot = allwells,
-    width = 30,
-    height = 20,
-    units = "cm"
-  )
-}
-
