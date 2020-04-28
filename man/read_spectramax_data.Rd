@@ -34,8 +34,11 @@ file_path <- system.file("extdata", "spectraMax_1stplate.txt", package = "mpxtra
 
 # Data is store as a tibble
 data <- read_spectramax_data(
-   file = file_path)
+  file = file_path
+)
 
 # Now data is tidy
 head(data)
+
+# Main function
 }

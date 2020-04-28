@@ -31,7 +31,8 @@ by using only .txt files.
 
 \examples{
 file_path <- system.file("extdata", "multiscanGO_1streading.txt",
-                         package = "mpxtractor")
+  package = "mpxtractor"
+)
 
 # Data is store as a tibble
 data <- read_multiscango_data(

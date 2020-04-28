@@ -12,12 +12,16 @@ data frame
 }
 \examples{
 file_path <- system.file("extdata", "fluorstar_milkjuice_FL.txt",
-package = "mpxtractor")
+  package = "mpxtractor"
+)
 
 # Data is store as a tibble
 data <- read_fluorstar_data(
-   file = file_path)
+  file = file_path
+)
 
 # Now data is tidy
 head(data)
+
+# Main function
 }

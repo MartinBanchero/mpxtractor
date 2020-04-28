@@ -1,5 +1,5 @@
 ---
-title: "Read layout files with `mpxtractor` package"
+title: "Plotting functions of `mpxtractor` package"
 author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette

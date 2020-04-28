@@ -1,5 +1,5 @@
 ---
-title: "Main functions of `mpxtractor` package"
+title: "Data wrangling functions of `mpxtractor` package"
 author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
@@ -17,11 +17,16 @@ knitr::opts_chunk$set(collapse = TRUE,comment = "#>")
 
 ## Overview
 The main function of `mpxtractor` is to provide a simple method that is able to represent
-the data store in an output file of a microplate reader into a tidy data frame. This is a critical point in severals reasearch lines link to molecular biolgy. This package main contribution is orientated to save time and get fast into data analysis.
-In the following sections the main functions of `mpxtractor` are described.
+the data of a microplate reader output file into a tidy data frame. This is a critical point in severals reasearch lines related to molecular biolgy. This package main contribution is orientated to save time and get fast into data analysis.
+In the following sections the main functions of data wrangling of `mpxtractor` are described.
+In addition to the data wrangling functions, `mpxtractor` provide functions to deal with
+layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy
+dataframe between the raw_data and the information present in the layout files.
 
-## 1. Main functions
-The `mpxtractor` contain one function for each type of microplate reader machine. This functions are, *read_spectramax_data()*, *read_multiscango_data()*, *read_fluorstar_data()*, *read_multiple_files()*, in the following section each of this functions are explained.
+## 1. Wrangling functions
+The `mpxtractor` contain one function for each type of microplate reader machine. This functions are, *read_spectramax_data()*, *read_multiscango_data()*, *read_fluorstar_data()*. In addition to this
+the function *read_multiple_files()* is used to combine more than one output file into one tidy
+dataframe. In the following section each of this functions are explained.
 
 ### 1.1 read_spectramax_data()
 This function take as argument one file with ".txt" extension. Also is a "\\t" separated
@@ -60,7 +65,7 @@ file_path <- system.file("extdata",
                          c("spectraMax_1stplate.txt","spectraMax_2ndplate.txt"), 
                          package = "mpxtractor")
 
-data_multiple_spectramax <- mpxtractor::read_multiple_files(
+data_multiple_spectramax <- mpxtractor::read_multiple_data_files(
                                                       reader_type = "spectramax",
                                                       filesname = file_path)
 head(data_multiple_spectramax)
@@ -70,6 +75,21 @@ head(data_multiple_spectramax)
 ```{r}
 tail(data_multiple_spectramax)
 ```
+
+## 2. Deal with layout files functions
+### 2.1 read_layout_files()
+```{r}
+
+
+```
+
+### 2.2 combine_data_with_layout()
+
+```{r}
+
+```
+
+
 
 
 

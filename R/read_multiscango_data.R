@@ -25,7 +25,8 @@
 #' @export
 #' @examples
 #' file_path <- system.file("extdata", "multiscanGO_1streading.txt",
-#'                          package = "mpxtractor")
+#'   package = "mpxtractor"
+#' )
 #'
 #' # Data is store as a tibble
 #' data <- read_multiscango_data(
@@ -40,13 +41,23 @@ read_multiscango_data <- function(file) {
   check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)
+  input_file_is_multiscango(file)
   processed_file <- get_raw_file_clean_multiscango(file)
-  df_tmp <- intermediate_df(processed_file)
+  df_tmp <- generate_df(processed_file)
   df_intermediate <- add_col_names(df_tmp)
-  df_final_tmp <- final_df(df_intermediate)
+  df_final_tmp <- generate_df_result(df_intermediate)
   df_result <- set_well_ids(df_final_tmp)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
+}
+
+
+input_file_is_multiscango <- function(file) {
+  raw_file <- readLines(file, warn = FALSE, encoding = "latin1")
+  raw_file <- strsplit(raw_file[1], split = " ")
+  if (!raw_file[[1]][1] == "Results") {
+    stop("The input file is not a multiscango file.")
+  }
 }
 
 # Remove empty lines and two lines of the multiscanGO output file.
@@ -71,7 +82,7 @@ get_raw_file_clean_multiscango <- function(file) {
 # Row indicated by one letter.
 # At the end transform the measurements to numeric.
 #
-intermediate_df <- function(processed_file) {
+generate_df <- function(processed_file) {
   idx <- grepl("Reading", processed_file)
   df_tmp <- read.table(text = processed_file[!idx])
   wd <- diff(c(which(idx), length(idx) + 1)) - 1
@@ -80,10 +91,10 @@ intermediate_df <- function(processed_file) {
   df_tmp <- cbind(Well_Row = rep(LETTERS[1:wd[1]], length(wd)), df_tmp)
 
   # Leave only the number of Readings from the string
-  num_read <- gsub("\\tReading:", "\\1", df_tmp$Reading)
+  num_read <- gsub("\\tReading:", "\\1", df_tmp[["Reading"]])
 
-    df_tmp$Reading <- as.numeric(num_read)
-    return(df_tmp)
+  df_tmp$Reading <- as.numeric(num_read)
+  return(df_tmp)
 }
 
 # Add numbers as colname to the columns with measurements.
@@ -101,19 +112,21 @@ add_col_names <- function(df_tmp) {
 # The argument is the dataframe output of the function add_col_names.
 # return a tidy dataframe
 
-final_df <- function(df_intermediate) {
-  df_final_tmp <- tidyr::gather(df_intermediate,
-                                Well_Col, Measurement,
-                                -c(Well_Row, Reading))
+generate_df_result <- function(df_intermediate) {
+  df_final_tmp <- tidyr::gather(
+    df_intermediate,
+    Well_Col, Measurement,
+    -c(Well_Row, Reading)
+  )
   df_final_tmp <- dplyr::group_by(df_final_tmp, Well_Col, Reading)
   df_final_tmp <- dplyr::mutate(df_final_tmp, rowID = seq_along(Well_Col))
   df_final_tmp <- dplyr::ungroup(df_final_tmp)
   df_final_tmp <- dplyr::mutate(df_final_tmp,
-                                Wells = interaction(Well_Row, Well_Col, sep = ""),
-                                Well_Row = NULL,
-                                Well_Col = NULL)
+    Wells = interaction(Well_Row, Well_Col, sep = ""),
+    Well_Row = NULL,
+    Well_Col = NULL
+  )
   df_final_tmp
-
 }
 
 # Reformat the output of the function final_df()
@@ -125,9 +138,9 @@ final_df <- function(df_intermediate) {
 # return a tidy dataframe
 
 set_well_ids <- function(df_final_tmp) {
- wells <- df_final_tmp$Wells
- wellsname <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", wells)
- df_final_tmp$Wells <- wellsname
- df_result <- dplyr::select(df_final_tmp, Wells, everything(), -rowID)
- df_result <- dplyr::arrange(df_result, Reading)
+  wells <- df_final_tmp$Wells
+  wellsname <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", wells)
+  df_final_tmp$Wells <- wellsname
+  df_result <- dplyr::select(df_final_tmp, Wells, everything(), -rowID)
+  df_result <- dplyr::arrange(df_result, Wells)
 }

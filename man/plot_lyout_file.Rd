@@ -32,13 +32,17 @@ examples below.
 
 \examples{
 file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
-package = "mpxtractor")
+  package = "mpxtractor"
+)
 
 # Data is store as a tibble
 plot_plate <- plot_layout_file(
-   file = file_path, var_shape = "basic", var_colour = "condition",
-   name_plate_layout = "My experiment" )
+  file = file_path, var_shape = "basic", var_colour = "condition",
+  name_plate_layout = "My experiment"
+)
 
 # Show the plot
 plot_plate
+
+# Main function
 }

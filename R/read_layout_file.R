@@ -1,6 +1,5 @@
 #' @export
-
-read_plate_file <- function (file, well_ids_column = "Wells") {
+read_layout_file <- function(file, well_ids_column = "Wells") {
   check_that_only_one_file_is_provided(file)
   check_file_path_layout(file)
   check_that_file_is_non_empty(file)

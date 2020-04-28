@@ -28,16 +28,18 @@
 #'
 #' # Data is store as a tibble
 #' data <- read_spectramax_data(
-#'    file = file_path)
+#'   file = file_path
+#' )
 #'
 #' # Now data is tidy
 #' head(data)
-
-# Main function
+#'
+#' # Main function
 read_spectramax_data <- function(file) {
   check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)
+  input_file_is_spectramax(file)
   clean_file <- get_raw_file_clean_spectramax(file)
   df <- cleanfile_to_df(clean_file)
   result_df <- std_format_df(df)
@@ -63,6 +65,20 @@ get_raw_file_clean_spectramax <- function(file) {
   cleanfile <- trimws(raw_file_clean, which = "right", whitespace = "[\t]")
 }
 
+input_file_is_spectramax <- function(file) {
+  raw_file <- readLines(file, warn = FALSE, encoding = "latin1")
+  raw_file <- strsplit(raw_file[1], split = "\t")
+  if (!raw_file[[1]][1] == "Time(hh:mm:ss)" && !raw_file[[1]][2] == "Temperature(°C)") {
+    stop("The input file is not an spectramax file.")
+  }
+}
+
+
+
+
+
+
+
 # Recive a character vector that is transformed to a data frame.
 #
 # The character vector is trasnformed to a data frame using read.table(). The
@@ -74,9 +90,9 @@ get_raw_file_clean_spectramax <- function(file) {
 # The function return a dataframe.
 cleanfile_to_df <- function(cleanfile) {
   df <- utils::read.table(textConnection(cleanfile),
-                          header = FALSE, sep = "\t",
-                          stringsAsFactors = FALSE,
-                          colClasses = "character", comment.char = ""
+    header = FALSE, sep = "\t",
+    stringsAsFactors = FALSE,
+    colClasses = "character", comment.char = ""
   )
   names(df) <- as.character(unlist(df[1, ]))
   return(df[-1, ])
@@ -104,6 +120,19 @@ std_format_df <- function(df) {
   df$Wells <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", df$Wells)
 
   df_measurements <- dplyr::select(df, Wells, everything())
+  df_measurements <- format_time_spectra(df_measurements)
   df_result <- tidyr::as_tibble(df_measurements)
   return(df_result)
+}
+
+# Transform the time format from spectramax to hh:mm:ss as character
+format_time_spectra <- function(df) {
+  time <- df$`Time(hh:mm:ss)`
+  time <- gsub("^(\\d{1}:\\d{2}$)", "\\00:0\\1", time)
+  time <- gsub("^(\\d{2}:\\d{2}$)", "\\00:\\1", time)
+  time <- gsub("^(\\d{1}:\\d{2}:\\d{2}$)", "\\0\\1", time)
+
+  df$`Time(hh:mm:ss)` <- time
+  colnames(df)[colnames(df) == "Time(hh:mm:ss)"] <- "Time"
+  df
 }
