@@ -43,6 +43,7 @@ read_spectramax_data <- function(file) {
   clean_file <- get_raw_file_clean_spectramax(file)
   df <- cleanfile_to_df(clean_file)
   result_df <- std_format_df(df)
+
   result_df
 }
 
@@ -95,6 +96,7 @@ cleanfile_to_df <- function(cleanfile) {
     colClasses = "character", comment.char = ""
   )
   names(df) <- as.character(unlist(df[1, ]))
+
   return(df[-1, ])
 }
 
@@ -121,7 +123,10 @@ std_format_df <- function(df) {
 
   df_measurements <- dplyr::select(df, Wells, everything())
   df_measurements <- format_time_spectra(df_measurements)
+
   df_result <- tidyr::as_tibble(df_measurements)
+  colnames(df_result)[colnames(df_result) == "Temperature(Â°C)"] <- "Temperature"
+
   return(df_result)
 }
 
