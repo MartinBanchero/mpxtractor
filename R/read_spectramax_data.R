@@ -134,5 +134,6 @@ format_time_spectra <- function(df) {
 
   df$`Time(hh:mm:ss)` <- time
   colnames(df)[colnames(df) == "Time(hh:mm:ss)"] <- "Time"
+
   df
 }
