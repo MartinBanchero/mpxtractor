@@ -8,6 +8,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+<style>
+body {
+text-align: justify}
+</style>
 
 ```{r, include = FALSE}
 library(mipledxtractor)
@@ -24,7 +28,7 @@ dataframe. In the following section each of this functions are explained.
 In addition to the data wrangling functions, `mpxtractor` provide functions to deal with
 layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy
 data frame between the raw_data and the information present in the layout files.
-
+  
 
 ### 2.1 read_layout_files()
 ```{r}

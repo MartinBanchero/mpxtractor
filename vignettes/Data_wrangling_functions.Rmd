@@ -8,6 +8,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+<style>
+body {
+text-align: justify}
+</style>
 
 ```{r, include = FALSE}
 library(mipledxtractor)
@@ -57,7 +61,7 @@ head(data_multiscan)
 ### 1.3 read_fluorstar_data()
 
 ```{r}
-file_path <- system.file("extdata", "fluorstar_milkjuice_FL.txt", package = "mpxtractor")
+file_path <- system.file("extdata", "test_fluorstar_fluorescence_data.txt", package = "mpxtractor")
 data_fluorstar <- mpxtractor::read_fluorstar_data(file = file_path)
 head(data_fluorstar)
 
@@ -68,13 +72,14 @@ head(data_fluorstar)
 
 ```{r}
 file_path <- system.file("extdata", 
-                         c("spectraMax_1stplate.txt","spectraMax_2ndplate.txt"), 
+                         c("test_spectramax_data_1.txt","test_spectramax_data_2.tx"), 
                          package = "mpxtractor")
 
 data_multiple_spectramax <- mpxtractor::read_multiple_data_files(
                                                       reader_type = "spectramax",
                                                       filesname = file_path)
 head(data_multiple_spectramax)
+tail(data_multiple_spectramax)
 ```
 
 

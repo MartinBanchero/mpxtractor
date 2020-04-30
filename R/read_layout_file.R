@@ -1,4 +1,38 @@
+#' Function specific to read layout files (.csv).
+#'
+#' This function recive layout file properly formated. This function is similar
+#' to the function \code{read_plate()} from plater package.
+#'
+#' @param file The path to a proper .csv file.
+#'
+#' @return Returns a tibble data frame whith different attributs. The first column
+#' is "Wells" this containe the names for each well (A01, A02..). The rest of the
+#' attributes represent the different conditions.
+#'
+#' @section \code{file} format:
+#'  The format that \code{read_layout_file()} receive is a .csv file previuosly
+#'  formated in a proper way. This mean that the separation between conditions is
+#'  one empty line.
+#'
+#' @references
+#' \insertRef{plater}{mpxtractor}
+#'
+#'
+#' @examples
+#' file_path <- system.file("extdata", "test_spectraMax_layout.csv", package = "mpxtractor")
+#'
+#' # Data is store as a tibble
+#' data <- read_layout_file(
+#'   file = file_path
+#' )
+#'
+#' # Now data is tidy
+#' head(data)
+#'
 #' @export
+#'
+#'
+# Main function
 read_layout_file <- function(file, well_ids_column = "Wells") {
   check_that_only_one_file_is_provided(file)
   check_file_path_layout(file)
