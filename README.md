@@ -10,6 +10,7 @@ This package main contribution is orientated to save time and get fast into data
 
 ## Installation 
 
+```R
 # The development version from GitHub:
 # install.packages("mpxtractor")
 devtools::install_github("MartinBanchero/mpxtractor")
