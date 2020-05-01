@@ -1,5 +1,7 @@
 # mpxtractor <img src="man/logo_mpxtractor.png" width = 150, align="right">
 
+
+
 The main function of `mpxtractor` is to provide a simple method that is able to process raw data from micro plate readers like 
 SpectraMax, FluorStar and MultiscanGO and apply different methods to it.
 This package generate tidy data frames, also combine this data with layout files and plot growth rates over a microplate 
