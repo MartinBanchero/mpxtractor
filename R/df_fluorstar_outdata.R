@@ -22,4 +22,4 @@
 #'   \item{Measurement}{OD600 or Fluorescence, optical density at 600 nm or Fluorescence}
 #' }
 #' @source \url{http://www.teusinkbruggemanlab.nl/}
-"df_fluorstar_absorbance_outdata"
+"df_fluorstar_fluorescence_outdata"
