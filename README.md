@@ -1,6 +1,6 @@
 # mpxtractor <img src="man/logo_mpxtractor.png" width = 200, align="right">
 
-<p align="center">
+<p align="left">
 The main function of `mpxtractor` is to provide a simple method that is able to process raw data 
 from micro plate readers like SpectraMax, FluorStar and MultiscanGO and apply different
 methods to it.
