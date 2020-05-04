@@ -131,6 +131,9 @@ std_format_df <- function(df) {
 }
 
 # Transform the time format from spectramax to hh:mm:ss as character
+#
+# Using gsub to match each of the different time representation and transform to
+# hh:mm:ss format
 format_time_spectra <- function(df) {
   time <- df$`Time(hh:mm:ss)`
   time <- gsub("^(\\d{1}:\\d{2}$)", "\\00:0\\1", time)

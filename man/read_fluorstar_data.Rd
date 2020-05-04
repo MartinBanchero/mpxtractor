@@ -2,16 +2,16 @@
 % Please edit documentation in R/read_fluorstar_data.R
 \name{read_fluorstar_data}
 \alias{read_fluorstar_data}
-\title{Function specific to read output .txt files from fluorStar readers.}
+\title{Function specific to read output (.txt) files from fluorStar readers machines.}
 \usage{
 read_fluorstar_data(file)
 }
 \description{
-\code{read_fluorstar_data} returns the data in the .txt as tibble
+\code{read_fluorstar_data} returns the data in the .txt file as tibble
 data frame
 }
 \examples{
-file_path <- system.file("extdata", "fluorstar_milkjuice_FL.txt",
+file_path <- system.file("extdata", "test_fluorstar_fluorescence.txt",
   package = "mpxtractor"
 )
 
@@ -23,5 +23,4 @@ data <- read_fluorstar_data(
 # Now data is tidy
 head(data)
 
-# Main function
 }

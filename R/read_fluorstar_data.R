@@ -1,11 +1,21 @@
-#' Function specific to read output .txt files from fluorStar readers.
+#' Function specific to read output files (.txt) from fluorStar readers machines.
 #'
-#' \code{read_fluorstar_data} returns the data in the .txt as tibble
-#' data frame
+#' This function recive one output file from fluorStar microplate reader and
+#' generate a tibble dataframe.
+#'
+#' @param file The path to a proper .txt file formatted by the fluorStar machine.
+#'
+#' @return Returns a tibble data frame whith four columns. The first column is
+#' "Wells" this containe the names for each well (A01, A02..). The second column
+#' represent "Sample" which identified the wells, this part of the standard output
+#' of fluorStar machines.
+#' The third column is "Time", that represents the timestep at which the machine
+#' measures. The fourth column contain the measured values. Depending on the experiment,
+#' this can be fluorescence, absorbance between others.
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "fluorstar_milkjuice_FL.txt",
+#' file_path <- system.file("extdata", "test_fluorstar_fluorescence.txt",
 #'   package = "mpxtractor"
 #' )
 #'
@@ -17,7 +27,7 @@
 #' # Now data is tidy
 #' head(data)
 #'
-#' # Main function
+# Main function
 read_fluorstar_data <- function(file) {
   check_one_file_provided(file)
   check_file_path(file)
@@ -30,6 +40,14 @@ read_fluorstar_data <- function(file) {
   df_result_tidy
 }
 
+# Check weather a file is fluorstar output file
+#
+# Read line by line and check if the first line containe the word user, this is
+# used as a tag to identify the fluorstar file.
+#
+# the argument is the fluorstar raw file
+# return the stop statment if is not a correct file, otherwise does not reurn anything
+#
 input_file_is_fluorstar <- function(file) {
   raw_file <- readLines(file, warn = FALSE, encoding = "latin1")
   raw_file <- strsplit(raw_file[1], split = ":")
@@ -41,6 +59,13 @@ input_file_is_fluorstar <- function(file) {
 
 
 # Clean the raw file
+#
+# This function read the file line by line and return all the lines that NOT contain
+# more than three tabs. This using grep() with invert = TRUE
+#
+# The argument is the raw file from fluorstar
+#
+# return clean file
 get_raw_file_clean_fluorstar <- function(file) {
   raw_file <- readLines(file, encoding = "latin1")
   clean_file <- grep(
@@ -56,9 +81,9 @@ get_raw_file_clean_fluorstar <- function(file) {
 #
 # The function extract samples and names into character vector. Reads the lines
 # samples and names into a dataframe. Add names to samples. Gather time and
-# measurement. Remove the word Sample from the column Sample.
+# measurement. Remove the word "Sample" from the column Sample.
 #
-# parameter is a character vector clean_file
+# Argument is a character vector clean_file
 #
 # returns a data frame with Wells, Sample, Time and Measurement as columns
 
@@ -102,7 +127,7 @@ generate_format_df_fluorstar <- function(clean_file) {
 # First remove letters, generate a dataframe with hour and minutes. Add 0 to complete
 # the format. Set the time format and arrange the data frame by wells and time
 #
-# Parameter is a dataframe object.
+# Argument is a dataframe object.
 #
 # This return a tidy tibble with proper time format.
 format_time_fluorstar <- function(raw_fls_data) {

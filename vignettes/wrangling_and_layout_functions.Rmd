@@ -19,19 +19,32 @@ library(kableExtra)
 knitr::opts_chunk$set(collapse = TRUE,comment = "#>")
 ```
 
+# Overview
+The `mpxtractor` contain one function for each type of micro plate reader machine. Each  of this functions are disgn to wrangle the raw data produced for this machines, this are: *read_spectramax_data()*, *read_multiscango_data()* and *read_fluorstar_data()*. In addition to this the function *read_multiple_files()* is used to combine more than one output file into one tidy data frame. 
+To simplify the number of tasks that the user have to apply before load the
+data in R, all this wrangling functions receive a file with .txt extension. This allows
+to  avoid different issues realted to file formats, like .csv, .xlsx or versions. This is simplified by using only .txt files.
+
+In addition to data wrangling functions, `mpxtractor` provide functions to deal with
+layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy data frame that combine the output of one wrangling function with the layout files.
+
 
 ## 1. Wrangling functions
-The `mpxtractor` contain one function for each type of micro plate reader machine. This functions are, *read_spectramax_data()*, *read_multiscango_data()*, *read_fluorstar_data()*. In addition to this
-the function *read_multiple_files()* is used to combine more than one output file into one tidy
-data frame. In the following section each of this functions are explained.
-In addition to the data wrangling functions, `mpxtractor` provide functions to deal with
-layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy
-data frame between the raw_data and the information present in the layout files.
+In this section is desccribed each of the wrangling functions with one example using
+test data.
  
 ### 1.1 read_spectramax_data()
-This function take as argument one file with ".txt" extension. Also is a "\\t" separated
-file. 
-Below is shown a toy example about how to use this function.
+This function is specific to read output files (.txt) produced by spectraMax readers.
+Recive one raw file and generate a tibble dataframe.
+The file is the path to a proper .txt file formatted by the spectraMax machine.
+The returned tibble data frame show four columns. The first column is
+"Wells" this containe the names for each well (A01, A02..). The second column
+represent "Time" at wich the measurements were done, the format is in hh:mm:ss.
+The third column is "Temperature", this is the temperature at which the
+experiment was performed. The fourth column contain the measured values.
+
+Below is shown a toy example about how to use this function. Note that measurement
+represent the values of OD600 in this case.
 
 ```{r}
 file_path <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpxtractor")
@@ -42,6 +55,14 @@ head(data_spectramax)
 ```
 
 ### 1.2 read_multiscango_data()
+This function is specific to read output files (.txt) produced by multiscanGO readers.
+Recive one raw file and generate a tibble dataframe.
+The file is the path to a proper .txt file formatted by the multiscanGO machine.
+The returned tibble data frame show four columns. The first column is
+"Wells" this contain the names for each well (A01, A02..). The second column
+represent "Reading" at which the measurements were done, The third column is "Measurement", this is the value measured for each "Reading".
+
+Below is shown a toy example about how to use this function.
 
 ```{r}
 file_path <- system.file("extdata", "test_multiscango_data_1.txt", package = "mpxtractor")

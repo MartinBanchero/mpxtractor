@@ -10,18 +10,18 @@ read_layout_file(file, well_ids_column = "Wells")
 \item{file}{The path to a proper .csv file.}
 }
 \value{
-Returns a tibble data frame whith different attributs. The first column
-is "Wells" this containe the names for each well (A01, A02..). The rest of the
+Returns a tibble data frame whith different attributtes. The first column
+is "Wells" this contain the names for each well (A01, A02..). The rest of the
 attributes represent the different conditions.
 }
 \description{
-This function recive layout file properly formated. This function is similar
-to the function \code{read_plate()} from plater package.
+This function recive layout file properly formatted. This function is similar
+to the function \code{read_plate()} from \cite{plater} package.
 }
 \section{\code{file} format}{
 
  The format that \code{read_layout_file()} receive is a .csv file previuosly
- formated in a proper way. This mean that the separation between conditions is
+ formatted in a proper way. This mean that the separation between conditions is
  one empty line.
 }
 
