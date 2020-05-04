@@ -17,7 +17,7 @@
 #' @references
 #' \insertRef{plater}{mpxtractor}
 #'
-#'
+#' @export
 #' @examples
 #' file_path <- system.file("extdata", "test_spectraMax_layout.csv", package = "mpxtractor")
 #'
@@ -29,7 +29,7 @@
 #' # Now data is tidy
 #' head(data)
 #'
-#' @export
+#'
 #'
 #'
 # Main function

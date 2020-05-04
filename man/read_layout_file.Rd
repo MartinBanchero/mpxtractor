@@ -36,6 +36,9 @@ data <- read_layout_file(
 # Now data is tidy
 head(data)
 
+
+
+
 }
 \references{
 \insertRef{plater}{mpxtractor}

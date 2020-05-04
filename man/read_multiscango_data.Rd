@@ -11,10 +11,9 @@ read_multiscango_data(file)
 }
 \value{
 Returns a tibble data frame whith four columns. The first column is
-"Wells" this containe the names for each well (A01, A02..). The second column
-represent "Time" at wich the measurements were done, the format is in hh:mm:ss.
-The third column is "Temperature", this is the temperature at which the
-experiment was performed. The fourth column containe the measured values.
+"Wells" this contain the names for each well (A01, A02..). The second column
+represent "Reading" at which the measurements were done, The third column is
+"Measurement", this is the value measured for each "Reading".
 }
 \description{
 This function recive one output file from multiscanGO microplate reader and
@@ -42,5 +41,4 @@ data <- read_multiscango_data(
 # Now data is tidy
 head(data)
 
-# Main function
 }

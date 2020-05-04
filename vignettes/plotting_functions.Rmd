@@ -3,6 +3,9 @@ title: "Plotting functions"
 author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
+fig_caption: yes
+bibliography: REFERENCES.bib
+link-citations: yes
 vignette: >
   %\VignetteIndexEntry{plotting_functions}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,13 +17,35 @@ text-align: justify}
 </style>
 
 ```{r, include = FALSE}
-library(mipledxtractor)
+library(mpxtractor)
 knitr::opts_chunk$set(fig.width = 7.2, fig.height = 5 ,collapse = TRUE, 
                       comment = "#>")
 ```
 
-### Overview
-This section explains two functions that work over the layout files. The first 
-function `read_layout_files()` of `mpxtractor` described is to add the layout
-files to the tidy data obtained by one of the main functions, this can be seen in `main_functions_mpxtractor` vignettes. The second function is `plot_layout_file()`
-and is used to plot the layout file as microplate.
+## Overview
+This section explains two functions of `mpxtractor` to visualize the layout files  and the growth rates over a microplate representation. This functions are 
+**plot_layout_file()** and **plot_gr_microplate()** respectively.
+In the next sections both functions are explained and one example is provided for 
+each function.
+
+## 1. **plot_layout_file()** 
+This function can take several arguments in order to improve the flexiblity of the function. The first argument is a .csv layout with the proper format(check .csv files in folder inst/extdata). The following arguments are the features that are required to identify the different conditions, like var_shape and var_colour. 
+
+**Important remarks:** Note that in order to obtain a better visualization the argument
+var_shape should should contain less than six diferent factors. While var_color has no limits.
+
+The implementation was taken from @plot_microtiter_plate with some minor
+modifications.
+
+```{r, fig.show='hold', fig.cap="Figure 1: Representation over a microplate frame of two different conditions, condition and strain. Note that strain contain less than 6 factors."}
+file_path_fl <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
+
+mpxtractor::plot_layout_file(file = file_path_fl, var_shape = "strain", var_colour = "condition")
+
+```
+
+
+
+## 2. **plot_gr_microplate()**
+
+## References

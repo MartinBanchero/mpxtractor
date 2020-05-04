@@ -2,7 +2,7 @@
 
 export(combine_data_with_layout)
 export(plot_gr_microplate)
-export(plot_lyout_file)
+export(plot_layout_file)
 export(read_fluorstar_data)
 export(read_layout_file)
 export(read_multiple_data_files)

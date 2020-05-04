@@ -2,7 +2,9 @@
 #'
 #' This function recive as argument a dataframe (data) which is given for
 #' one of the functions(read_spectramax_data, read_multiscango_data,
-#' read_fluorstar_data)
+#' read_fluorstar_data). Also, the type of machine(spectramax, multiscango or fluorstar)
+#' and the path to the layout files. This function can take many layout files as
+#' argument.
 #'
 #' \code{read_layout_files} returns the data in the .csv as tibble
 #' data frame

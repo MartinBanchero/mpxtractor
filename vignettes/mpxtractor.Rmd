@@ -3,6 +3,7 @@ title: "mpxtractor"
 author: "Martin Banchero"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+fig_caption: yes
 bibliography: REFERENCES.bib
 link-citations: yes
 vignette: >
@@ -16,6 +17,7 @@ text-align: justify}
 </style>
 
 ```{r setup, include = FALSE}
+library(mpxtractor)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"

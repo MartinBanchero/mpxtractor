@@ -34,7 +34,7 @@
 #' plot_plate
 #'
 #' # Main function
-plot_lyout_file <- function(file, var_shape,
+plot_layout_file <- function(file, var_shape,
                             var_colour,
                             name_plate_layout = NULL) {
   platemap_df <- platemap_for_ggplot(file)
@@ -74,9 +74,9 @@ generate_platemap <- function(platemap_df,
     ggplot2::scale_y_reverse(breaks = seq(1, n_row), labels = LETTERS[1:n_row]) +
     ggplot2::scale_x_continuous(breaks = seq(1, n_col), position = "top") +
     ggplot2::labs(title = name_plate_layout) +
-    ggplot2::geom_point(ggplot2::aes_string(shape = var_shape, colour = var_colour),
-      size = 3
-    ) +
+    ggplot2::geom_point(ggplot2::aes_string(
+      shape = var_shape, colour = var_colour,
+    ), size = 3) +
     ggplot2::theme(
       legend.box = "horizontal",
       plot.margin = ggplot2::unit(c(1, 1, 1, 1), "cm"),
