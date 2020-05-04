@@ -1,4 +1,4 @@
-# mpxtractor <img src="man/logo_mpxtractor.png" width = 200, align="right">
+# mpxtractor <img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
 
 <p align="justified">
 The main function of `mpxtractor` is to provide a simple method that is able to process raw data 
