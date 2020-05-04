@@ -1,10 +1,10 @@
 ---
-title: "Data wrangling functions of `mpxtractor` package"
+title: "Data wrangling functions"
 author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Main functions in `mpxtractor`}
+  %\VignetteIndexEntry{wrangling_and_layout_functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,22 +19,15 @@ library(kableExtra)
 knitr::opts_chunk$set(collapse = TRUE,comment = "#>")
 ```
 
-## Overview
-The main function of `mpxtractor` is to provide a simple method that is able to 
-process raw data from micro plate readers and generate a tidy data frame. This is
-a critical point in several research lines performing experiments using micro plate 
-reader machines because of the time that takes to clean and sort the raw data into 
-a tidy format. 
-This package main contribution is orientated to save time and get fast into data 
-analysis.
-In the following sections the main functions of data wrangling of `mpxtractor` 
-are described.
 
 ## 1. Wrangling functions
 The `mpxtractor` contain one function for each type of micro plate reader machine. This functions are, *read_spectramax_data()*, *read_multiscango_data()*, *read_fluorstar_data()*. In addition to this
 the function *read_multiple_files()* is used to combine more than one output file into one tidy
 data frame. In the following section each of this functions are explained.
-
+In addition to the data wrangling functions, `mpxtractor` provide functions to deal with
+layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy
+data frame between the raw_data and the information present in the layout files.
+ 
 ### 1.1 read_spectramax_data()
 This function take as argument one file with ".txt" extension. Also is a "\\t" separated
 file. 
@@ -85,6 +78,20 @@ tail(data_multiple_spectramax)
 
 ```{r}
 tail(data_multiple_spectramax)
+```
+
+## 2. Functions to process layout files
+
+
+### 2.1 read_layout_files()
+```{r}
+
+
+```
+
+### 2.2 combine_data_with_layout()
+```{r}
+
 ```
 
 
