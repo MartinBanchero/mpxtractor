@@ -3,7 +3,7 @@ title: "Data wrangling functions"
 author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
-bibliography: REFERENCES.bib
+bibliography: CITES.bib
 link-citations: yes
 vignette: >
   %\VignetteIndexEntry{wrangling_and_layout_functions}

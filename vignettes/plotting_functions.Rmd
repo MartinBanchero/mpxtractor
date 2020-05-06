@@ -4,7 +4,7 @@ author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette
 fig_caption: yes
-bibliography: REFERENCES.bib
+bibliography: CITES.bib
 link-citations: yes
 vignette: >
   %\VignetteIndexEntry{plotting_functions}
@@ -32,20 +32,117 @@ each function.
 This function can take several arguments in order to improve the flexiblity of the function. The first argument is a .csv layout with the proper format(check .csv files in folder inst/extdata). The following arguments are the features that are required to identify the different conditions, like var_shape and var_colour. 
 
 **Important remarks:** Note that in order to obtain a better visualization the argument
-var_shape should should contain less than six diferent factors. While var_color has no limits.
+var_shape should contain less than six diferent factors. While var_color has no limits.
 
 The implementation was taken from @plot_microtiter_plate with some minor
 modifications.
 
-```{r, fig.show='hold', fig.cap="Figure 1: Representation over a microplate frame of two different conditions, condition and strain. Note that strain contain less than 6 factors."}
-file_path_fl <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
+```{r, fig.show='hold', fig.cap="**Figure 1:** Representation over a microplate frame of two different conditions, condition and strain. Note that strain contain less than 6 factors."}
+file_path_fl <- system.file(
+  "extdata",
+  "test_spectraMax_layout_1.csv",
+  package = "mpxtractor"
+)
 
-mpxtractor::plot_layout_file(file = file_path_fl, var_shape = "strain", var_colour = "condition")
+mpxtractor::plot_layout_file(
+  file = file_path_fl,
+  var_shape = "strain",
+  var_colour = "condition"
+)
 
 ```
 
 
 
 ## 2. **plot_gr_microplate()**
+The main objective of this function is to obtain one quick overview of the 
+expermient performed in one microplate calculating the growth rates in each well.
+There are a few number of steps that must be followed in order to make this function
+run smoothly. 
+
+### 2.1 Set the input dataframe
+This is a very important step, here we combine the raw data with the information 
+stored in the layout files. This can be done easly using the *wrangling functions*
+of `mpxtractor`. The first step consist in stored the data sotred in the files
+into a dataframe, using the correspondig function depending of the type of machine
+that generated the data. This can be *read_spectramax_data()*, *read_multiscango_data()*
+or *read_fluorstar_data()*. In the following example read_spectramax_data() is used.
+
+```{r}
+# Get the file path 
+file_path_sp <- system.file(
+  "extdata",
+  "test_gr_spectramax_data.txt",
+  package = "mpxtractor"
+)
+# Extract the data stored in the files into a data frame using proper wrangling function
+df_sp <- mpxtractor::read_spectramax_data(
+  file = file_path_sp
+)
+# Show tidy data 
+head(df_sp)
+```
+
+### 2.2 Combine data with layout scheme
+In this step the data frame obtained above is combined with the layout scheme, 
+using *df_data_combine()* is possible to performed this action in a simple way.
+In the example below one layout file is used to be combined with the dataframe
+with raw data.
+
+```{r}
+# get the path to file
+file_path_layout <- system.file(
+  "extdata", "test_spectraMax_layout_1.csv",
+  package = "mpxtractor"
+)
+# combine raw data with layout scheme
+df_data_combine <- mpxtractor::combine_data_with_layout(
+  df_data = df_sp, 
+  reader_type = "spectramax", 
+  layout_files = file_path_layout
+)
+
+head(df_data_combine)
+```
+
+### 2.3 Plot growth rates over microplate frame
+Once al the data is stored in the data frame the function can be use. However 
+there are few considerations that must to be addressed. 
+
+- The argument **var_gr** indicates which attribute in the data frame is used to calculate the growth rates. It is important to apply transformations to this attribute before use the function i.e apply background correction or log transformation.
+- The arguments **ws** and **ts** are characters, this is because the number to be used is follow by the string *hs* or *min* to remain the user the units of each argument.
+- **Very Important:** In order to obtained the growth rates the time series has to be complete. This means that if there are different timesteps inside the attribute **Time** savgolfil() is not going to work. In the case that this happen the time series has to be correct before use this function. Note that in FluorStar machines this happens quite often. See table 1
+
+```{r echo = FALSE}
+library(htmlTable)
+fl_data <- system.file("doc", "df_fluorstar_fluorescence_outdata.rda", package = "mpxtractor")
+load(fl_data)
+cols <- with(df_fluorstar_fluorescence_outdata, ifelse(Time == "00:02:00", 'magenta', 'white'))
+table1 <- head(df_fluorstar_fluorescence_outdata)
+htmlTable(as.matrix(table1), col.rgroup = cols, caption = "Table 1")
+
+#sp_data <- system.file("doc", "df_spectramax_outdata_1.rda", package = "mpxtractor")
+#load(sp_data)
+#table2 <- head(df_spectramax_outdata_1)
+
+#knitr::kable(list(table1, table2), caption = "Table 1: Shows.")
+```
+The implementation was follow as in @subplots
+
+, fig.show='hold', fig.cap="**Figure 2:** Representation over a microplate frame of growth rates for each well. Note that in this case the attribute *condition* was chosen to be coloured."
+```{r eval = FALSE}
+
+microplateplot <- mpxtractor::plot_gr_microplate(
+  df_data = df_data_combine,
+  var_gr = "Measurement",
+  exp_title = "Spectramax experiment",
+  ws = "2hs", 
+  ts = "2min",
+  cond_to_col = "condition"
+)
+
+microplateplot                                     
+#ggsave(filename = "test.png", plot = microplateplot, width = 30, height = 20, units = "cm")
+```
 
 ## References

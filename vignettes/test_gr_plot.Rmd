@@ -1,0 +1,117 @@
+---
+title: "Untitled"
+author: "Martin"
+date: "4/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+file_path_sp <- system.file("extdata", "test_plot_gr_spectramax_data.txt", package = "mpxtractor")
+
+df_sp <- mpxtractor::read_spectramax_data(file = file_path_sp)
+
+
+file_path_layout <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
+
+df_data_combine <- mpxtractor::combine_data_with_layout(df_data = df_sp, reader_type = "spectramax",layout_files = file_path_layout)
+
+microplateplot <- mpxtractor::plot_gr_microplate(
+  df_data = df_data_combine, 
+  var_gr = "Measurement",
+  exp_title = "Spectramax experiment", windowsize = 2,
+  cond_to_col = "condition"
+)
+                                                
+ggsave(filename = "test.png", plot = microplateplot, width = 30, height = 20, units = "cm")
+
+typeof(microplateplot)
+```
+```{r}
+# Time in hs
+get_time_in_hh <- function(time.col) {
+  sapply(strsplit(time.col, ":"), function(x) {
+    x <- as.numeric(x)
+    x[1] + x[2] / 60 + x[3] / 3600
+  })
+}
+
+# Time in minutes
+get_time_in_mm <- function(time.col) {
+  sapply(strsplit(time.col, ":"), function(x) {
+    x <- as.numeric(x)
+    x[1] * 60 + x[2] + x[3] / 60
+  })
+}
+
+# Transform the time to hours or minutes
+format_time <- function(df_data, time = NULL) {
+  if (!"Time" %in% colnames(df_data)) {
+    df_data$Time <- df_data[["Reading"]]
+    return(df_data)
+  }
+  if (is.null(time) || toupper(time) == toupper("hours")) {
+    Time <- get_time_in_hh(df_data$Time)
+    # Move column time to the front
+    df_data$Time <- Time
+    return(df_data)
+  }
+  # Transform time to minutes
+  if (toupper(time) == toupper("minutes")) {
+    Time <- get_time_in_mm(df_data$Time)
+    # Replace column time with the transformed time.
+    df_data$Time <- Time
+    return(df_data)
+    if (!is.null(time) && toupper(time) != toupper("minutes") &&
+        toupper(time) != toupper("hours")) {
+      stop("The time unit is not recognized. The default unit is in hours, if you want
+      the convertion in minutes you should give time = minutes.")
+    }
+  }
+}
+
+df_sp <- format_time(df_data = df_data_combine)
+
+```
+
+```{r}
+library(imputeTS)
+calculate_growth_rates <- function(df_data, var_gr, windowsize) {
+  df_data <- dplyr::mutate(df_sp, Diff_time = Time[2] - Time[1])
+  if (max(df_data[["Time"]]) > windowsize) {
+      stop("The windowsize cannot be bigger than the total time.")
+  }
+  timestep <- windowsize / 60 # hs
+  windowlength <- (windowsize / df_data[[Diff_time[2]]])
+
+  if ((windowlength %% 2) == 0) {
+    windowlength <- windowlength + 1
+  }
+  # Calculate growth rate (mu) using Savitzky and Golay filter(savgol).
+  df_data <- dplyr::group_by(df_data, Wells)
+  mu <- dplyr::group_map(df_data, ~ signal::sgolayfilt(.x[[var_gr]],
+    p = 1,
+    n = windowlength,
+    m = 1,
+    ts = timestep
+  ))
+}
+
+microplateplot <- mpxtractor::plot_gr_microplate(
+  df_data = df_sp, 
+  var_gr = "Measurement",
+  exp_title = "Spectramax experiment", windowsize = 2,
+  cond_to_col = "condition"
+)
+```
+
+
+```{r}
+file_path_fl <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
+
+mpxtractor::plot_layout_file(file = file_path_fl, var_shape = "condition", var_colour = "strain")
+```
