@@ -2,56 +2,49 @@
 % Please edit documentation in R/plot_gr_microplate.R
 \name{plot_gr_microplate}
 \alias{plot_gr_microplate}
-\title{Function to plot growth rates from spectramax data.}
+\title{Function to plot growth rates over microplate frame.}
 \usage{
-plot_gr_microplate(
-  df_data,
-  var_gr,
-  time = NULL,
-  exp_title = NULL,
-  windowsize,
-  var_to_col
-)
+plot_gr_microplate(df_data, var_gr, exp_title = NULL, ws, ts, cond_to_col)
 }
 \arguments{
-\item{file}{The path to a proper .csv layout file.}
+\item{df_data}{Is a dataframe that combines data files with layout files}
 
-\item{var_shape}{Assign shape to represent one variable}
+\item{var_gr}{This the attribute to be used to calculate growth rates}
 
-\item{var_colour}{Assign colour to other variable}
+\item{exp_title}{optional, add the title.}
 
-\item{name_plate_layout}{This argument is optional, add the title.}
+\item{ws}{is the windowsize in hours}
+
+\item{ts}{is the time step in minutes}
+
+\item{cond_to_col}{The condition from the layout to color}
 }
 \value{
-Returns a plot that represents the microplate with the given layout.
-The plot shows in the x-axis the number of columns and in the y-axis the
-letter to identified the row.
+Returns the background plot which is the microplate frame and over this
+the plot of growth rates in each well.
+The background plot shows in the x-axis the number of columns and in the y-axis
+the letter to identified the row.
 }
 \description{
-This function recive two files which are the layout file .csv and the spectramax
-data file .txt.
-plot that represents the growth rates into the microplate frame.
+This function takes a dataframe with the raw data and the information from the
+layout file. Calculate growth rate and plot this growth rates over a microplate
+frame.
 }
-\section{\code{file} format}{
+\section{Warning}{
 
-Note that the .csv layout file needs to be formatted in the correct way. See
-examples below.
+Note that the time should be a time series, if the time series is broken the
+growth rates are not calculated and the process stop.
 }
 
 \examples{
-file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
-  package = "mpxtractor"
-)
+\dontrun{
+microplateplot <- mpxtractor::plot_gr_microplate(
+df_data = df_data_combine,
+var_gr = "Measurement",
+exp_title = "Spectramax experiment", windowsize = 2,
+ws = "2hs", ts = "2min",
+cond_to_col = "condition")
+}
+Check vignette **plotting_functions()** to see how to run the example.
 
-# Data is store as a tibble
-plot_plate <- plot_layout_file(
-  file = file_path, var_shape = "basic", var_colour = "condition",
-  name_plate_layout = "My experiment"
-)
-
-# Show the plot
-plot_plate
-
-
-# Main function
 }

@@ -4,7 +4,7 @@
 \alias{plot_layout_file}
 \title{Function to plot layout files.}
 \usage{
-plot_layout_file(file, var_shape, var_colour, name_plate_layout = NULL)
+plot_layout_file(file, var_shape, var_colour, plate_title = NULL)
 }
 \arguments{
 \item{file}{The path to a proper .csv layout file.}
@@ -13,7 +13,7 @@ plot_layout_file(file, var_shape, var_colour, name_plate_layout = NULL)
 
 \item{var_colour}{Assign colour to other variable}
 
-\item{name_plate_layout}{This argument is optional, add the title.}
+\item{plate_title}{This argument is optional, add the title.}
 }
 \value{
 Returns a plot that represents the microplate with the given layout.
@@ -27,7 +27,7 @@ plot that represents the designed layout of the microplate.
 \section{\code{file} format}{
 
 Note that the .csv layout file needs to be formatted in the correct way. See
-examples below.
+files in the examples below.
 }
 
 \examples{
@@ -44,5 +44,4 @@ plot_plate <- plot_layout_file(
 # Show the plot
 plot_plate
 
-# Main function
 }
