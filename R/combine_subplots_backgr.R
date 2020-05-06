@@ -1,14 +1,13 @@
-
-color_factor_condition <- function(df_sub_plots_well) {
-  colors_fact_cond <- rev(viridis::viridis(
-    length(unique(df_sub_plots_well[["condition_fc"]]))
-  ))
-  names(colors_fact_cond) <- levels(df_sub_plots_well[["condition_fc"]])
-  color_con <- stack(colors_fact_cond)
-}
-
-
-plot_gr_in_plate <- function(df_sub_plots_well, exp_title, var_to_col) {
+# Generates background plot and combine with subplots
+#
+# First the background plot is created, this is the microplate frame. Over the
+# frame the grobs objects in the input dataframe are added.
+#
+# Parameters are the dataframe with all the subplots, the exp_title to add title,
+# cvar_to_col is the attribute to color.
+#
+# Return a list with all the plots.
+combine_subplots_backgr <- function(df_sub_plots_well, exp_title, var_to_col) {
   n_col <- length(unique(df_sub_plots_well[["Column"]]))
   n_row <- length(unique(df_sub_plots_well[["Row"]]))
   color_con <- color_factor_condition(df_sub_plots_well)
@@ -37,4 +36,13 @@ plot_gr_in_plate <- function(df_sub_plots_well, exp_title, var_to_col) {
     ggplot2::labs(title = exp_title)
 
   all_wells_plot <- background_plot + df_sub_plots_well[["grobs"]]
+}
+
+
+color_factor_condition <- function(df_sub_plots_well) {
+  colors_fact_cond <- rev(viridis::viridis(
+    length(unique(df_sub_plots_well[["condition_fc"]]))
+  ))
+  names(colors_fact_cond) <- levels(df_sub_plots_well[["condition_fc"]])
+  color_con <- stack(colors_fact_cond)
 }
