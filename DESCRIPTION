@@ -19,13 +19,15 @@ Imports:
     purrr (>= 0.3.3),
     imputeTS (>= 3.0),
     viridis (>= 0.5.1),
-    Rdpack (>= 0.11.1)
+    Rdpack (>= 0.11.1),
+    signal (>= 0.7.6)
 RdMacros: Rdpack
 RoxygenNote: 7.1.0
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 2.3.1)
+    testthat (>= 2.3.1),
+    htmlTable (>= 1.13.3)
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
