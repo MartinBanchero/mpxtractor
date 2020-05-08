@@ -1,7 +1,7 @@
 ---
 title: "Plotting functions"
 author: "Martin Banchero"
-date: '`r Sys.Date()`'
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 fig_caption: yes
 bibliography: CITES.bib
@@ -16,12 +16,12 @@ body {
 text-align: justify}
 </style>
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 library(mpxtractor)
 library(dplyr)
-knitr::opts_chunk$set(fig.width = 7.2, fig.height = 5 ,collapse = TRUE, 
-                      comment = "#>")
+knitr::opts_chunk$set(fig.width = 7.2, fig.height = 5 ,collapse = TRUE, comment = "#>")
 ```
+
 
 ## Overview
 This section explains two functions of `mpxtractor` to visualize the layout files  and the growth rates over a microplate representation. This functions are 
@@ -39,6 +39,7 @@ The implementation was taken from @plot_microtiter_plate with some minor
 modifications.
 
 ```{r, fig.show='hold', fig.cap="**Figure 1:** Representation over a microplate frame of two different conditions, condition and strain. Note that strain contain less than 6 factors."}
+
 file_path_fl <- system.file(
   "extdata",
   "test_spectraMax_layout_1.csv",
@@ -106,6 +107,7 @@ df_data_combine <- mpxtractor::combine_data_with_layout(
 head(df_data_combine)
 ```
 
+
 ### 2.3 Plot growth rates over microplate frame
 Once al the data is stored in the data frame the function can be use. However 
 there are few considerations that must to be addressed. 
@@ -113,15 +115,16 @@ there are few considerations that must to be addressed.
 - **Very Important:** In order to obtained the growth rates the time series has to be complete. This means that if there are different timesteps inside the attribute **Time** savgolfil() is not going to work. In the case that this happen the time series has to be correct before use this function. Note that in FluorStar machines this happens quite often. See table 1
 
 ```{r echo = FALSE}
-library(htmlTable)
-fl_data <- system.file("doc", "df_fluorstar_fluorescence_outdata.rda", package = "mpxtractor")
-load(fl_data)
-cols <- with(df_fluorstar_fluorescence_outdata, ifelse(Time == "00:02:00", 'magenta', 'white'))
+data(df_fluorstar_fluorescence_outdata)
+#load(file = fl_data)
+cols <- with(df_fluorstar_fluorescence_outdata, ifelse(Time == "00:02:00", 'magenta', 'black'))
 
 table1 <- head(df_fluorstar_fluorescence_outdata)
-htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1: **")
+htmlTable::htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1: **")
 
 ```
+
+
 
 - The argument **var_gr** indicates which attribute in the data frame is used to calculate the growth rates. It is important to apply transformations to this attribute before use the function i.e apply background correction or log transformation. One possible appoach is shown
 below.
@@ -172,3 +175,5 @@ microplateplot
 This last function is based as in @subplots.
 
 ## References
+
+
