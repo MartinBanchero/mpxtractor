@@ -116,10 +116,18 @@ there are few considerations that must to be addressed.
 
 ```{r echo = FALSE}
 data(df_fluorstar_fluorescence_outdata)
+<<<<<<< HEAD
 cols <- with(df_fluorstar_fluorescence_outdata, ifelse(Time == "00:02:00", 'magenta', 'white'))
 
 table1 <- head(df_fluorstar_fluorescence_outdata)
 htmlTable::htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1:** Shown in magenta the row containing the time value that breaks the time series")
+=======
+#load(file = fl_data)
+cols <- with(df_fluorstar_fluorescence_outdata, ifelse(Time == "00:02:00", 'magenta', 'white'))
+
+table1 <- head(df_fluorstar_fluorescence_outdata)
+htmlTable::htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1:** Shows the timestep that breaks the time series")
+>>>>>>> b7a5d036382b1016d871888d806c9ddaecce366a
 
 ```
 
