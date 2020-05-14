@@ -16,8 +16,6 @@ plot_gr_microplate(df_data, var_gr, exp_title = NULL, ws, cond_to_col)
 \item{ws}{is the windowsize in hours}
 
 \item{cond_to_col}{The condition from the layout to color}
-
-\item{ts}{is the time step in minutes}
 }
 \value{
 Returns the background plot which is the microplate frame and over this
