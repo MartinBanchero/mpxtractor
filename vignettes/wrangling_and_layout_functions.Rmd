@@ -95,19 +95,16 @@ head(data_fluorstar)
 
 
 ```{r}
-file_path <- system.file("extdata", 
-                         c("test_spectramax_data_1.txt","test_spectramax_data_2.tx"), 
-                         package = "mpxtractor")
+
+file_path <- system.file("extdata", c("test_spectramax_data_1.txt", "test_spectramax_data_2.txt"),
+  package = "mpxtractor", mustWork = TRUE
+)
 
 data_multiple_spectramax <- mpxtractor::read_multiple_data_files(
-                                                      reader_type = "spectramax",
-                                                      filesname = file_path)
+  reader_type = "spectramax", filesname = file_path, plate_names = c("plate_1", "plate_2")
+)
+
 head(data_multiple_spectramax)
-tail(data_multiple_spectramax)
-```
-
-
-```{r}
 tail(data_multiple_spectramax)
 ```
 
@@ -140,12 +137,15 @@ data_spectramax <- mpxtractor::read_spectramax_data(file = file_path)
 layout_file_path <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
 
 # Use combine_data_with_layout()
-data_layout <- mpxtractor::combine_data_with_layout(data_spectramax, reader_type = "spectramax",
-   layout_files = layout_file_path)
+data_layout <- mpxtractor::combine_data_with_layout(
+  data_multiple_spectramax, 
+  reader_type = "spectramax",
+  layout_files = layout_file_path
+  )
 
 # Now data is combined
 head(data_layout)
-
+tail(data_layout)
 ```
 
 

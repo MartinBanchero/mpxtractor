@@ -3,67 +3,127 @@ title: "Auxiliary functions"
 author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+fig_caption: yes
+bibliography: CITES.bib
+link-citations: yes
 vignette: >
   %\VignetteIndexEntry{Auxyliary functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+<style>
+body {
+text-align: justify}
+</style>
 
 ```{r setup, include = FALSE}
+library(mpxtractor)
+library(dplyr)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
-## format_time()
-## compute_growth_rates()
 
 
+## Overview 
+As a part of `mpxtractor` some functions that are present in `wrangling functions` or `plotting functions` can be used independently. Here are explained some auxilary functions that can be used separately.
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## 1. format_time()
+This fuction transform the attribute **Time** from hh:mm:ss to time in hours.
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+```{r echo=FALSE}
+data(df_spectramax_outdata_1)
+data_spectra <- head(df_spectramax_outdata_1)
 
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+htmlTable::htmlTable(as.matrix(data_spectra), caption = "**Table 1:** Shows a capture of the data with the time in hh:mm:ss format.")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+Once the dataframe is created is passed to the function and the time is 
+formatted.
+In the case of multiscanGO files this function return the same dataframe given as input. In this case a one warning is shown.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r}
+# Time in hours
+df_hh <- mpxtractor::format_time(data_spectra)
+# Time in minutes
+df_mm <- mpxtractor::format_time(data_spectra, time_format = "minutes")
 ```
 
-Also a quote using `>`:
+```{r echo=FALSE}
+knitr::kable(list(df_hh, df_mm), caption = "**Table 2:** Shows a capture of
+the data with the time in hours (left) and in minutes (right).")
+```
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+## 2. compute_growth_rates()
+This function can be handy when one dataset is avilable and we want to do a quick calculation of growth curves. 
+### Example:
+In this example the data is transform in the same way used in the example in 
+the vignette `plotting_functions`. The background is subtracted followed by the log transform.
+
+### 2.1 Read and load the data
+In this example because is an output file from SpectraMax we use `read_spectramax_data()`.
+
+```{r}
+# Get the file path 
+file_path_sp <- system.file(
+  "extdata",
+  "test_gr_spectramax.txt",
+  package = "mpxtractor"
+)
+# Extract the data stored in the files into a data frame using proper wrangling function
+df_sp <- mpxtractor::read_spectramax_data(
+  file = file_path_sp
+)
+
+head(df_sp)
+```
+
+### 2.2 Background correction and log transform
+Here we correct by the minimun measurement followed by the logarithmic transformation.
+
+```{r}
+# Get the minimun measurement for each well
+df <- df_sp %>%
+  group_by(Wells) %>%
+  mutate(min_measurement = min(Measurement))
+
+# Subtract the minimun to each measurement
+df_tmp <- df %>%
+  mutate(bg_corrected = Measurement - min_measurement)
+
+# Apply log transform and clean the dataframe
+df_corrected <- df_tmp %>%
+  mutate(Measurement = log(bg_corrected)) %>%
+  select(-c(min_measurement, bg_corrected))
+
+head(df_corrected)  
+```
+
+### 2.3 Compute the growth rates.
+Here the the function `compute_growth_rates()` is used. 
+Some insights about this function:
+
+  - The argument **var_gr** is the attribute used to calculate the growth rates.
+  - The growth rates are calculated using *sgolayfilt()* from the package @signal, this function is taking: the first derivative, the windowlength given as a parameter in `compute_growth_rates()` and using as a time scaling factor the time points used in the experiment. 
+  - The function *sgolayfilt()* is not taking into account the time.
+  - The growth rates are calculated by wells.
+  
+  
+Is very important to note that the difference between time points must be equal for all them. Otherwise the time series is not complete.
+
+```{r}
+ df_gr_data <- mpxtractor::compute_growth_rates(
+   df_data = df_corrected,
+   var_gr = "Measurement",
+ ws = "2hs"
+)
+head(df_gr_data)
+```
+
+
+## References
+
+
+
