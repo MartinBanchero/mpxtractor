@@ -1,16 +1,32 @@
-# Transform the time to hours or minutes
-#
-# Process column Time of df_data and transform the time in hh:mm:ss format to
-# hours or minutes
-#
-# Parameter df_data dataframe and optinal time which is a character to indicate
-# where the the format is in hours or in minutes.
-#
-# Return the input dataframe whit the column Time formatted.
+#' Transform the time from hh:mm:ss to hours or minutes
+#'
+#' Process column Time of df_data and transform the time in hh:mm:ss format to
+#' hours or minutes.
+#'
+#' @param  df_data dataframe
+#' @param time_format which is a character to indicate
+#' whether the the format is in hours or in minutes.
+#'
+#' @return the input dataframe whit the column Time formatted.
+#'
+#'
+#' @export
+#'
+#' @examples
+#' #Load example dataframe
+#' data(df_spectramax_outdata_1)
+#'
+#' # format time
+#' df <- mpxtractor::format_time(df_spectramax_outdata_1)
+#'
+#' # Time transformed
+#' df
 
 format_time <- function(df_data, time_format = NULL) {
   if (!"Time" %in% colnames(df_data)) {
     df_data$Time <- df_data[["Reading"]]
+    warning("There is no Time attribute in multiscanGO data, the same dataframe
+            is return.")
     return(df_data)
   }
   if (is.null(time_format) || toupper(time_format) == toupper("hours")) {

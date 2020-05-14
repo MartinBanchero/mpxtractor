@@ -44,7 +44,7 @@ combine_data_with_layout <- function(df_data, reader_type = NULL, dir_lyout_file
   list_of_data_frames <- Map(f = function(file, plate_name) {
     tryCatch(expr = {
       p <- add_plate_file(df_data, file, well_ids_column = "Wells")
-      p$Plate <- plate_name
+      p$layout_file <- plate_name
       p
     }, error = function(e) {
       e <- paste0("Error in file '", plate_name, "': ", e$message)
@@ -74,7 +74,7 @@ join_spectramax_and_layout <- function(list_of_data_frames) {
     by = c(
       "Wells",
       "Time",
-      "Temperature(°C)",
+      "Temperature",
       "Measurement"
     )
   )

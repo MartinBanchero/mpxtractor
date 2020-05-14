@@ -7,7 +7,7 @@
 #' @param df_data Is a dataframe that combines data files with layout files
 #' @param var_gr This the attribute to be used to calculate growth rates
 #' @param ws is the windowsize in hours
-#' @param ts is the time step in minutes
+#'
 #'
 #'
 #' @return Returns the input dataframe with the column conaining the growth rates.
@@ -27,17 +27,18 @@
 #'
 #' # Data is store as a tibble
 #' df_data <- read_spectramax_data(file = file_path)
+#'
 #' df_gr_data <- mpxtractor::compute_growth_rates(
 #'   df_data = df_data,
 #'   var_gr = "Measurement",
-#'   ws = "2hs", ts = "2min"
+#'   ws = "2hs"
 #' )
 #' # Main function
-compute_growth_rates <- function(df_data, var_gr, ws, ts) {
+compute_growth_rates <- function(df_data, var_gr, ws) {
   df_data <- check_Na_Inf_in_var_gr(df_data, var_gr)
   df_data <- format_time(df_data)
   df_data <- check_time_series(df_data)
-  df_data_gr <- get_growth_rates(df_data, var_gr, ws, ts)
+  df_data_gr <- get_growth_rates(df_data, var_gr, ws)
   return(df_data_gr)
 }
 
@@ -51,13 +52,12 @@ compute_growth_rates <- function(df_data, var_gr, ws, ts) {
 #
 # return a dataframe with the raw data and one more column with growth_rates.
 #
-get_growth_rates <- function(df_data, var_gr, ws, ts) {
-  check_ws_ts(ws, ts)
+get_growth_rates <- function(df_data, var_gr, ws) {
+  check_ws(ws)
   ws <- as.numeric(sub("\\hs.*", "", ws))
-  ts <- as.numeric(sub("\\min.*", "", ts))
   df_data <- dplyr::mutate(df_data, Diff_time = Time[2] - Time[1])
-  timestep <- ts / 60 # hs
-  windowlength <- (ws / df_data$Diff_time[2])
+  timestep <- df_data$Diff_time[2] # hs
+  windowlength <- (ws / timestep)
   windowlength <- ifelse(windowlength %% 2 == 0, windowlength + 1, windowlength)
 
   # Calculate growth rate (mu) using Savitzky and Golay filter(savgol).
@@ -74,12 +74,9 @@ get_growth_rates <- function(df_data, var_gr, ws, ts) {
   return(df_data)
 }
 
-check_ws_ts <- function(ws, ts) {
+check_ws <- function(ws) {
   if (!any(grepl("hs", ws))) {
     stop("windowsize(ws) should be in hours")
-  }
-  if (!any(grepl("min", ts))) {
-    stop("timestep(ts) should be in minutes")
   }
 }
 
@@ -87,8 +84,11 @@ check_ws_ts <- function(ws, ts) {
 check_Na_Inf_in_var_gr <- function(df_data, var_gr) {
   if (any(is.na(df_data[[var_gr]]))) {
     df_data[[var_gr]] <- imputeTS::na_ma(df_data[[var_gr]], k = 1)
-    warning("The NAs present in `var_gr` are imputed by taking the mean between
-    the two elements surrounding the center.\n")
+    warning(
+    "The NAs present in `var_gr` are imputed by
+    taking the mean between the two elements surrounding
+    the center."
+            )
 
     return(df_data)
   }
@@ -96,7 +96,7 @@ check_Na_Inf_in_var_gr <- function(df_data, var_gr) {
     is.na(df_data[[var_gr]]) <- sapply(df_data[[var_gr]], is.infinite)
     df_data[[var_gr]] <- imputeTS::na_ma(df_data[[var_gr]], k = 1)
     warning("The -Inf/Inf present in var_gr are imputed by the mean between the
-            two elements surrounding the center.\n")
+            two elements surrounding the center")
 
     return(df_data)
   }

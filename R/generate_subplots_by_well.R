@@ -10,17 +10,32 @@
 # Return the input dataframe with the column subplots
 generate_subplots_by_well <- function(sp_data_layout, cond_to_col) {
   colScale <- generate_color_scale(sp_data_layout, cond_to_col)
+
+  max_y <- max(sp_data_layout$growth_rate)
+  min_y <- min(sp_data_layout$growth_rate)
   # generate subplots
   sp_data_layout_group <- dplyr::group_by(sp_data_layout, Wells)
   df_sub_plots_well <- dplyr::do(sp_data_layout_group,
     subplots = ggplot2::ggplot(., ggplot2::aes(x = Time, y = growth_rate)) +
       ggplot2::geom_line(ggplot2::aes(colour = condition_fc), size = 1) +
+      ggplot2::ylim(min_y, max_y) +
       colScale +
-      ggplot2::theme_void() +
       ggplot2::theme(
         legend.position = "none",
-        panel.border = ggplot2::element_rect(colour = "black", fill = NA, size = 0.5)
-      )
+        axis.title.x = ggplot2::element_blank(),
+        axis.text.x = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        panel.grid.minor.x = ggplot2::element_blank(),
+        panel.grid.major.x = ggplot2::element_blank(),
+        panel.grid.minor.y = ggplot2::element_blank(),
+        panel.grid.major.y = ggplot2::element_blank(),
+        panel.border = ggplot2::element_rect(
+          colour = "black",
+          fill = NA,
+          size = 0.5,
+        )
+      ) +
+      ggplot2::geom_hline(yintercept = 0, linetype = "dotted")
   )
   return(df_sub_plots_well)
 }

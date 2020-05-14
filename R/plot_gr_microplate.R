@@ -39,12 +39,12 @@
 #'
 # Main function
 plot_gr_microplate <- function(df_data, var_gr, exp_title = NULL,
-                               ws, ts, cond_to_col) {
+                               ws, cond_to_col) {
   # Check input
   if (!is.data.frame(df_data)) stop("df_data should be a dataframe")
   check_variables(df_data, var_gr, cond_to_col)
 
-  df_data_gr <- compute_growth_rates(df_data, var_gr, ws, ts)
+  df_data_gr <- compute_growth_rates(df_data, var_gr, ws)
   df_data_gr <- factor_to_color(df_data_gr, cond_to_col)
 
   df_sub_plots_well <- generate_subplots_by_well(df_data_gr, cond_to_col)

@@ -20,7 +20,7 @@ read_multiple_data_files <- function(reader_type = NULL, dirFiles = NULL,
   list_of_data_frames <- Map(f = function(file, plate_name) {
     tryCatch(expr = {
       p <- type_of_reader(file, reader_type)
-      p$Plate <- plate_name
+      p$data_filename <- plate_name
       p
     }, error = function(e) {
       e <- paste0("Error in file '", plate_name, "': ", e$message)

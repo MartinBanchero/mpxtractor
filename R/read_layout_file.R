@@ -14,6 +14,7 @@
 #'  formatted in a proper way. This mean that the separation between conditions is
 #'  one empty line.
 #'
+#'
 #' @references
 #' \insertRef{plater}{mpxtractor}
 #'

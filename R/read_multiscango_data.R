@@ -83,7 +83,7 @@ get_raw_file_clean_multiscango <- function(file) {
 #
 generate_df <- function(processed_file) {
   idx <- grepl("Reading", processed_file)
-  df_tmp <- read.table(text = processed_file[!idx])
+  df_tmp <- utils::read.table(text = processed_file[!idx], fill = TRUE)
   wd <- diff(c(which(idx), length(idx) + 1)) - 1
   # Assign reading to corresponding values
   df_tmp <- cbind(Reading = rep(processed_file[idx], wd), df_tmp)
