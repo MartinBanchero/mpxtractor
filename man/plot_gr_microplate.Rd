@@ -4,7 +4,7 @@
 \alias{plot_gr_microplate}
 \title{Function to plot growth rates over microplate frame.}
 \usage{
-plot_gr_microplate(df_data, var_gr, exp_title = NULL, ws, ts, cond_to_col)
+plot_gr_microplate(df_data, var_gr, exp_title = NULL, ws, cond_to_col)
 }
 \arguments{
 \item{df_data}{Is a dataframe that combines data files with layout files}
@@ -15,9 +15,9 @@ plot_gr_microplate(df_data, var_gr, exp_title = NULL, ws, ts, cond_to_col)
 
 \item{ws}{is the windowsize in hours}
 
-\item{ts}{is the time step in minutes}
-
 \item{cond_to_col}{The condition from the layout to color}
+
+\item{ts}{is the time step in minutes}
 }
 \value{
 Returns the background plot which is the microplate frame and over this

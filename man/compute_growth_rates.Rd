@@ -4,7 +4,7 @@
 \alias{compute_growth_rates}
 \title{Function to compute growth rates}
 \usage{
-compute_growth_rates(df_data, var_gr, ws, ts)
+compute_growth_rates(df_data, var_gr, ws)
 }
 \arguments{
 \item{df_data}{Is a dataframe that combines data files with layout files}
@@ -12,8 +12,6 @@ compute_growth_rates(df_data, var_gr, ws, ts)
 \item{var_gr}{This the attribute to be used to calculate growth rates}
 
 \item{ws}{is the windowsize in hours}
-
-\item{ts}{is the time step in minutes}
 }
 \value{
 Returns the input dataframe with the column conaining the growth rates.
@@ -36,10 +34,11 @@ file_path <- system.file("extdata", "test_gr_spectramax_data.txt",
 
 # Data is store as a tibble
 df_data <- read_spectramax_data(file = file_path)
+
 df_gr_data <- mpxtractor::compute_growth_rates(
   df_data = df_data,
   var_gr = "Measurement",
-  ws = "2hs", ts = "2min"
+  ws = "2hs"
 )
 # Main function
 }
