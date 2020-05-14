@@ -8,7 +8,6 @@
 #' @param var_gr This the attribute to be used to calculate growth rates
 #' @param exp_title optional, add the title.
 #' @param ws is the windowsize in hours
-#' @param ts is the time step in minutes
 #' @param cond_to_col The condition from the layout to color
 #'
 #'
