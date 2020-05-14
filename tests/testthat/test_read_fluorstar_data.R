@@ -1,5 +1,6 @@
 context("Data wrangling: fluorstar function")
 test_that("Check correct dataframe, attributes, dimensions and attributes class", {
+
   file <- system.file("extdata", "test_fluorstar_fluorescence_data.txt", package = "mpxtractor")
   df_fluorstar_fluorescence <- mpxtractor::read_fluorstar_data(file)
 
