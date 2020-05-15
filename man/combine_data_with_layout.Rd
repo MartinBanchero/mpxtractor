@@ -2,7 +2,7 @@
 % Please edit documentation in R/combine_data_with_layout.R
 \name{combine_data_with_layout}
 \alias{combine_data_with_layout}
-\title{Function specific to read layout files .csv .}
+\title{Function specific to read layout files .csv}
 \usage{
 combine_data_with_layout(
   df_data,
@@ -25,7 +25,7 @@ argument.
 data frame
 }
 \examples{
-file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
+file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 package = "mpxtractor")
 
 # Data is store as a tibble

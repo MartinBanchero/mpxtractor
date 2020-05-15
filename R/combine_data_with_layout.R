@@ -1,4 +1,4 @@
-#' Function specific to read layout files .csv .
+#' Function specific to read layout files .csv
 #'
 #' This function recive as argument a dataframe (data) which is given for
 #' one of the functions(read_spectramax_data, read_multiscango_data,
@@ -11,15 +11,17 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
+#' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 #' package = "mpxtractor")
 #'
+#' data(df_spectramax_outdata_1)
+#'
 #' # Data is store as a tibble
-#' data_layout <- read_layout_files(data, reader_type ="spectramax"
+#' data_layout <- read_layout_files(df_spectramax_outdata_1, reader_type ="spectramax"
 #'    layout_files = file_path)
 #'
 #' # Now data is tidy
-#' head(data)
+#' head(data_layout)
 
 combine_data_with_layout <- function(df_data, reader_type = NULL, dir_lyout_files = NULL,
                                      layout_file_pattern = NULL,
