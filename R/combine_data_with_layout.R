@@ -17,8 +17,8 @@
 #' data(df_spectramax_outdata_1)
 #'
 #' # Data is store as a tibble
-#' data_layout <- read_layout_files(df_spectramax_outdata_1, reader_type ="spectramax"
-#'    layout_files = file_path)
+#' data_layout <- combine_data_with_layout(df_spectramax_outdata_1,
+#'  reader_type ="spectramax", layout_files = file_path)
 #'
 #' # Now data is tidy
 #' head(data_layout)

@@ -28,10 +28,12 @@ data frame
 file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 package = "mpxtractor")
 
+data(df_spectramax_outdata_1)
+
 # Data is store as a tibble
-data_layout <- read_layout_files(data, reader_type ="spectramax"
-   layout_files = file_path)
+data_layout <- combine_data_with_layout(df_spectramax_outdata_1,
+ reader_type ="spectramax", layout_files = file_path)
 
 # Now data is tidy
-head(data)
+head(data_layout)
 }

@@ -87,7 +87,7 @@ head(df_sp)
 
 ### 2.2 Combine data with layout scheme
 In this step the data frame obtained above is combined with the layout scheme, 
-using *df_data_combine()* is possible to performed this action in a simple way.
+using *combine_data_with_layout()* is possible to performed this action in a simple way.
 In the example below one layout file is used to be combined with the dataframe
 with raw data.
 
@@ -158,7 +158,6 @@ microplateplot <- mpxtractor::plot_gr_microplate(
   var_gr = "Measurement",
   exp_title = "Spectramax experiment",
   ws = "2hs", 
-  ts = "2min",
   cond_to_col = "condition"
 )
 
