@@ -7,11 +7,24 @@
 combine_data_with_layout(
   df_data,
   reader_type = NULL,
-  dir_lyout_files = NULL,
+  dir_layout_files = NULL,
   layout_file_pattern = NULL,
   layout_files = NULL,
   plate_names = NULL
 )
+}
+\arguments{
+\item{df_data}{dataframe tidy}
+
+\item{reader_type}{string with the name of one the reader machines}
+
+\item{dir_layout_files}{specified the ddirectory in which gather the files}
+
+\item{layout_file_pattern}{specified pattern to match the file names}
+
+\item{layout_files}{name of layout files}
+
+\item{plate_names}{optional argument to give name to plates}
 }
 \description{
 This function recive as argument a dataframe (data) which is given for
@@ -21,17 +34,22 @@ and the path to the layout files. This function can take many layout files as
 argument.
 }
 \details{
-\code{read_layout_files} returns the data in the .csv as tibble
-data frame
+\code{combine_data_with_layout} returns a dataframe with the data in
+the raw files and in the layout files.
 }
 \examples{
 file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 package = "mpxtractor")
 
+data(df_spectramax_outdata_1)
+
 # Data is store as a tibble
-data_layout <- read_layout_files(data, reader_type ="spectramax"
-   layout_files = file_path)
+data_layout <- combine_data_with_layout(
+ df_spectramax_outdata_1,
+ reader_type = "spectramax",
+ layout_files = file_path
+)
 
 # Now data is tidy
-head(data)
+head(data_layout)
 }

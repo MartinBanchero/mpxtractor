@@ -8,6 +8,8 @@ read_layout_file(file, well_ids_column = "Wells")
 }
 \arguments{
 \item{file}{The path to a proper .csv file.}
+
+\item{well_ids_column}{add the name to column well}
 }
 \value{
 Returns a tibble data frame whith different attributtes. The first column
