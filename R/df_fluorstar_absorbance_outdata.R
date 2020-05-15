@@ -19,7 +19,7 @@
 #'   \item{Wells}{Well id}
 #'   \item{Sample}{Sample X}
 #'   \item{Time}{Time step, in hh:mm:ss format}
-#'   \item{Measurement}{OD600 or Fluorescence, optical density at 600 nm or Fluorescence}
+#'   \item{Measurement}{OD600, optical density at 600 nm}
 #' }
 #' @source \url{http://www.teusinkbruggemanlab.nl/}
-"df_fluorstar_fluorescence_outdata"
+"df_fluorstar_absorbance_outdata"

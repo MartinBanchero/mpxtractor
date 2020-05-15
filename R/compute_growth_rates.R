@@ -21,7 +21,7 @@
 #' @export
 #'
 #' @examples
-#' file_path <- system.file("extdata", "test_gr_spectramax_data.txt",
+#' file_path <- system.file("extdata", "test_gr_spectramax.txt",
 #'   package = "mpxtractor"
 #' )
 #'
