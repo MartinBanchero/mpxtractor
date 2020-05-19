@@ -158,7 +158,6 @@ microplateplot <- mpxtractor::plot_gr_microplate(
   var_gr = "Measurement",
   exp_title = "Spectramax experiment",
   ws = "2hs", 
-  ts = "2min",
   cond_to_col = "condition"
 )
 
