@@ -75,12 +75,6 @@ input_file_is_spectramax <- function(file) {
   }
 }
 
-
-
-
-
-
-
 # Recive a character vector that is transformed to a data frame.
 #
 # The character vector is trasnformed to a data frame using read.table(). The
@@ -122,7 +116,7 @@ std_format_df <- function(df) {
 
   df$Wells <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", df$Wells)
 
-  df_measurements <- dplyr::select(df, Wells, everything())
+  df_measurements <- dplyr::select(df, .data$Wells, dplyr::everything())
   df_measurements <- format_time_spectra(df_measurements)
 
   df_result <- tidyr::as_tibble(df_measurements)

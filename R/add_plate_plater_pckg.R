@@ -100,6 +100,28 @@ are_leading_zeroes_missing <- function(data, well_ids_column, plate_size) {
   }
 }
 
+# Returns an error message indicating which wells in annotations are not in
+# data.
+#
+# Requires: at least one well in annotations$wellIds is not in
+# data[[well_ids_column]].
+#
+# @param data The data frame missing some wells.
+# @param well_ids_column The name of the column in data containing the well IDs.
+# @param annotations The data frame with extra wells (with well_ids_column named
+# "wellIds")
+# @return An error message describing which wells are missing.
+wrong_wells_error_message <- function(data, well_ids_column, annotations) {
+  missing <- annotations$wellIds[!(annotations$wellIds %in%
+                                     data[[well_ids_column]])]
+  if (length(missing) == 0) {
+    stop("No wells are missing.")
+  }
+  missing <- paste0(missing, collapse = ", ")
+  paste0("Some wells in your file are not in the data frame you ",
+         "provided, but they all should be. The missing wells are: ",
+         missing, ".")
+}
 
 # Returns wells with leading zeroes removed.
 #
@@ -112,3 +134,37 @@ remove_leading_zeroes <- function(wells) {
   )
   return(wells)
 }
+
+# Returns a character vector of well IDs without leading zeroes (e.g. A1..B10..
+# H12) of length 12, 24, 48, 96, or 384 wells.
+#
+# @param plate_size 12, 24, 48, 96, or 384 wells
+# @return A character vector of well IDs without leading zeroes (e.g. A1..B10..
+# H12) of length 12, 24, 48, 96, or 384 wells
+# @examples get_well_ids_without_leading_zeroes(96)
+get_well_ids_without_leading_zeroes <- function(plate_size) {
+  wells <- get_well_ids(plate_size)
+  return(remove_leading_zeroes(wells))
+}
+
+
+
+
+# Returns TRUE if all well IDs that should have leading zeroes do.
+#
+# @inheritParams ensure_correct_well_ids
+# @return TRUE if all well IDs that should have leading zeroes do. This
+# includes the case where no well IDs need leading zeroes (e.g. if all are >
+# 9 or if none of the IDs are valid well IDs without leading zeroes). Thus this
+# function returns TRUE for data$well_ids_column containing arbitrary, non-ID
+# text.
+are_leading_zeroes_valid <- function(data, well_ids_column, plate_size) {
+  wells <- data[[well_ids_column]]
+  missing <- get_well_ids_without_leading_zeroes(plate_size)
+  missing <- missing[nchar(missing) == 2]
+  if (any(wells %in% missing)) {
+    return(FALSE)
+  }
+  return(TRUE)
+}
+

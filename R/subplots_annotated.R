@@ -12,7 +12,7 @@ subplots_annotated <- function(df_sub_plots_well, sp_data_layout) {
     grobs = purrr::pmap(
       subset(
         df_sub_plots_well,
-        select = -c(Wells, Row, Column)
+        select = -c(.data$Wells, .data$Row, .data$Column)
       ),
       grobfun
     )
