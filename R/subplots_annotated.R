@@ -8,11 +8,12 @@
 # Return the input dataframe with the the column grobs, which is a layerinstance
 # containing the subplots and the coordinates to placed it in the background plot.
 subplots_annotated <- function(df_sub_plots_well, sp_data_layout) {
+  Wells <- Row <- Column <- NULL # defined as global variables
   df_sub_plots_well <- dplyr::mutate(df_sub_plots_well,
     grobs = purrr::pmap(
       subset(
         df_sub_plots_well,
-        select = -c(.data$Wells, .data$Row, .data$Column)
+        select = -c(Wells, Row, Column)
       ),
       grobfun
     )

@@ -17,7 +17,7 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "test_fluorstar_fluorescence.txt",
+#' file_path <- system.file("extdata", "test_fluorstar_fluorescence_data.txt",
 #'   package = "mpxtractor"
 #' )
 #'
@@ -37,6 +37,7 @@ read_fluorstar_data <- function(file) {
   input_file_is_fluorstar(file)
   clean_file <- get_raw_file_clean_fluorstar(file)
   df_result <- generate_format_df_fluorstar(clean_file)
+  df_result <- add_wave_lenght_col(df_result)
   df_result <- format_time_fluorstar(df_result)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
@@ -92,6 +93,7 @@ get_raw_file_clean_fluorstar <- function(file) {
 generate_format_df_fluorstar <- function(clean_file) {
   #define the global variables
   Well <- Col <- Well <- Row <- Wells <- NULL
+
   # Extract samples and names into a character vector.
   samples <- grep(x = clean_file, pattern = "*Sample*", value = T, useBytes = T)
   names <- grep(
@@ -111,7 +113,7 @@ generate_format_df_fluorstar <- function(clean_file) {
   # Generate well name
   df_tmp <- tidyr::unite(df_samples,
     Wells,
-    c(`Well Row`, `Well Col`),
+    c(.data$`Well Row`, .data$`Well Col`),
     sep = ""
   )
   # Gather time and measurements
@@ -125,6 +127,24 @@ generate_format_df_fluorstar <- function(clean_file) {
   df_result$Sample <- gsub(".*e", "", df_result[["Sample"]])
   df_result
 }
+
+add_wave_lenght_col <- function(df_result){
+  matches <- regmatches(
+    df_result[["Time"]],
+    gregexpr(
+      "(?<=\\().+?(?=\\))",
+      df_result[["Time"]],
+      perl = TRUE
+    )
+  )
+  df_result <- dplyr::mutate(df_result, lambda = unlist(matches))
+  df_result
+}
+
+
+
+
+
 
 # Transform the time column into time format hh:mm:ss as character.
 #

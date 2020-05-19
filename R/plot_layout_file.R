@@ -22,14 +22,14 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
+#' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 #'   package = "mpxtractor"
 #' )
 #'
 #' # Data is store as a tibble
 #' plot_plate <- plot_layout_file(
 #'   file = file_path, var_shape = "basic", var_colour = "condition",
-#'   name_plate_layout = "My experiment"
+#'   plate_title = "My experiment"
 #' )
 #'
 #' # Show the plot

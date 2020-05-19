@@ -24,7 +24,7 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "spectraMax_1stplate.txt",
+#' file_path <- system.file("extdata", "test_spectramax_data_1.txt",
 #' package = "mpxtractor")
 #'
 #' # Data is store as a tibble
@@ -70,7 +70,7 @@ get_raw_file_clean_spectramax <- function(file) {
 input_file_is_spectramax <- function(file) {
   raw_file <- readLines(file, warn = FALSE, encoding = "latin1")
   raw_file <- strsplit(raw_file[1], split = "\t")
-  if (!raw_file[[1]][1] == "Time(hh:mm:ss)" && !raw_file[[1]][2] == "Temperature(°C)") {
+  if (!raw_file[[1]][1] == "Time(hh:mm:ss)" && !raw_file[[1]][2] == "Temperature(\u00B0\u0043)") {
     stop("The input file is not an spectramax file.")
   }
 }
@@ -120,7 +120,7 @@ std_format_df <- function(df) {
   df_measurements <- format_time_spectra(df_measurements)
 
   df_result <- tidyr::as_tibble(df_measurements)
-  colnames(df_result)[colnames(df_result) == "Temperature(Â°C)"] <- "Temperature"
+  colnames(df_result)[colnames(df_result) == "Temperature(\u00C2\u00B0\u0043)"] <- "Temperature"
 
   return(df_result)
 }

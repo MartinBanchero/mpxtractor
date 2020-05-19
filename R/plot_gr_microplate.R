@@ -22,19 +22,41 @@
 #' Note that the time should be a time series, if the time series is broken the
 #' growth rates are not calculated and the process stop.
 #'
-#'
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
+#' # Get the data file path
+#' file_path_sp <- system.file(
+#'  "extdata",
+#'  "test_gr_spectramax.txt",
+#'  package = "mpxtractor"
+#' )
+#'
+#' # Extract the data stored in the files into a df using proper wrangling function
+#' df_sp <- mpxtractor::read_spectramax_data(
+#'  file = file_path_sp
+#'  )
+#'  # get the path to layout file
+#' file_path_layout <- system.file(
+#'  "extdata", "test_spectraMax_layout_1.csv",
+#'  package = "mpxtractor"
+#' )
+#' # combine raw data with layout scheme
+#' df_data_combine <- mpxtractor::combine_data_with_layout(
+#'  df_data = df_sp,
+#'  reader_type = "spectramax",
+#'  layout_files = file_path_layout
+#' )
 #'
 #' microplateplot <- mpxtractor::plot_gr_microplate(
-#' df_data = df_data_combine,
-#' var_gr = "Measurement",
-#' exp_title = "Spectramax experiment",
-#' ws = "2hs",
-#' cond_to_col = "condition")
+#'  df_data = df_data_combine,
+#'  var_gr = "Measurement",
+#'  exp_title = "Spectramax experiment",
+#'  ws = "2hs",
+#'  cond_to_col = "condition")
 #'
-#' #Check vignette **plotting_functions()** to see how to run the example.
+#' #Check vignette **plotting_functions()** for more information.
 #'
 # Main function
 plot_gr_microplate <- function(df_data, var_gr, exp_title = NULL,
@@ -56,10 +78,12 @@ plot_gr_microplate <- function(df_data, var_gr, exp_title = NULL,
 
 check_variables <- function(df_data, var_gr, cond_to_col) {
   if (!var_gr %in% colnames(df_data)) {
-    stop("The variable (var_gr) to calculate growth rate is not present in the input data.")
+    stop("The variable (var_gr) to calculate growth rate is not present in the
+         input data.")
   }
   if (!cond_to_col %in% colnames(df_data)) {
-    stop("The variable (cond_to_col) assigned to color is not present in the input data.")
+    stop("The variable (cond_to_col) assigned to color is not present in the
+         input data.")
   }
 }
 
