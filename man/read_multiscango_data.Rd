@@ -41,4 +41,5 @@ data <- read_multiscango_data(
 # Now data is tidy
 head(data)
 
+# Main function
 }

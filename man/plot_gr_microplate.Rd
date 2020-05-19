@@ -35,14 +35,14 @@ growth rates are not calculated and the process stop.
 }
 
 \examples{
-\dontrun{
+
 microplateplot <- mpxtractor::plot_gr_microplate(
 df_data = df_data_combine,
 var_gr = "Measurement",
-exp_title = "Spectramax experiment", windowsize = 2,
-ws = "2hs", ts = "2min",
+exp_title = "Spectramax experiment",
+ws = "2hs",
 cond_to_col = "condition")
-}
-Check vignette **plotting_functions()** to see how to run the example.
+
+#Check vignette **plotting_functions()** to see how to run the example.
 
 }
