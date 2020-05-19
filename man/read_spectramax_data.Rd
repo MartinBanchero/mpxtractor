@@ -30,7 +30,7 @@ by using only .txt files.
 }
 
 \examples{
-file_path <- system.file("extdata", "spectraMax_1stplate.txt",
+file_path <- system.file("extdata", "test_spectramax_data_1.txt",
 package = "mpxtractor")
 
 # Data is store as a tibble

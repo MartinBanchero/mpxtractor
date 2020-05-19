@@ -18,16 +18,18 @@
 #' files in the examples below.
 #'
 #'
+#' @importFrom rlang .data
+#'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "spectraMax_layout_plate1.csv",
+#' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 #'   package = "mpxtractor"
 #' )
 #'
 #' # Data is store as a tibble
 #' plot_plate <- plot_layout_file(
 #'   file = file_path, var_shape = "basic", var_colour = "condition",
-#'   name_plate_layout = "My experiment"
+#'   plate_title = "My experiment"
 #' )
 #'
 #' # Show the plot
@@ -61,10 +63,10 @@ platemap_for_ggplot <- function(file) {
   platemap_df <- read_layout_file(file, well_ids_column = "Wells")
   platemap_df <- dplyr::mutate(platemap_df,
     Row = as.numeric(match(
-      toupper(substr(Wells, 1, 1)),
+      toupper(substr(.data$Wells, 1, 1)),
       LETTERS
     )),
-    Column = as.numeric(substr(Wells, 2, 5))
+    Column = as.numeric(substr(.data$Wells, 2, 5))
   )
 }
 
@@ -86,10 +88,10 @@ generate_platemap <- function(platemap_df, var_shape, var_colour, plate_title) {
   n_col <- length(unique(platemap_df$Column))
   n_row <- length(unique(platemap_df$Row))
   # Make the background plot
-  ggplot2::ggplot(data = platemap_df, ggplot2::aes(x = Column, y = Row)) +
+  ggplot2::ggplot(data = platemap_df, ggplot2::aes(x = .data$Column, y = .data$Row)) +
     ggplot2::geom_point(
       data = expand.grid(seq(1, n_col), seq(1, n_row)),
-      ggplot2::aes(x = Var1, y = Var2),
+      ggplot2::aes(x = .data$Var1, y = .data$Var2),
       color = "grey39", fill = "white", shape = 21, size = 5
     ) +
     ggplot2::scale_y_reverse(breaks = seq(1, n_row), labels = LETTERS[1:n_row]) +

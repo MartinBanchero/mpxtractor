@@ -17,7 +17,7 @@
 #' Note that the time should be a time series, if the time series is broken the
 #' growth rates are not calculated and the process stops.
 #'
-#'
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -55,13 +55,13 @@ compute_growth_rates <- function(df_data, var_gr, ws) {
 get_growth_rates <- function(df_data, var_gr, ws) {
   check_ws(ws)
   ws <- as.numeric(sub("\\hs.*", "", ws))
-  df_data <- dplyr::mutate(df_data, Diff_time = Time[2] - Time[1])
+  df_data <- dplyr::mutate(df_data, Diff_time = .data$Time[2] - .data$Time[1])
   timestep <- df_data$Diff_time[2] # hs
   windowlength <- (ws / timestep)
   windowlength <- ifelse(windowlength %% 2 == 0, windowlength + 1, windowlength)
 
   # Calculate growth rate (mu) using Savitzky and Golay filter(savgol).
-  df_data <- dplyr::group_by(df_data, Wells)
+  df_data <- dplyr::group_by(df_data, .data$Wells)
   growth_rate <- dplyr::group_map(df_data, ~ signal::sgolayfilt(.x[[var_gr]],
     p = 1,
     n = windowlength,
@@ -70,7 +70,7 @@ get_growth_rates <- function(df_data, var_gr, ws) {
   ))
 
   df_data$growth_rate <- as.vector(unlist(growth_rate))
-  df_data <- dplyr::select(df_data, -c(Diff, Diff_time))
+  df_data <- dplyr::select(df_data, -c(.data$Diff, .data$Diff_time))
   return(df_data)
 }
 
@@ -107,8 +107,13 @@ check_Na_Inf_in_var_gr <- function(df_data, var_gr) {
 
 # Function check sequence time for time series
 check_time_series <- function(df_data) {
-  df_tmp <- dplyr::group_by(df_data, Wells)
-  df_tmp1 <- dplyr::mutate(df_tmp, Diff = round(Time - dplyr::lag(Time), digits = 3))
+  df_tmp <- dplyr::group_by(df_data, .data$Wells)
+  df_tmp1 <- dplyr::mutate(
+    df_tmp,
+    Diff = round(.data$Time - dplyr::lag(.data$Time),
+      digits = 3
+    )
+  )
   df_tmp1[is.na(df_tmp1)] <- 0
   if (length(unique(df_tmp1[["Diff"]])) > 2) {
     stop("The sequence of time is not equally spaced, thus is not a time series")

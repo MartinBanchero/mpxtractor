@@ -29,7 +29,7 @@ by using only .txt files.
 }
 
 \examples{
-file_path <- system.file("extdata", "multiscanGO_1streading.txt",
+file_path <- system.file("extdata", "test_multiscango_data_1.txt",
   package = "mpxtractor"
 )
 
@@ -41,4 +41,5 @@ data <- read_multiscango_data(
 # Now data is tidy
 head(data)
 
+# Main function
 }

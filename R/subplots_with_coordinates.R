@@ -3,9 +3,9 @@
 # The function takes as input the output data frame of generate_subplots_by_well(),
 # and is adding to this the coordinates where the subplots are placed in the background
 # plot.
+#' @importFrom rlang .data
 #
 # Parameters are df_sub_plots_well dataframe.
-#
 # Return the input dataframe with the coordinates min_x, max_x and min_y and max_y
 # as columns.
 subplots_with_coordinates <- function(df_sub_plots_well) {
@@ -22,12 +22,12 @@ subplots_with_coordinates <- function(df_sub_plots_well) {
     length(unique(df_sub_plots_well[["Row"]]))
   )
 
-  df_sub_plots_well <- tidyr::separate(df_sub_plots_well, group_x,
+  df_sub_plots_well <- tidyr::separate(df_sub_plots_well, .data$group_x,
     into = c("min_x", "max_x"),
     sep = ",", convert = TRUE
   )
 
-  df_sub_plots_well <- tidyr::separate(df_sub_plots_well, group_y,
+  df_sub_plots_well <- tidyr::separate(df_sub_plots_well, .data$group_y,
     into = c("min_y", "max_y"),
     sep = ",", convert = TRUE
   )
@@ -44,15 +44,14 @@ cut_into_coordinates <- function(variable, ngroups) {
   )
 }
 
-
 add_rows_and_columns <- function(df_sub_plots_well) {
   # Add column and row to the dataframe sub_subplots
   df_sub_plots_well <- dplyr::mutate(df_sub_plots_well,
     Row = as.numeric(match(
-      toupper(substr(Wells, 1, 1)),
+      toupper(substr( .data$Wells, 1, 1)),
       LETTERS
     )),
-    Column = as.numeric(substr(Wells, 2, 5))
+    Column = as.numeric(substr(.data$Wells, 2, 5))
   )
   return(df_sub_plots_well)
 }

@@ -1,5 +1,5 @@
 # Generates background plot and combine with subplots
-#
+#' @importFrom rlang .data
 # First the background plot is created, this is the microplate frame. Over the
 # frame the grobs objects in the input dataframe are added.
 #
@@ -14,11 +14,18 @@ combine_subplots_backgr <- function(df_sub_plots_well, exp_title, var_to_col) {
 
   background_plot <- ggplot2::ggplot(
     data = df_sub_plots_well,
-    ggplot2::aes(x = Column, y = Row, fill = condition_fc)
+    ggplot2::aes(
+      x = .data$Column,
+      y = .data$Row,
+      fill = .data$condition_fc
+    )
   ) +
     ggplot2::geom_blank() +
     ggplot2::theme_classic() +
-    ggplot2::theme(panel.border = ggplot2::element_rect("black", fill = NA, size = 2), ) +
+    ggplot2::theme(panel.border = ggplot2::element_rect("black",
+      fill = NA,
+      size = 2
+    ), ) +
     ggplot2::scale_x_continuous(
       breaks = seq(1, n_col),
       position = "top",
@@ -42,7 +49,6 @@ combine_subplots_backgr <- function(df_sub_plots_well, exp_title, var_to_col) {
       axis.text.x = ggplot2::element_text(color = "black", size = 30),
       axis.text.y = ggplot2::element_text(color = "black", size = 30),
       axis.title = ggplot2::element_text(size = 30)
-
     )
   all_wells_plot <- background_plot + df_sub_plots_well[["grobs"]]
 }
@@ -53,5 +59,5 @@ color_factor_condition <- function(df_sub_plots_well) {
     length(unique(df_sub_plots_well[["condition_fc"]]))
   ))
   names(colors_fact_cond) <- levels(df_sub_plots_well[["condition_fc"]])
-  color_con <- stack(colors_fact_cond)
+  color_con <- utils::stack(colors_fact_cond)
 }

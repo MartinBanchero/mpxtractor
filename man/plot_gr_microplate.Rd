@@ -35,14 +35,36 @@ growth rates are not calculated and the process stop.
 }
 
 \examples{
-\dontrun{
+# Get the data file path
+file_path_sp <- system.file(
+ "extdata",
+ "test_gr_spectramax.txt",
+ package = "mpxtractor"
+)
+
+# Extract the data stored in the files into a df using proper wrangling function
+df_sp <- mpxtractor::read_spectramax_data(
+ file = file_path_sp
+ )
+ # get the path to layout file
+file_path_layout <- system.file(
+ "extdata", "test_spectraMax_layout_1.csv",
+ package = "mpxtractor"
+)
+# combine raw data with layout scheme
+df_data_combine <- mpxtractor::combine_data_with_layout(
+ df_data = df_sp,
+ reader_type = "spectramax",
+ layout_files = file_path_layout
+)
+
 microplateplot <- mpxtractor::plot_gr_microplate(
-df_data = df_data_combine,
-var_gr = "Measurement",
-exp_title = "Spectramax experiment", windowsize = 2,
-ws = "2hs", ts = "2min",
-cond_to_col = "condition")
-}
-Check vignette **plotting_functions()** to see how to run the example.
+ df_data = df_data_combine,
+ var_gr = "Measurement",
+ exp_title = "Spectramax experiment",
+ ws = "2hs",
+ cond_to_col = "condition")
+
+#Check vignette **plotting_functions()** for more information.
 
 }

@@ -13,9 +13,11 @@
 #' measures. The fourth column contain the measured values. Depending on the experiment,
 #' this can be fluorescence, absorbance between others.
 #'
+#' @importFrom rlang .data
+#'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "test_fluorstar_fluorescence.txt",
+#' file_path <- system.file("extdata", "test_fluorstar_fluorescence_data.txt",
 #'   package = "mpxtractor"
 #' )
 #'
@@ -35,6 +37,7 @@ read_fluorstar_data <- function(file) {
   input_file_is_fluorstar(file)
   clean_file <- get_raw_file_clean_fluorstar(file)
   df_result <- generate_format_df_fluorstar(clean_file)
+  df_result <- add_wave_lenght_col(df_result)
   df_result <- format_time_fluorstar(df_result)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
@@ -88,6 +91,9 @@ get_raw_file_clean_fluorstar <- function(file) {
 # returns a data frame with Wells, Sample, Time and Measurement as columns
 
 generate_format_df_fluorstar <- function(clean_file) {
+  #define the global variables
+  Well <- Col <- Well <- Row <- Wells <- NULL
+
   # Extract samples and names into a character vector.
   samples <- grep(x = clean_file, pattern = "*Sample*", value = T, useBytes = T)
   names <- grep(
@@ -107,20 +113,38 @@ generate_format_df_fluorstar <- function(clean_file) {
   # Generate well name
   df_tmp <- tidyr::unite(df_samples,
     Wells,
-    c(`Well Row`, `Well Col`),
+    c(.data$`Well Row`, .data$`Well Col`),
     sep = ""
   )
   # Gather time and measurements
   df_result <- tidyr::gather(df_tmp,
     key = "Time",
     value = "Measurement",
-    starts_with("Raw")
+    dplyr::starts_with("Raw")
   )
   # Remove the word Sample from the column.
   colnames(df_result)[2] <- "Sample"
   df_result$Sample <- gsub(".*e", "", df_result[["Sample"]])
   df_result
 }
+
+add_wave_lenght_col <- function(df_result){
+  matches <- regmatches(
+    df_result[["Time"]],
+    gregexpr(
+      "(?<=\\().+?(?=\\))",
+      df_result[["Time"]],
+      perl = TRUE
+    )
+  )
+  df_result <- dplyr::mutate(df_result, lambda = unlist(matches))
+  df_result
+}
+
+
+
+
+
 
 # Transform the time column into time format hh:mm:ss as character.
 #
@@ -148,8 +172,17 @@ format_time_fluorstar <- function(raw_fls_data) {
   time_df$minute <- stringr::str_pad(time_df[["minute"]], 2, pad = "0")
 
   # Set the time format and arrange the data frame by wells and time
-  time_df <- dplyr::mutate(time_df, Time = paste(hour, ":", minute, ":00", sep = ""))
+  time_df <- dplyr::mutate(time_df,
+    Time = paste(.data$hour, ":",
+      .data$minute, ":00",
+      sep = ""
+    )
+  )
   raw_fls_data$Time <- time_df[["Time"]]
-  raw_fls_data <- dplyr::group_by(raw_fls_data, Sample)
-  raw_fls_data <- dplyr::arrange(raw_fls_data, Wells, Time)
+  raw_fls_data <- dplyr::group_by(raw_fls_data, .data$Sample)
+  raw_fls_data <- dplyr::arrange(
+    raw_fls_data,
+    .data$Wells,
+    .data$Time
+  )
 }

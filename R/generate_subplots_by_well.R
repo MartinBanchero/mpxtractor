@@ -14,10 +14,13 @@ generate_subplots_by_well <- function(sp_data_layout, cond_to_col) {
   max_y <- max(sp_data_layout$growth_rate)
   min_y <- min(sp_data_layout$growth_rate)
   # generate subplots
-  sp_data_layout_group <- dplyr::group_by(sp_data_layout, Wells)
+  sp_data_layout_group <- dplyr::group_by(sp_data_layout, .data$Wells)
   df_sub_plots_well <- dplyr::do(sp_data_layout_group,
-    subplots = ggplot2::ggplot(., ggplot2::aes(x = Time, y = growth_rate)) +
-      ggplot2::geom_line(ggplot2::aes(colour = condition_fc), size = 1) +
+    subplots = ggplot2::ggplot(.data, ggplot2::aes(
+      x = .data$Time,
+      y = .data$growth_rate
+    )) +
+      ggplot2::geom_line(ggplot2::aes(colour = .data$condition_fc), size = 1) +
       ggplot2::ylim(min_y, max_y) +
       colScale +
       ggplot2::theme(

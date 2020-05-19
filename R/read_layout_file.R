@@ -20,7 +20,7 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "test_spectraMax_layout.csv", package = "mpxtractor")
+#' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
 #'
 #' # Data is store as a tibble
 #' data <- read_layout_file(

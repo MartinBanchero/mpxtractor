@@ -18,12 +18,12 @@
 #' related to different file formats, like .csv, .xlsx and versions is simplified
 #' by using only .txt files.
 #'
-#'
+#' @importFrom rlang .data
 #'
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "multiscanGO_1streading.txt",
+#' file_path <- system.file("extdata", "test_multiscango_data_1.txt",
 #'   package = "mpxtractor"
 #' )
 #'
@@ -35,7 +35,7 @@
 #' # Now data is tidy
 #' head(data)
 #'
-# Main function
+#' # Main function
 read_multiscango_data <- function(file) {
   check_one_file_provided(file)
   check_file_path(file)
@@ -104,6 +104,7 @@ add_col_names <- function(df_tmp) {
   df2 <- df_tmp[c(-1, -2)]
   colnames(df2) <- 1:ncol(df2)
   df_intermediate <- cbind(df_tmp[, c(1, 2)], df2)
+  return(df_intermediate)
 }
 
 # Transform the dataframe to a more tidy dataframe.
@@ -112,16 +113,24 @@ add_col_names <- function(df_tmp) {
 # return a tidy dataframe
 
 generate_df_result <- function(df_intermediate) {
-  df_final_tmp <- tidyr::gather(
+    Well_Col <- Measurement <- Well_Row <- Reading <- NULL
+    df_final_tmp <- tidyr::gather(
     df_intermediate,
-    Well_Col, Measurement,
+    Well_Col,
+    Measurement,
     -c(Well_Row, Reading)
   )
-  df_final_tmp <- dplyr::group_by(df_final_tmp, Well_Col, Reading)
-  df_final_tmp <- dplyr::mutate(df_final_tmp, rowID = seq_along(Well_Col))
+  df_final_tmp <- dplyr::group_by(
+    df_final_tmp,
+    .data$Well_Col,
+    .data$Reading
+  )
+  df_final_tmp <- dplyr::mutate(df_final_tmp,
+    rowID = seq_along(.data$Well_Col)
+  )
   df_final_tmp <- dplyr::ungroup(df_final_tmp)
   df_final_tmp <- dplyr::mutate(df_final_tmp,
-    Wells = interaction(Well_Row, Well_Col, sep = ""),
+    Wells = interaction(.data$Well_Row, .data$Well_Col, sep = ""),
     Well_Row = NULL,
     Well_Col = NULL
   )
@@ -140,6 +149,11 @@ set_well_ids <- function(df_final_tmp) {
   wells <- df_final_tmp$Wells
   wellsname <- gsub("(^[A-Z])([0-9]$)", "\\10\\2", wells)
   df_final_tmp$Wells <- wellsname
-  df_result <- dplyr::select(df_final_tmp, Wells, everything(), -rowID)
-  df_result <- dplyr::arrange(df_result, Wells)
+  df_result <- dplyr::select(
+    df_final_tmp,
+    .data$Wells,
+    dplyr::everything(),
+    -.data$rowID
+  )
+  df_result <- dplyr::arrange(df_result, .data$Wells)
 }
