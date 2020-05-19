@@ -7,7 +7,7 @@ URL: https://github.com/MartinBanchero/mpxtractor
 BugReports: https://github.com/MartinBanchero/mpxtractor/issues
 Description: Extract data from microplate output files into tidy dataframe. This package is focus in process
     output files from spectraMax, multiscanGO and fluorStar machines.
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
