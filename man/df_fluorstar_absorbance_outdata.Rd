@@ -5,12 +5,13 @@
 \alias{df_fluorstar_absorbance_outdata}
 \title{Full dataset of fluorstar microplate readers.}
 \format{
-A data frame with 23712 rows and 4 variables:
+A data frame with 23712 rows and 5 variables:
 \describe{
   \item{Wells}{Well id}
   \item{Sample}{Sample X}
   \item{Time}{Time step, in hh:mm:ss format}
   \item{Measurement}{OD600, optical density at 600 nm}
+  \item{lambda}{ wave lenght at which the measurements were performed}
 }
 }
 \source{
