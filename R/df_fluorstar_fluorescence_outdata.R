@@ -14,12 +14,13 @@
 #'   timestep is 5 minutes.
 #'
 #'
-#' @format A data frame with 23712 rows and 4 variables:
+#' @format A data frame with 23712 rows and 5 variables:
 #' \describe{
 #'   \item{Wells}{Well id}
 #'   \item{Sample}{Sample X}
-#'   \item{Time}{Time step, in hh:mm:ss format}
+#'   \item{Time}{Time point, in hh:mm:ss format}
 #'   \item{Measurement}{OD600, optical density at 600 nm}
+#'   \item{lambda}{ wave lenght at which the measurements were performed}
 #' }
 #' @source \url{http://www.teusinkbruggemanlab.nl/}
 "df_fluorstar_fluorescence_outdata"

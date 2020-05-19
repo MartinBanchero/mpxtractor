@@ -12,6 +12,34 @@ read_multiple_data_files(
   plate_names = NULL
 )
 }
+\arguments{
+\item{reader_type}{to specified the type of reader machine}
+
+\item{dirFiles}{to specified the directory}
+
+\item{file_pattern}{pattern to match filenames}
+
+\item{filesname}{name of the files to be read}
+
+\item{plate_names}{to add the name of the plate
+
+ \code{read_multiple_data_files} returns a dataframe with the data in
+the raw files as dataframe.}
+}
 \description{
-Multiple plates files
+This function can recive as argument multiple raw data files and join them.
+}
+\examples{
+file_path <- system.file(
+ "extdata",
+ c("test_spectramax_data_1.txt", "test_spectramax_data_2.tx"),
+ package = "mpxtractor"
+)
+
+data_multiple_spectramax <- mpxtractor::read_multiple_data_files(
+reader_type = "spectramax",
+filesname = file_path
+)
+
+
 }

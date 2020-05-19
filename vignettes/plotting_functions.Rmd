@@ -87,7 +87,7 @@ head(df_sp)
 
 ### 2.2 Combine data with layout scheme
 In this step the data frame obtained above is combined with the layout scheme, 
-using *combine_data_with_layout()* is possible to performed this action in a simple way.
+using *df_data_combine()* is possible to performed this action in a simple way.
 In the example below one layout file is used to be combined with the dataframe
 with raw data.
 
@@ -161,7 +161,7 @@ microplateplot <- mpxtractor::plot_gr_microplate(
   cond_to_col = "condition"
 )
 
-ggplot2::ggsave(filename = "test.png", plot = microplateplot, width = 70, height = 50, units = "cm")
+#ggplot2::ggsave(filename = "test.png", plot = microplateplot, width = 70, height = 50, units = "cm")
 ```
 
 ```{r ,echo=FALSE, out.width ='100%', fig.show="hold", fig.cap="**Figure 2:** Representation over a microplate frame of growth rates for each well. Note that in this case the attribute *condition* was chosen to be coloured."}

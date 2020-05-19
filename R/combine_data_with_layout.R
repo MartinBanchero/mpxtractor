@@ -6,8 +6,17 @@
 #' and the path to the layout files. This function can take many layout files as
 #' argument.
 #'
-#' \code{read_layout_files} returns the data in the .csv as tibble
-#' data frame
+#' \code{combine_data_with_layout} returns a dataframe with the data in
+#' the raw files and in the layout files.
+#'
+#' @param df_data dataframe tidy
+#' @param reader_type string with the name of one the reader machines
+#' @param dir_layout_files specified the ddirectory in which gather the files
+#' @param layout_file_pattern specified pattern to match the file names
+#' @param layout_files name of layout files
+#' @param plate_names optional argument to give name to plates
+#'
+#'
 #'
 #' @export
 #' @examples
@@ -17,13 +26,16 @@
 #' data(df_spectramax_outdata_1)
 #'
 #' # Data is store as a tibble
-#' data_layout <- combine_data_with_layout(df_spectramax_outdata_1,
-#'  reader_type ="spectramax", layout_files = file_path)
+#' data_layout <- combine_data_with_layout(
+#'  df_spectramax_outdata_1,
+#'  reader_type = "spectramax",
+#'  layout_files = file_path
+#' )
 #'
 #' # Now data is tidy
 #' head(data_layout)
 
-combine_data_with_layout <- function(df_data, reader_type = NULL, dir_lyout_files = NULL,
+combine_data_with_layout <- function(df_data, reader_type = NULL, dir_layout_files = NULL,
                                      layout_file_pattern = NULL,
                                      layout_files = NULL,
                                      plate_names = NULL) {
@@ -31,7 +43,7 @@ combine_data_with_layout <- function(df_data, reader_type = NULL, dir_lyout_file
   check_type_of_reader(reader_type)
 
   files_layout <- get_input_read_multifiles(
-    folder = dir_lyout_files,
+    folder = dir_layout_files,
     pattern = layout_file_pattern,
     filebyname = layout_files
   )

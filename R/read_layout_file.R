@@ -4,6 +4,7 @@
 #' to the function \code{read_plate()} from \cite{plater} package.
 #'
 #' @param file The path to a proper .csv file.
+#' @param well_ids_column add the name to column well
 #'
 #' @return Returns a tibble data frame whith different attributtes. The first column
 #' is "Wells" this contain the names for each well (A01, A02..). The rest of the
