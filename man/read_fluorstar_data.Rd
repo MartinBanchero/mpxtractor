@@ -23,7 +23,7 @@ This function recive one output file from fluorStar microplate reader and
 generate a tibble dataframe.
 }
 \examples{
-file_path <- system.file("extdata", "test_fluorstar_fluorescence.txt",
+file_path <- system.file("extdata", "test_fluorstar_fluorescence_data.txt",
   package = "mpxtractor"
 )
 
