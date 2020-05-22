@@ -103,15 +103,27 @@ head(df_corrected)
 
 ### 2.3 Compute the growth rates.
 Here the the function `compute_growth_rates()` is used. 
-Some insights about this function:
 
-  - The argument **var_gr** is the attribute used to calculate the growth rates.
-  - The growth rates are calculated using *sgolayfilt()* from the package @signal, this function is taking: the first derivative, the windowlength given as a parameter in `compute_growth_rates()` and using as a time scaling factor the time points used in the experiment. 
-  - The function *sgolayfilt()* is not taking into account the time.
-  - The growth rates are calculated by wells.
+Some insights about this function:
+  
+  **Data imputation:**
+    
+ * If the attribute used to calculate growth rates contain Inf/-Inf values this are tranformed to `NAs` and impute using k=1, this means that one value to the right and one to the left are used to calculate the mean of that missing value.
+    
+ * In the case that there more than one `NA` the function scan both sides until it finds the next value.
+  
+  **Growth rates calculation:**
+  
+ * The argument **var_gr** is the attribute used to calculate the growth rates.
+  
+ * The growth rates are calculated using *sgolayfilt()* from the package @signal, this function is taking: the first derivative, the windowlength given as a parameter in `compute_growth_rates()` and using as a time scaling factor the time points used in the experiment. 
+  
+    - The function *sgolayfilt()* is not taking into account the time.
+    - The growth rates are calculated by wells.
   
   
-Is very important to note that the difference between time points must be equal for all them. Otherwise the time series is not complete.
+Is very important to note that the difference between time points must be equal for all them. Otherwise the time series is not complete. Remeber the example with
+fluorstar machines.
 
 ```{r}
  df_gr_data <- mpxtractor::compute_growth_rates(
