@@ -4,10 +4,12 @@
 \alias{read_multiscango_data}
 \title{Function specific to read output files (.txt) produced by multisccanGo readers.}
 \usage{
-read_multiscango_data(file)
+read_multiscango_data(file, time_point)
 }
 \arguments{
 \item{file}{The path to a proper .txt file formatted by the multiscanGO machine.}
+
+\item{time_point}{the time interval at which the measurements are done in min.}
 }
 \value{
 Returns a tibble data frame whith four columns. The first column is
@@ -35,7 +37,7 @@ file_path <- system.file("extdata", "test_multiscango_data_1.txt",
 
 # Data is store as a tibble
 data <- read_multiscango_data(
-  file = file_path
+  file = file_path, time_point = "2.5 min"
 )
 
 # Now data is tidy
