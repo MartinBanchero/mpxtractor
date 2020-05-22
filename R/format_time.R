@@ -23,12 +23,6 @@
 #' df
 
 format_time <- function(df_data, time_format = NULL) {
-  if (!"Time" %in% colnames(df_data)) {
-    df_data$Time <- df_data[["Reading"]]
-    warning("There is no Time attribute in multiscanGO data, the same dataframe
-            is return.")
-    return(df_data)
-  }
   if (is.null(time_format) || toupper(time_format) == toupper("hours")) {
     Time <- get_time_in_hh(df_data$Time)
     # Move column time to the front

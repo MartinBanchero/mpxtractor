@@ -37,9 +37,18 @@
 #'
 # Main function
 plot_layout_file <- function(file, var_shape, var_colour, plate_title = NULL) {
+  #defined <- rm(list = ls(pattern = "plate_title"))
+  list_arg <- ls()
+  defined <- list_arg[-2]
+  passed <- names(as.list(match.call())[-1])
+  if (any(!defined %in% passed)) {
+    stop(paste("missing values for argument", paste(setdiff(defined, passed), collapse = ", ")))
+  }
+
   NUMBER_FACTORS <- 6 # number of shapes available to use
   platemap_df <- platemap_for_ggplot(file)
-  if (length(unique(platemap_df[[var_shape]])) > NUMBER_FACTORS) {
+
+   if (length(unique(platemap_df[[var_shape]])) > NUMBER_FACTORS) {
     stop("You must use attributes for var_shape with less than 7 different factors.")
   }
 

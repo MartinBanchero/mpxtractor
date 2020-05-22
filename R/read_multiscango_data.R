@@ -4,6 +4,7 @@
 #' generate a tibble dataframe.
 #'
 #' @param file The path to a proper .txt file formatted by the multiscanGO machine.
+#' @param time_point the time interval at which the measurements are done in min.
 #'
 #' @return Returns a tibble data frame whith four columns. The first column is
 #' "Wells" this contain the names for each well (A01, A02..). The second column
@@ -29,23 +30,25 @@
 #'
 #' # Data is store as a tibble
 #' data <- read_multiscango_data(
-#'   file = file_path
+#'   file = file_path, time_point = "2.5 min"
 #' )
 #'
 #' # Now data is tidy
 #' head(data)
 #'
 #' # Main function
-read_multiscango_data <- function(file) {
+read_multiscango_data <- function(file, time_point) {
   check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)
+  check_time_point(time_point)
   input_file_is_multiscango(file)
   processed_file <- get_raw_file_clean_multiscango(file)
   df_tmp <- generate_df(processed_file)
   df_intermediate <- add_col_names(df_tmp)
   df_final_tmp <- generate_df_result(df_intermediate)
   df_result <- set_well_ids(df_final_tmp)
+  df_result <- add_column_time(df_result, time_point)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
 }
@@ -156,4 +159,40 @@ set_well_ids <- function(df_final_tmp) {
     -.data$rowID
   )
   df_result <- dplyr::arrange(df_result, .data$Wells)
+}
+
+check_time_point <- function(tp) {
+  if (!any(grepl("min", tp))) {
+    stop("time point should be in minutes")
+  }
+}
+
+add_column_time <- function(df, time_point) {
+  tp <- as.numeric(sub("\\min.*", "", time_point))
+  time_point <- tp / 60 # to hours
+  max_reading <- max(df$Reading)
+  total_time <- (time_point * (max_reading - 1))
+
+  df_result <- dplyr::group_by(df, .data$Wells)
+  df_result <- dplyr::mutate(
+    df_result,
+    Time = seq(0, total_time, by = time_point)
+  )
+  df_result <- get_time_multiscango(df_result)
+  df_result[,c("Wells", "Time", "Reading", "Measurement")]
+
+}
+
+get_time_multiscango <- function(df) {
+  h <- df$Time %/% 1
+  m <- ((df$Time %% 1) * 60) %/% 1
+  s <- round((((df$Time %% 1) * 60) %% 1) * 60, 0)
+
+  time_first_format <- paste(h, m, s, sep = ":")
+
+  time_hh <- gsub("^(\\d{1}:\\d{1,}:\\d{1,}$)", "\\0\\1", time_first_format)
+  time_mm <- gsub("^(\\d{2}:)(\\d{1}:)", "\\10\\2", time_hh)
+  time_hhmmss <- gsub("^(\\d{2}:\\d{2}:)(\\d{1})$", "\\10\\2", time_mm)
+  df$Time <- time_hhmmss
+  df
 }

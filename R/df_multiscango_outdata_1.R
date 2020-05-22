@@ -8,10 +8,11 @@
 #'
 #'
 #'
-#' @format A data frame with 1536 rows and 3 variables:
+#' @format A data frame with 1536 rows and 4 variables:
 #' \describe{
 #'  \item{Wells}{Well id}
-#'  \item{Reading}{Time step, contain the reading number.}
+#'  \item{Time}{time points}
+#'  \item{Reading}{contain the reading number.}
 #'  \item{Measurement}{OD600, optical density at 600 nm}
 #' }
 #' @source \url{http://www.teusinkbruggemanlab.nl/}
