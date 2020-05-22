@@ -63,6 +63,10 @@ The returned tibble data frame show four columns. The first column is
 "Wells" this contain the names for each well (A01, A02..). The second column
 represent "Time", this column is generated using the argument `time_point`, the third column is "Reading", shows the number of reading, and the fourth is "Measurement", this is the value measured for each "Reading".
 
+**Important:** The time point given as an argument generates the time series, is 
+very important to know the time between readings to use it to generate the attribute
+`Time` in the tidy data frame.
+
 Below is shown a toy example about how to use this function.
 
 ```{r}
