@@ -1,5 +1,5 @@
 ---
-title: "mpxtractor"
+title: "Brief introduction to `mpxtractor`"
 author: "Martin Banchero"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -7,7 +7,7 @@ fig_caption: yes
 bibliography: CITES.bib
 link-citations: yes
 vignette: >
-  %\VignetteIndexEntry{mpxtractor}
+  %\VignetteIndexEntry{Brief introduction to `mpxtractor`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,12 +18,9 @@ text-align: justify}
 
 ```{r setup, include = FALSE}
 library(mpxtractor)
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+library(dplyr)
+knitr::opts_chunk$set(fig.width = 7, fig.height = 5 ,collapse = TRUE, comment = "#>")
 ```
-
 
 
 ## Overview

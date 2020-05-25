@@ -1,0 +1,96 @@
+---
+title: "Untitled"
+author: "Martin"
+date: "5/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(mpxtractor)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+#get the path to file
+file <- system.file(
+  "extdata", "test_multiscanGO_layout1.csv",
+  package = "mpxtractor"
+)
+
+mpxtractor::plot_layout_file(file, var_shape = "Basic", var_colour = "presugar", plate_title = "Multiscango")
+```
+
+```{r}
+# Get the file path 
+file_path_sp <- system.file(
+  "extdata",
+  "test_multiscango_data_1.txt",
+  package = "mpxtractor"
+)
+
+# Extract the data stored in the files into a data frame using proper wrangling function
+df_mgo <- mpxtractor::read_multiscango_data(
+  file = file_path_sp, time_point = "2.5 min"
+)
+
+# Show tidy data 
+head(df_mgo) 
+
+```
+
+```{r}
+#get the path to file
+file_path_layout <- system.file(
+  "extdata", "test_multiscanGO_layout1.csv",
+  package = "mpxtractor"
+)
+# combine raw data with layout scheme
+df_data_combine <- mpxtractor::combine_data_with_layout(
+  df_data = df_mgo, 
+  reader_type = "multiscango", 
+  layout_files = file_path_layout
+)
+
+head(df_data_combine)
+
+```
+```{r}
+library(dplyr)
+# Get the minimun measurement for each well
+df <- df_data_combine %>%
+  group_by(Wells) %>%
+  mutate(min_measurement = min(Measurement))
+
+# Subtract the minimun to each measurement
+df_tmp <- df %>%
+  mutate(bg_corrected = Measurement - min_measurement)
+
+# Apply log transform and clean the dataframe
+df_corrected <- df_tmp %>%
+  mutate(Measurement = log(bg_corrected)) %>%
+  select(-c(min_measurement, bg_corrected))
+
+head(df_corrected)  
+```
+
+```{r}
+t <- mpxtractor::compute_growth_rates(df_data = df_corrected, var_gr = "Measurement",ws = "2hs")
+
+t %>%
+  filter(Wells == "D19")
+```
+
+
+
+```{r}
+microplateplot <- mpxtractor::plot_gr_microplate(
+  df_data = df_corrected,
+  var_gr = "Measurement",
+  exp_title = "multiscango experiment",
+  ws = "2hs", 
+  cond_to_col = "presugar"
+)
+ggplot2::ggsave(filename = "mulriscango_test.png", plot = microplateplot, width = 70, height = 50, units = "cm")
+``` 
