@@ -16,7 +16,7 @@
 #' @section Warning:
 #' Note that the time should be a time series, if the time series is broken the
 #' growth rates are not calculated and the process stops.
-#'
+#' @rawNamespace import(quantmod, except = as.zoo.data.frame)
 #' @importFrom rlang .data
 #' @export
 #'
@@ -84,10 +84,8 @@ check_ws <- function(ws) {
 check_Na_Inf_in_var_gr <- function(df_data, var_gr) {
   if (any(is.na(df_data[[var_gr]]))) {
     df_data[[var_gr]] <- imputeTS::na_ma(df_data[[var_gr]], k = 1)
-    warning(
-    "The NAs present in `var_gr` are imputed by
-    taking the mean between the two elements surrounding
-    the center."
+    warning("The NAs present in `var_gr` are imputed by taking the mean between
+the two elements surrounding the center."
             )
 
     return(df_data)
@@ -96,7 +94,7 @@ check_Na_Inf_in_var_gr <- function(df_data, var_gr) {
     is.na(df_data[[var_gr]]) <- sapply(df_data[[var_gr]], is.infinite)
     df_data[[var_gr]] <- imputeTS::na_ma(df_data[[var_gr]], k = 1)
     warning("The -Inf/Inf present in var_gr are imputed by the mean between the
-            two elements surrounding the center")
+two elements surrounding the center")
 
     return(df_data)
   }

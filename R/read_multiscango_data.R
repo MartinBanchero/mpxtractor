@@ -48,6 +48,7 @@ read_multiscango_data <- function(file, time_point) {
   df_intermediate <- add_col_names(df_tmp)
   df_final_tmp <- generate_df_result(df_intermediate)
   df_result <- set_well_ids(df_final_tmp)
+  df_result <- impute_rows_with_NA(df_result)
   df_result <- add_column_time(df_result, time_point)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
@@ -159,6 +160,24 @@ set_well_ids <- function(df_final_tmp) {
     -.data$rowID
   )
   df_result <- dplyr::arrange(df_result, .data$Wells)
+}
+
+impute_rows_with_NA <- function(df_result) {
+  if (any(is.na(df_result))) {
+    NA_data <- dplyr::filter_all(df_result, dplyr::any_vars(is.na(.)))
+    warning(paste(
+      "Warning 1\n Well:", NA_data$Wells, "and Reading:", NA_data$Reading,
+      "contain missing values.\n"
+    ))
+    df_result[["Measurement"]] <- imputeTS::na_ma(
+      df_result[["Measurement"]],
+      k = 1
+    )
+    warning("Warning 2\n The missing values are imputed by taking the mean
+between the two elements surrounding the center.")
+    return(df_result)
+  }
+  return(df_result)
 }
 
 check_time_point <- function(tp) {
