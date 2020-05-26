@@ -62,6 +62,8 @@ The file is the path to a proper .txt file formatted by the multiscanGO machine.
 The returned tibble data frame show four columns. The first column is
 "Wells" this contain the names for each well (A01, A02..). The second column
 represent "Time", this column is generated using the argument `time_point`, the third column is "Reading", shows the number of reading, and the fourth is "Measurement", this is the value measured for each "Reading".
+If there are NA's present in "Measurement" column the row containing this NA's is
+removed.
 
 **Important:** The time point given as an argument generates the time series, is 
 very important to know the time between readings to use it to generate the attribute

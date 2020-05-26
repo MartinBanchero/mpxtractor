@@ -22,7 +22,7 @@ file <- system.file(
 mpxtractor::plot_layout_file(file, var_shape = "Basic", var_colour = "presugar", plate_title = "Multiscango")
 ```
 
-```{r}
+```{r, eval=FALSE}
 # Get the file path 
 file_path_sp <- system.file(
   "extdata",
@@ -30,13 +30,46 @@ file_path_sp <- system.file(
   package = "mpxtractor"
 )
 
+```
+
+```{r}
+
+file <- "/home/martin/Master_VU_Mayor/reader_machines/multiscanGO/data_raw/mcd37_diauxie_1stplate_1streadings.txt"
+
 # Extract the data stored in the files into a data frame using proper wrangling function
 df_mgo <- mpxtractor::read_multiscango_data(
-  file = file_path_sp, time_point = "2.5 min"
+  file = file, time_point = "2 min"
 )
+
 
 # Show tidy data 
 head(df_mgo) 
+```
+
+```{r}
+file <- "/home/martin/Master_VU_Mayor/reader_machines/multiscanGO/data_raw/mcd37_diauxie_1stplate_1streadings.txt"
+
+processed_file <- get_raw_file_clean_multiscango(file)
+df_tmp <- generate_df(processed_file)
+df_intermediate <- add_col_names(df_tmp)
+df_final_tmp <- generate_df_result(df_intermediate)
+df_result <- set_well_ids(df_final_tmp)
+
+
+tremove_rows_with_NA <- function(df_result) {
+  if (any(is.na(df_result))) {
+    NA_data <- dplyr::filter_all(df_result, dplyr::any_vars(is.na(.)))
+    warning(paste("Well:", NA_data$Wells, "and Reading:", NA_data$Reading, "contain missing values.\n"))
+    df_result[["Measurement"]] <- imputeTS::na_ma(df_result[["Measurement"]], k = 1)
+    warning("The missing values are impute by taking the mean between the two elements surrounding the center")
+    return(df_result)
+  }
+  return(df_result)
+}
+
+t <- tremove_rows_with_NA(df_result)
+
+
 
 ```
 
@@ -55,7 +88,16 @@ df_data_combine <- mpxtractor::combine_data_with_layout(
 
 head(df_data_combine)
 
+df <- df_data_combine %>%
+  filter(Wells == "M24")
+
+unique(df$Measurement)
+
+
 ```
+
+
+
 ```{r}
 library(dplyr)
 # Get the minimun measurement for each well
@@ -72,11 +114,19 @@ df_corrected <- df_tmp %>%
   mutate(Measurement = log(bg_corrected)) %>%
   select(-c(min_measurement, bg_corrected))
 
+
+dft <- df_tmp %>%
+  filter(Wells == "M24")
+
 head(df_corrected)  
 ```
 
 ```{r}
 t <- mpxtractor::compute_growth_rates(df_data = df_corrected, var_gr = "Measurement",ws = "2hs")
+
+new_DF <- df_corrected %>%
+  filter(is.na(Measurement)) 
+unique(df_corrected$Wells)
 
 t %>%
   filter(Wells == "D19")
