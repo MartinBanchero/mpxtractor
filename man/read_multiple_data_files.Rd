@@ -5,7 +5,8 @@
 \title{Multiple plates files}
 \usage{
 read_multiple_data_files(
-  reader_type = NULL,
+  reader_type,
+  time_point = NULL,
   dirFiles = NULL,
   file_pattern = NULL,
   filesname = NULL,
