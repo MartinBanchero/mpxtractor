@@ -20,7 +20,7 @@ text-align: justify}
 library(mpxtractor)
 library(dplyr)
 options(width = "95")
-knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.align = "center", fig.show = "hold", dev = "png")
 ```
 
 
@@ -62,7 +62,7 @@ head(df_layout)
 
 Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function to have a visualization of our experimental design. For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout desing over the microplate is more easy to check wether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `Basic` and the `presugar` conditions over the microplate.  
 
-```{r, fig.width = 7, fig.height = 6 ,out.width = "100%", out.height = "100%",fig.show='hold', fig.cap="**Figure 1:** Showing the layout position for Basic and presugar "}
+```{r, fig.width = 7, fig.height = 6 ,out.width = "100%", out.height = "100%", fig.cap="**Figure 1:** Showing the layout position for Basic and presugar "}
 
 #get the path to file
 file <- system.file(
@@ -156,14 +156,15 @@ head(df_combine)
 ```
 
 
-```{r, fig.width = 20, fig.height = 15 ,out.width = "100%", out.height = "100%"}
-mpxtractor::plot_gr_microplate(
+```{r, fig.width = 10, fig.height = 7 ,out.width = "100%", out.height = "100%"}
+plt <- mpxtractor::plot_gr_microplate(
   df_data = df_combine, 
   cond_to_col = "presugar", 
   var_gr = "Measurement",  
   ws = "2 hs", 
   plate_file = "plate_1")
 
+ggplot2::ggsave(filename = "test_multi.png", plot = plt, width = 50, height = 30, units = "cm")
 ````
 
 ## References
