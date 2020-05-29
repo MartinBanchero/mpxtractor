@@ -35,12 +35,13 @@
 #' # Now data is tidy
 #' head(data_layout)
 
-combine_data_with_layout <- function(df_data, reader_type = NULL, dir_layout_files = NULL,
+combine_data_with_layout <- function(df_data, reader_type , dir_layout_files = NULL,
                                      layout_file_pattern = NULL,
                                      layout_files = NULL,
                                      plate_names = NULL) {
   if (!is.data.frame(df_data)) stop("df_data should be a dataframe")
-  check_type_of_reader(reader_type)
+
+  check_reader(reader_type)
 
   files_layout <- get_input_read_multifiles(
     folder = dir_layout_files,
@@ -67,6 +68,8 @@ combine_data_with_layout <- function(df_data, reader_type = NULL, dir_layout_fil
   }, files_layout, plate_names)
   ## ADD functiones to combine each type
   df_result <- reader_df_format(list_of_data_frames, reader_type)
+  df_result_group <- dplyr::group_by(df_result, .data$Wells, .data$plate_filename)
+  df_result <- dplyr::arrange(df_result_group, .data$Reading, .by_group = TRUE)
   df_result
 }
 
@@ -125,5 +128,17 @@ reader_df_format <- function(list_of_data_frames, reader_type) {
   if (toupper(reader_type) == toupper("fluorStar")) {
     dfr <- join_fluorstar_and_layout(list_of_data_frames) # One function for each machine
     return(dfr)
+  }
+}
+
+# check the reader type from which the dataframe was crated
+check_reader <- function(reader_type, time_point) {
+  if (is.null(reader_type)) {
+    stop("Sorry, one reader type must to be specified.")
+  }
+  if (toupper(reader_type) != toupper("spectramax") && toupper(reader_type) !=
+      toupper("multiscango") && toupper(reader_type) != toupper("fluorstar")) {
+    stop("Sorry,
+      the micro-plate readers must to be spectramax, multiscango or fluorstar.")
   }
 }

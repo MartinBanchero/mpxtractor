@@ -56,7 +56,7 @@ get_input_read_multifiles <- function(folder = NULL,
 # Recive as argument one string with the name of the microplate reader type.
 #
 # Return an error if there is no match.
-check_type_of_reader <- function(reader_type) {
+check_type_of_reader <- function(reader_type, time_point) {
   if (is.null(reader_type)) {
     stop("Sorry, one reader type must to be specified.")
   }
@@ -65,8 +65,13 @@ check_type_of_reader <- function(reader_type) {
     stop("Sorry,
       the micro-plate readers must to be spectramax, multiscango or fluorstar.")
   }
+  if (toupper(reader_type) == toupper("multiscango") && is.null(time_point)) {
+    stop("Sorry, the time_point argument is missing")
+  }
+  if (toupper(reader_type) == toupper("multiscango") && !is.null(time_point)) {
+    check_time_point(time_point)
+  }
 }
-
 
 check_one_file_provided <- function(file) {
   if (length(file) > 1) {

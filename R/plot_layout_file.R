@@ -111,9 +111,14 @@ generate_platemap <- function(platemap_df, var_shape, var_colour, plate_title) {
       shape = var_shape, colour = var_colour,
     ), size = 3) +
     ggplot2::theme(
-      legend.box = "horizontal",
+      legend.box = "vertical",
+      legend.position = "bottom",
+      legend.title = ggplot2::element_text(size = 10),
+      legend.text = ggplot2::element_text(size = 8),
+      legend.key.size = ggplot2::unit(0.001, "cm"),
+      legend.key.width = ggplot2::unit(0.7, "cm"),
       plot.margin = ggplot2::unit(c(1, 1, 1, 1), "cm"),
-      text = ggplot2::element_text(size = 10),
+      text = ggplot2::element_text(size = 12),
       axis.text.x = ggplot2::element_text(angle = 0, hjust = 0.5),
       panel.border = ggplot2::element_rect(
         colour = "black",

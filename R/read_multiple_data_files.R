@@ -26,13 +26,16 @@
 #' )
 #'
 #'
-read_multiple_data_files <- function(reader_type = NULL, dirFiles = NULL,
-                                file_pattern = NULL,
-                                filesname = NULL,
-                                plate_names = NULL) {
-  check_type_of_reader(reader_type)
-  files <- get_input_read_multifiles(folder = dirFiles, pattern = file_pattern,
-                                     filebyname = filesname)
+read_multiple_data_files <- function(reader_type,
+                                    time_point = NULL, dirFiles = NULL,
+                                    file_pattern = NULL,
+                                    filesname = NULL,
+                                    plate_names = NULL) {
+  check_type_of_reader(reader_type, time_point)
+  files <- get_input_read_multifiles(
+    folder = dirFiles, pattern = file_pattern,
+    filebyname = filesname
+  )
 
   lapply(files, check_file_path)
   if (is.null(plate_names)) {
@@ -43,8 +46,8 @@ read_multiple_data_files <- function(reader_type = NULL, dirFiles = NULL,
   }
   list_of_data_frames <- Map(f = function(file, plate_name) {
     tryCatch(expr = {
-      p <- type_of_reader(file, reader_type)
-      p$data_filename <- plate_name
+      p <- type_of_reader(file, reader_type, time_point)
+      p$plate_filename <- plate_name
       p
     }, error = function(e) {
       e <- paste0("Error in file '", plate_name, "': ", e$message)
@@ -54,6 +57,10 @@ read_multiple_data_files <- function(reader_type = NULL, dirFiles = NULL,
   result <- dplyr::bind_rows(list_of_data_frames)
   rownames(result) <- NULL
   result <- dplyr::select_(result, "Wells", ~ dplyr::everything())
+  result <- dplyr::group_by(result, .data$Wells)
+  result <- dplyr::arrange(result, .data$plate_filename)
+  result <- dplyr::ungroup(result)
+
   result
 }
 
@@ -75,13 +82,13 @@ get_files <- function(folder, pattern = NULL) {
 
 # Receive the name of the machine and call the specific function to read the
 # data.
-type_of_reader <- function(file, reader_type) {
+type_of_reader <- function(file, reader_type, time_point) {
   if (toupper(reader_type) == toupper("spectramax")) {
     p <- read_spectramax_data(file)  #One function for each machine
     return(p)
   }
-  if (toupper(reader_type) == toupper("multiscango")) {
-    p <- read_multiscango_data(file) #One function for each machine
+  if (toupper(reader_type) == toupper("multiscango") && !is.null(time_point)) {
+    p <- read_multiscango_data(file, time_point) #One function for each machine
     return(p)
   }
   if (toupper(reader_type) == toupper("fluorStar")) {

@@ -43,12 +43,14 @@ combine_subplots_backgr <- function(df_sub_plots_well, exp_title, var_to_col) {
     ) +
     ggplot2::labs(title = exp_title) +
     ggplot2::theme(
-      legend.title = ggplot2::element_text(size = 30),
-      legend.text = ggplot2::element_text(size = 28),
-      plot.title = ggplot2::element_text(size = 40),
-      axis.text.x = ggplot2::element_text(color = "black", size = 30),
-      axis.text.y = ggplot2::element_text(color = "black", size = 30),
-      axis.title = ggplot2::element_text(size = 30)
+      legend.box = "vertical",
+      legend.position = "bottom",
+      legend.title = ggplot2::element_text(size = 10),
+      legend.text = ggplot2::element_text(size = 8),
+      plot.title = ggplot2::element_text(size = 12),
+      axis.text.x = ggplot2::element_text(color = "black", size = 10),
+      axis.text.y = ggplot2::element_text(color = "black", size = 10),
+      axis.title = ggplot2::element_text(size = 10)
     )
   all_wells_plot <- background_plot + df_sub_plots_well[["grobs"]]
 }
