@@ -29,12 +29,12 @@ combine_subplots_backgr <- function(df_sub_plots_well, exp_title, var_to_col) {
     ggplot2::scale_x_continuous(
       breaks = seq(1, n_col),
       position = "top",
-      limits = c(0, n_col + 0.5)
+      limits = c(1, n_col + 0.2)
     ) +
     ggplot2::scale_y_continuous(
       breaks = seq(1, n_row),
       labels = LETTERS[n_row:1], position = "left",
-      limits = c(0, n_row + 0.5)
+      limits = c(0.8, n_row + 0.1)
     ) +
     ggplot2::geom_col(ggplot2::aes(Inf, Inf)) +
     ggplot2::scale_fill_manual(

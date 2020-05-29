@@ -58,7 +58,7 @@ read_multiple_data_files <- function(reader_type,
   rownames(result) <- NULL
   result <- dplyr::select_(result, "Wells", ~ dplyr::everything())
   result <- dplyr::group_by(result, .data$Wells)
-  result <- dplyr::arrange(result, .data$plate_filename)
+  #result <- dplyr::arrange(result, .data$plate_filename)
   result <- dplyr::ungroup(result)
 
   result

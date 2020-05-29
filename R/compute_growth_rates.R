@@ -59,7 +59,7 @@ get_growth_rates <- function(df_data, var_gr, ws) {
   ws <- as.numeric(sub("\\hs.*", "", ws))
   df_data <- dplyr::mutate(df_data, Diff_time = .data$Time[2] - .data$Time[1])
   timestep <- df_data$Diff_time[2] # hs
-  windowlength <- (ws / timestep)
+  windowlength <-  round((ws / timestep),0)
   windowlength <- ifelse(windowlength %% 2 == 0, windowlength + 1, windowlength)
 
   # Calculate growth rate (mu) using Savitzky and Golay filter(savgol).

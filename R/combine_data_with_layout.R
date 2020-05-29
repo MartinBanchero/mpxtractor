@@ -68,8 +68,6 @@ combine_data_with_layout <- function(df_data, reader_type , dir_layout_files = N
   }, files_layout, plate_names)
   ## ADD functiones to combine each type
   df_result <- reader_df_format(list_of_data_frames, reader_type)
-  df_result_group <- dplyr::group_by(df_result, .data$Wells, .data$plate_filename)
-  df_result <- dplyr::arrange(df_result_group, .data$Reading, .by_group = TRUE)
   df_result
 }
 
@@ -123,11 +121,17 @@ reader_df_format <- function(list_of_data_frames, reader_type) {
   }
   if (toupper(reader_type) == toupper("multiscango")) {
     dfr <- join_multiscango_and_layout(list_of_data_frames) # One function for each machine
+    dfr <- dplyr::group_by(dfr, .data$Wells, .data$plate_filename)
+    dfr <- dplyr::arrange(dfr, .data$Reading, .by_group = TRUE)
     return(dfr)
   }
   if (toupper(reader_type) == toupper("fluorStar")) {
     dfr <- join_fluorstar_and_layout(list_of_data_frames) # One function for each machine
-    return(dfr)
+    dfr_time <- format_time(dfr)# Time to hs to avoid time to be sort alphabetically
+    dfr_time <- dplyr::group_by(dfr_time, .data$Wells, .data$plate_filename)
+    dfr_time <- dplyr::arrange(dfr_time, .data$Time, .by_group = TRUE)
+    dfr_time <- get_time_hhmmss(dfr_time)
+    return(dfr_time)
   }
 }
 

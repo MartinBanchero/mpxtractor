@@ -59,3 +59,19 @@ get_time_in_mm <- function(time.col) {
     x[1] * 60 + x[2] + x[3] / 60
   })
 }
+
+
+
+get_time_hhmmss <- function(df) {
+  h <- df$Time %/% 1
+  m <- ((df$Time %% 1) * 60) %/% 1
+  s <- round((((df$Time %% 1) * 60) %% 1) * 60, 0)
+
+  time_first_format <- paste(h, m, s, sep = ":")
+
+  time_hh <- gsub("^(\\d{1}:\\d{1,}:\\d{1,}$)", "\\0\\1", time_first_format)
+  time_mm <- gsub("^(\\d{2}:)(\\d{1}:)", "\\10\\2", time_hh)
+  time_hhmmss <- gsub("^(\\d{2}:\\d{2}:)(\\d{1})$", "\\10\\2", time_mm)
+  df$Time <- time_hhmmss
+  df
+}

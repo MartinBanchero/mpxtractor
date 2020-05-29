@@ -63,7 +63,12 @@ check_type_of_reader <- function(reader_type, time_point) {
   if (toupper(reader_type) != toupper("spectramax") && toupper(reader_type) !=
     toupper("multiscango") && toupper(reader_type) != toupper("fluorstar")) {
     stop("Sorry,
-      the micro-plate readers must to be spectramax, multiscango or fluorstar.")
+      the micro-plate readers must be spectramax, multiscango or fluorstar.")
+  }
+  if (toupper(reader_type) == toupper("spectramax") || toupper(reader_type) ==
+      toupper("fluorstar") && !is.null(time_point)) {
+    stop("Sorry,
+      the time_point argument is only valid for multiscango analysis.")
   }
   if (toupper(reader_type) == toupper("multiscango") && is.null(time_point)) {
     stop("Sorry, the time_point argument is missing")
