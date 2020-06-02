@@ -6,7 +6,7 @@
 \usage{
 combine_data_with_layout(
   df_data,
-  reader_type = NULL,
+  reader_type,
   dir_layout_files = NULL,
   layout_file_pattern = NULL,
   layout_files = NULL,

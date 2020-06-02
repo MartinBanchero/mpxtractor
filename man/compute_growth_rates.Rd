@@ -4,7 +4,7 @@
 \alias{compute_growth_rates}
 \title{Function to compute growth rates}
 \usage{
-compute_growth_rates(df_data, var_gr, ws)
+compute_growth_rates(df_data, var_gr, ws, plate_file = NULL)
 }
 \arguments{
 \item{df_data}{Is a dataframe that combines data files with layout files}
@@ -12,6 +12,8 @@ compute_growth_rates(df_data, var_gr, ws)
 \item{var_gr}{This the attribute to be used to calculate growth rates}
 
 \item{ws}{is the windowsize in hours}
+
+\item{plate_file}{the name of the plate to be use to calculate the growth rates.}
 }
 \value{
 Returns the input dataframe with the column conaining the growth rates.
