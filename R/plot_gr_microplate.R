@@ -9,7 +9,7 @@
 #' @param exp_title optional, add the title.
 #' @param ws is the windowsize in hours
 #' @param cond_to_col The condition from the layout to color
-#'
+#' @param plate_file plate file to be use to compute growth rates
 #'
 #'
 #' @return Returns the background plot which is the microplate frame and over this

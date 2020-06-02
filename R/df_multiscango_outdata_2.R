@@ -5,13 +5,11 @@
 #' reads. The dataset was grouped by wells and arrange by reading. Both
 #' datatasets df_multiscango_1 and df_multiscango_2 have the same structure.
 #'
-#'
-#'
-#'
 #' @format A data frame with 1536 rows and 3 variables:
 #' \describe{
 #'  \item{Wells}{Well id}
 #'  \item{Time}{time points}
+#'  \item{wavelength}{wavelength of the measurement}
 #'  \item{Reading}{contain the reading number.}
 #'  \item{Measurement}{OD600, optical density at 600 nm}
 #' }
