@@ -16,16 +16,17 @@ read_multiple_data_files(
 \arguments{
 \item{reader_type}{to specified the type of reader machine}
 
+\item{time_interval}{used only if the input is multiscango
+ \code{read_multiple_data_files} returns a dataframe with the data in
+the raw files as dataframe.}
+
 \item{dirFiles}{to specified the directory}
 
 \item{file_pattern}{pattern to match filenames}
 
 \item{filesname}{name of the files to be read}
 
-\item{plate_names}{to add the name of the plate
-
- \code{read_multiple_data_files} returns a dataframe with the data in
-the raw files as dataframe.}
+\item{plate_names}{to add the name of the plate}
 }
 \description{
 This function can recive as argument multiple raw data files and join them.

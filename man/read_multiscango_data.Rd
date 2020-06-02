@@ -37,7 +37,7 @@ file_path <- system.file("extdata", "test_multiscango_data_1.txt",
 
 # Data is store as a tibble
 data <- read_multiscango_data(
-  file = file_path, time_point = "2.5 min"
+  file = file_path, time_interval = "2 min"
 )
 
 # Now data is tidy

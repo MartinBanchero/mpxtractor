@@ -11,7 +11,7 @@ A data frame with 23712 rows and 5 variables:
   \item{Sample}{Sample X}
   \item{Time}{Time step, in hh:mm:ss format}
   \item{Measurement}{OD600, optical density at 600 nm}
-  \item{lambda}{ wave lenght at which the measurements were performed}
+  \item{wavelength}{ wave lenght at which the measurements were performed}
 }
 }
 \source{
