@@ -73,7 +73,7 @@ Below is shown a toy example about how to use this function.
 
 ```{r}
 file_path <- system.file("extdata", "test_multiscango_data_1.txt", package = "mpxtractor")
-data_multiscan <- mpxtractor::read_multiscango_data(file = file_path, time_point = "2.5 min" )
+data_multiscan <- mpxtractor::read_multiscango_data(file = file_path, time_interval = "2.5 min" )
 head(data_multiscan)
 ```
 

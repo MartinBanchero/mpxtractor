@@ -111,7 +111,7 @@ file <- system.file("extdata", "test_multiscango_data_1.txt", package = "mpxtrac
 
 # Extract the data stored in the files into a data frame using proper wrangling function
 df_mgo <- mpxtractor::read_multiscango_data(
-  file = file, time_point = "2 min"
+  file = file, time_interval = "2 min"
 )
 
 # Show tidy data 
@@ -128,7 +128,7 @@ file2 <- system.file("extdata", "test_multiscango_data_2.txt", package = "mpxtra
 
 df_two_files <- mpxtractor::read_multiple_data_files(
   reader_type = "multiscango", 
-  time_point = "2 min", 
+  time_interval = "2 min", 
   filesname = c(file1,file2), 
   plate_names = c("plate_1", "plate_2") 
   )
