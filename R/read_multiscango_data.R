@@ -164,7 +164,7 @@ set_well_ids <- function(df_final_tmp) {
 
 impute_rows_with_NA <- function(df_result) {
   if (any(is.na(df_result))) {
-    NA_data <- dplyr::filter_all(df_result, dplyr::any_vars(is.na(.)))
+    NA_data <- dplyr::filter_all(df_result, dplyr::any_vars(is.na(.data)))
     warning(paste(
       "Warning 1\n Well:", NA_data$Wells, "and Reading:", NA_data$Reading,
       "contain missing values.\n"

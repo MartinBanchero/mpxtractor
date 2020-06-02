@@ -34,10 +34,10 @@
 #'   ws = "2hs"
 #' )
 #' # Main function
-compute_growth_rates <- function(df_data, var_gr, ws, plate_file) {
+compute_growth_rates <- function(df_data, var_gr, ws, plate_file = NULL) {
   df_data <- check_Na_Inf_in_var_gr(df_data, var_gr)
   check_is_multi_plate(df_data, plate_file)
-  df_data <- df_data[df_data[["plate_filename"]] == plate_file, ]
+  df_data <- plate_file_to_compute_gr(df_data, plate_file)
   df_data <- format_time(df_data)
   df_data <- check_time_series(df_data)
   df_data_gr <- get_growth_rates(df_data, var_gr, ws)
@@ -74,6 +74,14 @@ get_growth_rates <- function(df_data, var_gr, ws) {
   df_data$growth_rate <- as.vector(unlist(growth_rate))
   df_data <- dplyr::select(df_data, -c(.data$Diff, .data$Diff_time))
   return(df_data)
+}
+
+plate_file_to_compute_gr <- function(df_data, plate_file){
+  if (!is.null(plate_file)) {
+    df_data <- df_data[df_data[["plate_filename"]] == plate_file, ]
+    return(df_data)
+  }
+   return(df_data)
 }
 
 check_ws <- function(ws) {

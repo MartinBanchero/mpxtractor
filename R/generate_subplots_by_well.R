@@ -28,6 +28,7 @@ generate_subplots_by_well <- function(sp_data_layout, cond_to_col) {
         axis.title.x = ggplot2::element_blank(),
         axis.text.x = ggplot2::element_blank(),
         axis.title.y = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_text(color = "black", size = 5),
         panel.grid.minor.x = ggplot2::element_blank(),
         panel.grid.major.x = ggplot2::element_blank(),
         panel.grid.minor.y = ggplot2::element_blank(),
