@@ -82,21 +82,20 @@ As you can see in Fig.1 only two conditions can be add to this visualization, on
 As we observed above we have several conditions, `Basic`, `presugar`,`secondsugar`
 and `replicate`. For example we can join conditions and obtain a more broad visualization. 
 
-```{r , fig.width = 7, fig.height = 8 ,out.width = "100%", out.height = "100%"}
+```{r , fig.width = 7, fig.height = 8 ,out.width = "100%", out.height = "100%", fig.cap="**Figure 2:** Showing *Basic* that contain control or sample, and presugar and replicate after been merge into one column."}
 # We have all the layout information in a tidy dataframe obtained from before.
 df_layout <- mpxtractor::read_layout_file(file = layout_file)
 
 df <- tidyr::unite(df_layout, presugar_replicate, -c(Wells, Basic, secondsugar)) 
 
-pl <- mpxtractor::plot_layout_dataframe(
+layout <- mpxtractor::plot_layout_dataframe(
   df, 
   var_shape = "Basic", 
   var_colour = "presugar_replicate", 
   plate_title = "test"
   )
 
-pl
-#ggplot2::ggsave(filename = "layout_test.png", plot = pl, width = 70, height = 50, units = "cm")
+layout
 ```
 
 ## Data wrangling
@@ -156,16 +155,24 @@ head(df_combine)
 ```
 
 
-```{r, fig.width = 10, fig.height = 7 ,out.width = "100%", out.height = "100%"}
+```{r, eval = FALSE, fig.width = 10, fig.height = 7 ,out.width = "100%", out.height = "100%"}
 plt <- mpxtractor::plot_gr_microplate(
   df_data = df_combine, 
   cond_to_col = "presugar", 
   var_gr = "Measurement",  
   ws = "2 hs", 
   plate_file = "plate_1")
+```
 
+**Note:** To improve visualization the output of `plot_gr_microplate()` can be save 
+into a png file using the comand below.
+```{r, eval = FALSE}
 ggplot2::ggsave(filename = "test_multi.png", plot = plt, width = 50, height = 30, units = "cm")
 ````
+
+```{r ,echo=FALSE, out.width ='100%', fig.show="hold", fig.cap="**Figure 3:** Representation over a microplate frame of growth rates for each well. Note that in this case the attribute *presugar* was chosen to be coloured."}
+knitr::include_graphics('gr_multiscango_test.png')
+```
 
 ## References
 

@@ -129,7 +129,7 @@ fluorstar machines.
  df_gr_data <- mpxtractor::compute_growth_rates(
    df_data = df_corrected,
    var_gr = "Measurement",
- ws = "2hs"
+   ws = "2hs"
 )
 head(df_gr_data)
 ```
