@@ -4,7 +4,7 @@
 #' generate a tibble dataframe.
 #'
 #' @param file The path to a proper .txt file formatted by the multiscanGO machine.
-#' @param time_point the time interval at which the measurements are done in min.
+#' @param time_interval the time interval at which the measurements are done in min.
 #'
 #' @return Returns a tibble data frame whith four columns. The first column is
 #' "Wells" this contain the names for each well (A01, A02..). The second column
@@ -37,11 +37,11 @@
 #' head(data)
 #'
 #' # Main function
-read_multiscango_data <- function(file, time_point) {
+read_multiscango_data <- function(file, time_interval) {
   check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)
-  check_time_point(time_point)
+  check_time_point(time_interval)
   input_file_is_multiscango(file)
   processed_file <- get_raw_file_clean_multiscango(file)
   df_tmp <- generate_df(processed_file)
@@ -49,7 +49,7 @@ read_multiscango_data <- function(file, time_point) {
   df_final_tmp <- generate_df_result(df_intermediate)
   df_result <- set_well_ids(df_final_tmp)
   df_result <- impute_rows_with_NA(df_result)
-  df_result <- add_column_time(df_result, time_point)
+  df_result <- add_column_time(df_result, time_interval)
   df_result_tidy <- tidyr::as_tibble(df_result)
   df_result_tidy
 }
@@ -74,7 +74,7 @@ input_file_is_multiscango <- function(file) {
 get_raw_file_clean_multiscango <- function(file) {
   raw_file <- readLines(file, warn = FALSE, encoding = "latin1")
   raw_file_clean <- raw_file[which(raw_file != "")] # Remove empty space
-  processed_file <- raw_file_clean[-c(1, 2)] # Remove firs two lines
+  return(raw_file_clean)
 }
 
 # Generate a dataframe from the processed file.
@@ -85,7 +85,8 @@ get_raw_file_clean_multiscango <- function(file) {
 # Row indicated by one letter.
 # At the end transform the measurements to numeric.
 #
-generate_df <- function(processed_file) {
+generate_df <- function(raw_file_clean) {
+  processed_file <- raw_file_clean[-c(1, 2)] # Remove firs two lines
   idx <- grepl("Reading", processed_file)
   df_tmp <- utils::read.table(text = processed_file[!idx], fill = TRUE)
   wd <- diff(c(which(idx), length(idx) + 1)) - 1
@@ -95,19 +96,32 @@ generate_df <- function(processed_file) {
 
   # Leave only the number of Readings from the string
   num_read <- gsub("\\tReading:", "\\1", df_tmp[["Reading"]])
-
   df_tmp$Reading <- as.numeric(num_read)
+  df_tmp <- add_wavelength(raw_file_clean, df_tmp)#Add wavelength column
   return(df_tmp)
 }
+
+# Extract wavelength from file to be added as column to df_tmp
+add_wavelength <- function(raw_file_clean, df_tmp){
+  indx <- c(grep(pattern = "^.*Plate.*$", x = raw_file_clean))
+  wavelength <- gsub("^(:?(.+):\\D+)","", raw_file_clean[indx])
+  df_tmp <- cbind(wavelength = rep(wavelength, nrow(df_tmp)), df_tmp)
+  return(df_tmp)
+}
+
+
+
+
+
 
 # Add numbers as colname to the columns with measurements.
 #
 # The argument is a dataframe.
 # Return dataframe with the name of columns indicating the number of well col.
 add_col_names <- function(df_tmp) {
-  df2 <- df_tmp[c(-1, -2)]
+  df2 <- df_tmp[c(-1, -2, -3)]
   colnames(df2) <- 1:ncol(df2)
-  df_intermediate <- cbind(df_tmp[, c(1, 2)], df2)
+  df_intermediate <- cbind(df_tmp[, c(1, 2, 3)], df2)
   return(df_intermediate)
 }
 
@@ -117,12 +131,12 @@ add_col_names <- function(df_tmp) {
 # return a tidy dataframe
 
 generate_df_result <- function(df_intermediate) {
-    Well_Col <- Measurement <- Well_Row <- Reading <- NULL
+    Well_Col <- Measurement <- Well_Row <- Reading <- wavelength <- NULL
     df_final_tmp <- tidyr::gather(
     df_intermediate,
     Well_Col,
     Measurement,
-    -c(Well_Row, Reading)
+    -c(Well_Row, Reading, wavelength)
   )
   df_final_tmp <- dplyr::group_by(
     df_final_tmp,
@@ -186,18 +200,18 @@ check_time_point <- function(tp) {
   }
 }
 
-add_column_time <- function(df, time_point) {
-  tp <- as.numeric(sub("\\min.*", "", time_point))
-  time_point <- tp / 60 # to hours
+add_column_time <- function(df, time_interval) {
+  tp <- as.numeric(sub("\\min.*", "", time_interval))
+  time_interval <- tp / 60 # to hours
   max_reading <- max(df$Reading)
-  total_time <- (time_point * (max_reading - 1))
+  total_time <- (time_interval * (max_reading - 1))
 
   df_result <- dplyr::group_by(df, .data$Wells)
   df_result <- dplyr::mutate(
     df_result,
-    Time = seq(0, total_time, by = time_point)
+    Time = seq(0, total_time, by = time_interval)
   )
   df_result <- get_time_hhmmss(df_result)
-  df_result[,c("Wells", "Time", "Reading", "Measurement")]
+  df_result[,c("Wells", "Time", "Reading", "wavelength","Measurement")]
 
 }

@@ -137,7 +137,7 @@ add_wave_lenght_col <- function(df_result){
       perl = TRUE
     )
   )
-  df_result <- dplyr::mutate(df_result, lambda = unlist(matches))
+  df_result <- dplyr::mutate(df_result, wavelength = unlist(matches))
   df_result
 }
 

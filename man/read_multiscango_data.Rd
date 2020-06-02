@@ -4,12 +4,12 @@
 \alias{read_multiscango_data}
 \title{Function specific to read output files (.txt) produced by multisccanGo readers.}
 \usage{
-read_multiscango_data(file, time_point)
+read_multiscango_data(file, time_interval)
 }
 \arguments{
 \item{file}{The path to a proper .txt file formatted by the multiscanGO machine.}
 
-\item{time_point}{the time interval at which the measurements are done in min.}
+\item{time_interval}{the time interval at which the measurements are done in min.}
 }
 \value{
 Returns a tibble data frame whith four columns. The first column is

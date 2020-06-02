@@ -6,7 +6,7 @@
 \usage{
 read_multiple_data_files(
   reader_type,
-  time_point = NULL,
+  time_interval = NULL,
   dirFiles = NULL,
   file_pattern = NULL,
   filesname = NULL,

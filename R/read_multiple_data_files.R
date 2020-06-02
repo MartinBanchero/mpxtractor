@@ -7,7 +7,7 @@
 #' @param file_pattern pattern to match filenames
 #' @param filesname name of the files to be read
 #' @param plate_names to add the name of the plate
-#'
+#' @param time_interval used only if the input is multiscango
 #'  \code{read_multiple_data_files} returns a dataframe with the data in
 #' the raw files as dataframe.
 #'
@@ -27,11 +27,11 @@
 #'
 #'
 read_multiple_data_files <- function(reader_type,
-                                    time_point = NULL, dirFiles = NULL,
+                                    time_interval = NULL, dirFiles = NULL,
                                     file_pattern = NULL,
                                     filesname = NULL,
                                     plate_names = NULL) {
-  check_type_of_reader(reader_type, time_point)
+  check_type_of_reader(reader_type, time_interval)
   files <- get_input_read_multifiles(
     folder = dirFiles, pattern = file_pattern,
     filebyname = filesname
@@ -46,7 +46,7 @@ read_multiple_data_files <- function(reader_type,
   }
   list_of_data_frames <- Map(f = function(file, plate_name) {
     tryCatch(expr = {
-      p <- type_of_reader(file, reader_type, time_point)
+      p <- type_of_reader(file, reader_type, time_interval)
       p$plate_filename <- plate_name
       p
     }, error = function(e) {
