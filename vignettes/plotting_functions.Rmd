@@ -127,6 +127,8 @@ htmlTable::htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1:
 - The argument **var_gr** indicates which attribute in the data frame is used to calculate the growth rates. It is important to apply transformations to this attribute before use the function i.e apply background correction or log transformation. One possible appoach is shown
 below.
 
+- The argument **ws** is a character, this is because the number to be used is follow by the string *hs* to remain the user the units of the argument.
+
 ```{r}
 # Get the minimun measurement for each well
 df <- df_data_combine %>%
@@ -145,8 +147,6 @@ df_corrected <- df_tmp %>%
 head(df_corrected)  
 
 ```
-
-- The argument **ws** is a character, this is because the number to be used is follow by the string *hs* to remain the user the units of the argument.
 
 
 ### Ready to plot
