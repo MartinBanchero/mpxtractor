@@ -3,7 +3,7 @@
 #' This function recive dataframe similar to the output from read_layout_files()
 #' and generate a plot that represents the designed layout of the microplate.
 #'
-#' @param df_layout dataframe structure similar to read_layout_files() output
+#' @param platemap_df dataframe structure similar to read_layout_files() output
 #' @param var_shape Assign shape to represent one variable
 #' @param var_colour Assign colour to other variable
 #' @param plate_title This argument is optional, add the title.

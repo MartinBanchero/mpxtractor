@@ -7,13 +7,13 @@
 plot_layout_dataframe(platemap_df, var_shape, var_colour, plate_title)
 }
 \arguments{
+\item{platemap_df}{dataframe structure similar to read_layout_files() output}
+
 \item{var_shape}{Assign shape to represent one variable}
 
 \item{var_colour}{Assign colour to other variable}
 
 \item{plate_title}{This argument is optional, add the title.}
-
-\item{df_layout}{dataframe structure similar to read_layout_files() output}
 }
 \value{
 Returns a plot that represents the microplate with the given layout.

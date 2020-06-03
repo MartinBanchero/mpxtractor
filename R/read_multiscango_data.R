@@ -30,7 +30,7 @@
 #'
 #' # Data is store as a tibble
 #' data <- read_multiscango_data(
-#'   file = file_path, time_point = "2.5 min"
+#'   file = file_path, time_interval = "2 min"
 #' )
 #'
 #' # Now data is tidy
@@ -104,15 +104,10 @@ generate_df <- function(raw_file_clean) {
 # Extract wavelength from file to be added as column to df_tmp
 add_wavelength <- function(raw_file_clean, df_tmp){
   indx <- c(grep(pattern = "^.*Plate.*$", x = raw_file_clean))
-  wavelength <- gsub("^(:?(.+):\\D+)","", raw_file_clean[indx])
+  wavelength <- as.numeric(gsub("^(:?(.+):\\D+)","", raw_file_clean[indx]))
   df_tmp <- cbind(wavelength = rep(wavelength, nrow(df_tmp)), df_tmp)
   return(df_tmp)
 }
-
-
-
-
-
 
 # Add numbers as colname to the columns with measurements.
 #

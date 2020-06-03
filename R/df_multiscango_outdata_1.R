@@ -12,6 +12,7 @@
 #' \describe{
 #'  \item{Wells}{Well id}
 #'  \item{Time}{time points}
+#'  \item{wavelength}{wavelength of the measurement}
 #'  \item{Reading}{contain the reading number.}
 #'  \item{Measurement}{OD600, optical density at 600 nm}
 #' }

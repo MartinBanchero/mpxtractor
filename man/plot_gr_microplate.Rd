@@ -23,6 +23,8 @@ plot_gr_microplate(
 \item{ws}{is the windowsize in hours}
 
 \item{cond_to_col}{The condition from the layout to color}
+
+\item{plate_file}{plate file to be use to compute growth rates}
 }
 \value{
 Returns the background plot which is the microplate frame and over this
