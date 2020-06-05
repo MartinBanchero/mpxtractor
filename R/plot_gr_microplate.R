@@ -89,7 +89,8 @@ check_variables <- function(df_data, var_gr, cond_to_col) {
 }
 
 check_is_multi_plate <- function(df_data, plate_file){
-  if (is.null(plate_file) && length(unique(df_data$plate_filename)) > 1) {
+  if (is.null(plate_file) && !is.null(.data$plate_filename) &&
+      length(unique(df_data$plate_filename)) > 1) {
     stop("Sorry, there is more than one plate present in the data. You have to
          specify which plate to use." )
   }

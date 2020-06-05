@@ -95,7 +95,7 @@ check_Na_Inf_in_var_gr <- function(df_data, var_gr) {
   if (any(is.na(df_data[[var_gr]]))) {
     df_data[[var_gr]] <- imputeTS::na_ma(df_data[[var_gr]], k = 1)
     warning("The NAs present in `var_gr` are imputed by taking the mean between
-the two elements surrounding the center."
+the two elements surrounding the center.\n"
             )
 
     return(df_data)
@@ -104,7 +104,7 @@ the two elements surrounding the center."
     is.na(df_data[[var_gr]]) <- sapply(df_data[[var_gr]], is.infinite)
     df_data[[var_gr]] <- imputeTS::na_ma(df_data[[var_gr]], k = 1)
     warning("The -Inf/Inf present in var_gr are imputed by the mean between the
-two elements surrounding the center")
+two elements surrounding the center.\n")
 
     return(df_data)
   }

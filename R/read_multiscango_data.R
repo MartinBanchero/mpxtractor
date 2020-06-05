@@ -104,8 +104,9 @@ generate_df <- function(raw_file_clean) {
 # Extract wavelength from file to be added as column to df_tmp
 add_wavelength <- function(raw_file_clean, df_tmp){
   indx <- c(grep(pattern = "^.*Plate.*$", x = raw_file_clean))
-  wavelength <- as.numeric(gsub("^(:?(.+):\\D+)","", raw_file_clean[indx]))
+  wavelength <- gsub("^(:?(.+):\\D+)","", raw_file_clean[indx])
   df_tmp <- cbind(wavelength = rep(wavelength, nrow(df_tmp)), df_tmp)
+  df_tmp$wavelength <- as.numeric(as.character(df_tmp$wavelength))
   return(df_tmp)
 }
 
@@ -191,7 +192,7 @@ between the two elements surrounding the center.")
 
 check_time_point <- function(tp) {
   if (!any(grepl("min", tp))) {
-    stop("time point should be in minutes")
+    stop("time interval should be in minutes")
   }
 }
 
