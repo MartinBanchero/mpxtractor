@@ -125,6 +125,7 @@ The first column is "Wells" this contain the names for each well (A01, A02..). T
 ```{r}
 file_path <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
 df_layout_data <- mpxtractor::read_layout_file(file = file_path)
+
 head(df_layout_data)
 ```
 

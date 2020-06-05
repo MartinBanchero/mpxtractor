@@ -38,7 +38,7 @@ var_shape should contain less than six diferent factors. While var_color has no 
 The implementation was taken from @plot_microtiter_plate with some minor
 modifications.
 
-```{r,fig.width = 7, fig.height = 6 ,out.width = "100%", out.height = "100%", fig.cap="**Figure 1:** Representation over a microplate frame of two different conditions, condition and strain. Note that strain contain less than 6 factors."}
+```{r,fig.width = 8, fig.height = 6 ,out.width = "100%", out.height = "100%", fig.cap="**Figure 1:** Representation over a microplate frame of two different conditions, condition and strain. Note that strain contain less than 6 factors."}
 
 file_path_fl <- system.file(
   "extdata",
@@ -46,12 +46,12 @@ file_path_fl <- system.file(
   package = "mpxtractor"
 )
 
-mpxtractor::plot_layout_file(
+plot <- mpxtractor::plot_layout_file(
   file = file_path_fl,
   var_shape = "strain",
   var_colour = "condition"
 )
-
+plot
 ```
 
 
