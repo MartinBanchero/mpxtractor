@@ -10,7 +10,7 @@ combine_data_with_layout(
   dir_layout_files = NULL,
   layout_file_pattern = NULL,
   layout_files = NULL,
-  plate_names = NULL
+  layout_file_name = NULL
 )
 }
 \arguments{
