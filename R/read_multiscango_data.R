@@ -41,7 +41,7 @@ read_multiscango_data <- function(file, time_interval) {
   check_one_file_provided(file)
   check_file_path(file)
   check_that_file_is_non_empty(file)
-  check_time_point(time_interval)
+  check_time_interval(time_interval)
   input_file_is_multiscango(file)
   processed_file <- get_raw_file_clean_multiscango(file)
   df_tmp <- generate_df(processed_file)
@@ -190,7 +190,7 @@ between the two elements surrounding the center.")
   return(df_result)
 }
 
-check_time_point <- function(tp) {
+check_time_interval <- function(tp) {
   if (!any(grepl("min", tp))) {
     stop("time interval should be in minutes")
   }
