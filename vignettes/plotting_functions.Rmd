@@ -51,7 +51,6 @@ plot <- mpxtractor::plot_layout_file(
   var_shape = "strain",
   var_colour = "condition"
 )
-plot
 ```
 
 

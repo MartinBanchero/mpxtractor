@@ -141,7 +141,11 @@ file_path <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpx
 data_spectramax <- mpxtractor::read_spectramax_data(file = file_path)
 
 # path to layout file
-layout_file_path <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
+layout_file_path <- system.file(
+  "extdata", 
+  "test_spectraMax_layout_1.csv",
+  package = "mpxtractor"
+  )
 
 # Use combine_data_with_layout()
 data_layout <- mpxtractor::combine_data_with_layout(
