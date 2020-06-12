@@ -10,7 +10,7 @@
 subplots_annotated <- function(df_sub_plots_well, sp_data_layout) {
   Wells <- Row <- Column <- NULL # defined as global variables
   df_sub_plots_well <- dplyr::mutate(df_sub_plots_well,
-    grobs = purrr::pmap(
+    grobs = purrr::pmap(#loop through rows
       subset(
         df_sub_plots_well,
         select = -c(Wells, Row, Column)
