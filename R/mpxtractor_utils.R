@@ -56,7 +56,7 @@ get_input_read_multifiles <- function(folder = NULL,
 # Recive as argument one string with the name of the microplate reader type.
 #
 # Return an error if there is no match.
-check_type_of_reader <- function(reader_type, time_point) {
+check_type_of_reader <- function(reader_type, time_interval) {
   if (is.null(reader_type)) {
     stop("Sorry, one reader type must to be specified.")
   }
@@ -65,22 +65,22 @@ check_type_of_reader <- function(reader_type, time_point) {
     stop("Sorry,
       the micro-plate readers must be spectramax, multiscango or fluorstar.")
   }
-  if (toupper(reader_type) == toupper("spectramax") && !is.null(time_point)) {
+  if (toupper(reader_type) == toupper("spectramax") && !is.null(time_interval)) {
     stop("Sorry,
       the time_point argument is only valid for multiscango analysis.")
   }
-  if (toupper(reader_type) == toupper("fluorstar") && !is.null(time_point)) {
+  if (toupper(reader_type) == toupper("fluorstar") && !is.null(time_interval)) {
     stop("Sorry,
       the time_point argument is only valid for multiscango analysis.")
   }
 
 
 
-  if (toupper(reader_type) == toupper("multiscango") && is.null(time_point)) {
+  if (toupper(reader_type) == toupper("multiscango") && is.null(time_interval)) {
     stop("Sorry, the time_point argument is missing")
   }
-  if (toupper(reader_type) == toupper("multiscango") && !is.null(time_point)) {
-    check_time_point(time_point)
+  if (toupper(reader_type) == toupper("multiscango") && !is.null(time_interval)) {
+    check_time_interval(time_interval)
   }
 }
 

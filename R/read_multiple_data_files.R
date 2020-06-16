@@ -82,13 +82,13 @@ get_files <- function(folder, pattern = NULL) {
 
 # Receive the name of the machine and call the specific function to read the
 # data.
-type_of_reader <- function(file, reader_type, time_point) {
+type_of_reader <- function(file, reader_type, time_interval) {
   if (toupper(reader_type) == toupper("spectramax")) {
     p <- read_spectramax_data(file)  #One function for each machine
     return(p)
   }
-  if (toupper(reader_type) == toupper("multiscango") && !is.null(time_point)) {
-    p <- read_multiscango_data(file, time_point) #One function for each machine
+  if (toupper(reader_type) == toupper("multiscango") && !is.null(time_interval)) {
+    p <- read_multiscango_data(file, time_interval) #One function for each machine
     return(p)
   }
   if (toupper(reader_type) == toupper("fluorStar")) {
