@@ -1,8 +1,9 @@
 <img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
 
-# mpxtractor
-**An R package to extract data from plate reader output files into a tidy dataframe. 
+# mpxtractor 
+**An R package to extract data from plate reader output raw files into a tidy data frame. 
    Plot layout files and plot growth rates over microplate frame.**
+
 <p align="justified">
   
 The main function of `mpxtractor` is to provide a simple method that is able to process raw data 
@@ -26,12 +27,12 @@ devtools::install_github("MartinBanchero/mpxtractor")
 ```
 
 ## Usage
+### Layout design and visualization
 
 ```R
-
-
-
-
+layout_file <- system.file("extdata", "test_multiscanGO_layout1.csv", package = "mpxtractor")
+df_layout <- mpxtractor::read_layout_file(file = layout_file)
+head(df_layout)
 ```
 
 ## Learn more
