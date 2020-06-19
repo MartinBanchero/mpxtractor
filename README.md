@@ -1,16 +1,3 @@
----
-output: github_document
----
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-library(mpxtractor)
-```
-
 <img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
 
 # mpxtractor 
@@ -33,7 +20,7 @@ This package main contribution is orientated to save time and get fast into data
 
 ## Installation 
 
-```{r gh-installation, eval = FALSE}
+```r
 # The development version from GitHub:
 # install.packages("mpxtractor")
 devtools::install_github("MartinBanchero/mpxtractor")
@@ -42,7 +29,7 @@ devtools::install_github("MartinBanchero/mpxtractor")
 ## Usage
 ### Layout design and visualization
 
-```{r}
+```r
 layout_file <- system.file("extdata", "test_multiscanGO_layout1.csv", package = "mpxtractor")
 df_layout <- mpxtractor::read_layout_file(file = layout_file)
 head(df_layout)
