@@ -30,8 +30,12 @@ devtools::install_github("MartinBanchero/mpxtractor")
 ### Layout design and visualization
 
 ```r
-layout_file <- system.file("extdata", "test_multiscanGO_layout1.csv", package = "mpxtractor")
+layout_file <- system.file("extdata",
+    "test_multiscanGO_layout1.csv", 
+     package = "mpxtractor"
+     )
 df_layout <- mpxtractor::read_layout_file(file = layout_file)
+
 head(df_layout)
 ```
 
