@@ -1,4 +1,4 @@
-# mpxtractor <img src="man/figures/logo_mpxtractor.png" width = 150, align="right">
+# mpxtractor <img src="man/figures/logo_mpxtractor.png" width = 300, align="right">
 
 <p align="justified">
   
