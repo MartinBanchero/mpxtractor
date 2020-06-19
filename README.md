@@ -1,5 +1,7 @@
-# mpxtractor <img src="man/figures/logo_mpxtractor.png" width = 300, align="right">
+<img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
 
+# mpxtractor
+**An R package to  **
 <p align="justified">
   
 The main function of `mpxtractor` is to provide a simple method that is able to process raw data 
