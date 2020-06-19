@@ -24,7 +24,7 @@ combine_data_with_layout(
 
 \item{layout_files}{name of layout files}
 
-\item{layout_file_name}{optional argument to assign a name to plates}
+\item{layout_file_name}{optional argument to assign name to plates}
 }
 \description{
 This function recive as argument a dataframe (data) which is given for

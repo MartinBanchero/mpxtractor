@@ -14,7 +14,7 @@
 #' @param dir_layout_files specified the ddirectory in which gather the files
 #' @param layout_file_pattern specified pattern to match the file names
 #' @param layout_files name of layout files
-#' @param layout_file_name optional argument to assign a name to plates
+#' @param layout_file_name optional argument to assign name to plates
 #'
 #'
 #'
