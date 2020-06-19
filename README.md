@@ -1,7 +1,8 @@
 <img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
 
 # mpxtractor
-**An R package to extract data from plate reader output files into a tidy dataframe. Plot layout files and plot growth rates over microplate frame.**
+**An R package to extract data from plate reader output files into a tidy dataframe. 
+Plot layout files and plot growth rates over microplate frame.**
 <p align="justified">
   
 The main function of `mpxtractor` is to provide a simple method that is able to process raw data 
