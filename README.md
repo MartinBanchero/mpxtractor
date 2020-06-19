@@ -1,3 +1,16 @@
+---
+output: github_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+library(mpxtractor)
+```
+
 <img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
 
 # mpxtractor 
@@ -20,7 +33,7 @@ This package main contribution is orientated to save time and get fast into data
 
 ## Installation 
 
-```R
+```{r gh-installation, eval = FALSE}
 # The development version from GitHub:
 # install.packages("mpxtractor")
 devtools::install_github("MartinBanchero/mpxtractor")
