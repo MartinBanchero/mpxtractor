@@ -1,0 +1,162 @@
+---
+title: "readme"
+output: github_document
+keep_md: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.align = "center", fig.show = "hold", dev = "png")
+library(mpxtractor)
+library(dplyr)
+options(width = "95")
+```
+
+<style>
+body {
+text-align: justify}
+</style>
+
+# mpxtractor 
+**An R package to extract data from plate reader output raw files into a tidy data frame. 
+   Plot layout files and plot growth rates over microplate frame.**
+
+
+The main function of `mpxtractor` is to provide a simple method that is able to process raw data 
+from micro plate readers like SpectraMax, FluorStar and MultiscanGO and apply different
+methods to it. 
+This package generate tidy data frames, this data can be combined with layout files and then growth rates
+are calculated and plot over a microplate frame. This is a critical point in several research lines performing
+experiments using micro plate reader machines mainly due to the time that takes to clean and sort the raw data into a
+tidy format. Also, the features of this package allow to detect which wells present faulty data **e.g** wells
+not filled correctly. Other feature of `mpxtractor` is that allow to plot the layout file over a microplate frame, 
+this is very useful because is easy to visualize the layout, this is handy in the lab to set the experiment.
+This package main contribution is orientated to save time and get fast into data analysis.
+
+It is well known for anyone performing experiments that involved microplate readers
+that the analysis of the raw data can be tedious and time consuming. Several 
+of this microplate reader machines include softwares to aliviate this problem but
+many times are not very handy. Although several good R packages exists many of them are design to solve specific problems lossing generability. For example some features from @plater were used to build `mpxtractor`.  To clarify, `mpxtractor` can process
+raw data from three different microplate reader machines, SpectraMax, MultiscanGO and
+FluorStar.
+
+For the reasons mentioned above is why `mpxtractor` can help to reduce the time to process the raw data into tidy dataframes, combine layout files
+with tidy data. Also, `mpxtractor` provides features to visualize growth curves 
+and layout files over a microplate frame. The latter can be printed to be use in
+the lab during the set ups of experiments. 
+
+
+## Features of `mpxtractor` 
+This package is divided by two sets of functions
+
+1. Function to wrangling the data in raw files, this functions are explained in 
+detail in vignette `wrangling_and_layout_functions` along side with some examples.
+
+2. Functions to plot layout files and growth curves, the vignette `plotting_functions` exlain how they work and some details.
+
+
+## Installation 
+
+```{r, eval=FALSE}
+# The development version from GitHub:
+# install.packages("mpxtractor")
+devtools::install_github("MartinBanchero/mpxtractor")
+```
+
+## Usage
+### Example
+#### Layout design and visualization
+
+Lets suppose we want to perform an experiment to measure growth rates under different type of sugars. The first step is to design the layout and 
+generate the layout file. Using `mpxtractor` we can load the layout file into
+a tidy dataframe.
+
+```{r}
+layout_file <- system.file("extdata", "test_fluorstar_layout.csv", package = "mpxtractor")
+
+df_layout <- mpxtractor::read_layout_file(file = layout_file)
+head(df_layout)
+```
+
+Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function to have a visualization of our experimental design. For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout desing over the microplate is more easy to check wether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` and the `control` conditions over the microplate.  
+
+```{r, fig.width = 7, fig.height = 6 ,out.width = "60%", out.height = "60%", fig.cap="**Figure 1:** Showing the layout position for basic and control "}
+
+#get the path to file
+file <- system.file(
+  "extdata",
+  "test_fluorstar_layout.csv",
+  package = "mpxtractor"
+)
+
+mpxtractor::plot_layout_file(file,
+  var_shape = "Basic",
+  var_colour = "Medium",
+  plate_title = "Title: FluorStar"
+)
+```
+
+
+## Data wrangling
+Once all the experimental design is complete we are ready to use the microplate
+reader machines. In this example we are using a multiscanGO to measure our growth rates. 
+Within `mpxtractor` we can find one wrangling function for each machine, in this
+case we going to use `read_multiscango_data()` (see vignette `wrangling_and_layout_functions`) to store the raw data into a tidy dataframe.
+
+
+```{r}
+file <- system.file("extdata", "test_fluorstar_fluorescence_data.txt", package = "mpxtractor")
+
+# Extract the data stored in the files into a data frame using proper wrangling function
+df_fl <- mpxtractor::read_fluorstar_data(
+  file = file
+)
+
+# Show tidy data 
+head(df_fl) 
+```
+
+Now let's suppose we want to repeat the experiment under the same conditions. In this case we have to raw data files to be analyzed. Using the function `read_multiple_data_files()` we can store both files into a tidy dataframe. There many options that can be used to gather files with this function, for more information check vignette `wrangling_and_layout_functions` .
+
+```{r}
+# Path to files
+file1 <- system.file("extdata", "test_fluorstar_absorbance_data.txt", package = "mpxtractor")
+
+file2 <- system.file("extdata", "test_fluorstar_fluorescence_data.txt", package = "mpxtractor")
+
+df_two_files <- mpxtractor::read_multiple_data_files(
+  reader_type = "fluorstar", 
+  filesname = c(file1,file2), 
+  plate_names = c("absorbance", "fluorescence") 
+  )
+head(df_two_files)
+tail(df_two_files)
+```
+At this point we have two measurements under the same layout design. Now we want to add the layout information to our tidy dataframe with both files. To do this we can use the function `combine_data_with_layout()` and store all the information in one tidy dataframe.
+
+```{r}
+#get the path to layout file
+file_layout <- system.file(
+  "extdata",
+  "test_fluorstar_layout.csv",
+  package = "mpxtractor"
+)
+
+df_combine <- mpxtractor::combine_data_with_layout(
+  df_data = df_two_files, 
+  reader_type = "Fluorstar", 
+  layout_files = file_layout
+  )
+
+head(df_combine)
+
+
+```
+
+
+## Learn more
+
+To get started, first read `vignette("mpxtractor")`. Then read more about the specific package component that you want to apply.
+
+* For data wrangling and layout files, read `vignette("wrangling_and_layout_functions")`.
+* For plotting features, read `vignette("plotting_functions")`
+* For auxiliary functions read `vignette("Auxiliary_functions")`
