@@ -6,11 +6,6 @@ keep_md: TRUE
 
 
 
-<style>
-body {
-text-align: justify}
-</style>
-
 # mpxtractor 
 **An R package to extract data from plate reader output raw files into a tidy data frame. 
    Plot layout files and plot growth rates over microplate frame.**
