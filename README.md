@@ -1,4 +1,4 @@
-<img src="man/figures/logo_mpxtractor.png" width = 200, align="right">
+<img src="man/figures/logompxtractor.png" width = 200, align="right">
 
 # mpxtractor 
 **An R package to extract data from plate reader output raw files into a tidy data frame. 
