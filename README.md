@@ -1,4 +1,15 @@
 <p align="justified">
+   <style>
+img
+{
+    display:block; 
+    float:none; 
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+}
+</style> 
+   
 <img src="man/figures/logompxtractor.png" width = 100, align="right">
 
 # mpxtractor 
@@ -92,7 +103,7 @@ mpxtractor::plot_layout_file(file,
 )
 ```
 
-<img src="figure/unnamed-chunk-3-1.png" title="**Figure 1:** Showing the layout position for basic and control " alt="**Figure 1:** Showing the layout position for basic and control " width="60%" height="60%" style="display:block;float:none;margin-left:auto;margin-right:auto" />
+<img src="figure/unnamed-chunk-3-1.png" title="**Figure 1:** Showing the layout position for basic and control " alt="**Figure 1:** Showing the layout position for basic and control " width="60%" height="60%"/>
 
 
 
