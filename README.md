@@ -18,26 +18,16 @@ not filled correctly. Other feature of `mpxtractor` is that allow to plot the la
 this is very useful because is easy to visualize the layout, this is handy in the lab to set the experiment.
 This package main contribution is orientated to save time and get fast into data analysis.
 
-It is well known for anyone performing experiments that involved microplate readers
-that the analysis of the raw data can be tedious and time consuming. Several 
-of this microplate reader machines include softwares to aliviate this problem but
-many times are not very handy. Although several good R packages exists many of them are design to solve specific problems lossing generability. For example some features from @plater were used to build `mpxtractor`.  To clarify, `mpxtractor` can process
-raw data from three different microplate reader machines, SpectraMax, MultiscanGO and
-FluorStar.
-
-For the reasons mentioned above is why `mpxtractor` can help to reduce the time to process the raw data into tidy dataframes, combine layout files
-with tidy data. Also, `mpxtractor` provides features to visualize growth curves 
-and layout files over a microplate frame. The latter can be printed to be use in
-the lab during the set ups of experiments. 
+For the reasons mentioned above is why `mpxtractor` can help to reduce the time to process the raw data into tidy dataframes, combine layout files with tidy data. Also, `mpxtractor` provides features to visualize growth curves and layout files over a microplate frame. The latter can be printed to be use in the lab during the set up of experiments. 
 
 
 ## Features of `mpxtractor` 
 This package is divided by two sets of functions
 
-1. Function to wrangling the data in raw files, this functions are explained in 
+**1.** Function to wrangling the data in raw files, this functions are explained in 
 detail in vignette `wrangling_and_layout_functions` along side with some examples.
 
-2. Functions to plot layout files and growth curves, the vignette `plotting_functions` exlain how they work and some details.
+**2.** Functions to plot layout files and growth curves, the vignette `plotting_functions` exlain how they work and some details.
 
 
 ## Installation 
@@ -53,10 +43,7 @@ devtools::install_github("MartinBanchero/mpxtractor")
 ### Example
 #### Layout design and visualization
 
-Lets suppose we want to perform an experiment to measure growth rates under different type of sugars. The first step is to design the layout and 
-generate the layout file. Using `mpxtractor` we can load the layout file into
-a tidy dataframe.
-
+Lets suppose we want to perform an experiment to measure growth rates under different type of sugars. The first step is to design the layout. Using `mpxtractor` we can load the layout file into a tidy data frame.
 
 ```r
 layout_file <- system.file("extdata", "test_fluorstar_layout.csv", package = "mpxtractor")
@@ -74,7 +61,7 @@ head(df_layout)
 #> 6 A06   sample milk_sup
 ```
 
-Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function to have a visualization of our experimental design. For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout desing over the microplate is more easy to check wether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` and the `control` conditions over the microplate.  
+Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function that provide a visualization of our experimental design. For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout design over the microplate give an easy way to check wether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` and the `Medium` conditions over the microplate.  
 
 
 ```r
@@ -98,11 +85,10 @@ mpxtractor::plot_layout_file(file,
 
 
 
-## Data wrangling
-Once all the experimental design is complete we are ready to use the microplate
-reader machines. In this example we are using a multiscanGO to measure our growth rates. 
+### Data wrangling
+Once all the experimental design is complete we are ready to use the microplate reader machines. In this example we are using a fluorStar to measure our growth rates. 
 Within `mpxtractor` we can find one wrangling function for each machine, in this
-case we going to use `read_multiscango_data()` (see vignette `wrangling_and_layout_functions`) to store the raw data into a tidy dataframe.
+case we going to use `read_fluorstar_data()` (see vignette `wrangling_and_layout_functions`) to store the raw data into a tidy dataframe.
 
 
 
@@ -127,7 +113,7 @@ head(df_fl)
 #> 6 A01   " X1"  00:22:00      191198 485, 520
 ```
 
-Now let's suppose we want to repeat the experiment under the same conditions. In this case we have to raw data files to be analyzed. Using the function `read_multiple_data_files()` we can store both files into a tidy dataframe. There many options that can be used to gather files with this function, for more information check vignette `wrangling_and_layout_functions` .
+Now let's suppose we want to repeat the experiment but this time we want to measure absorbance under the same conditions. In this case we have two raw data files to be analyzed. Using the function `read_multiple_data_files()` we can store both files into a tidy dataframe. There many options that can be used to gather files with this function, for more information check vignette `wrangling_and_layout_functions` .
 
 
 ```r
@@ -162,7 +148,7 @@ tail(df_two_files)
 #> 5 H12   " X96" 20:23:00       40357 485, 520   fluorescence  
 #> 6 H12   " X96" 20:28:00       40154 485, 520   fluorescence
 ```
-At this point we have two measurements under the same layout design. Now we want to add the layout information to our tidy dataframe with both files. To do this we can use the function `combine_data_with_layout()` and store all the information in one tidy dataframe.
+At this point we have two measurements under the same layout design. Now we want to add the layout information to our tidy data frame with both files. To do this we can use the function `combine_data_with_layout()` and store all the information in one tidy data frame.
 
 
 ```r
@@ -190,7 +176,7 @@ head(df_combine)
 #> 5 A01   " X1"  00:17:00        3.21 600        absorbance     poor  milk   test_fluorstar_layo…
 #> 6 A01   " X1"  00:22:00        3.35 600        absorbance     poor  milk   test_fluorstar_layo…
 ```
-
+### Visualization of growth curves
 
 ## Learn more
 
