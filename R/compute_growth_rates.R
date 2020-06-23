@@ -77,7 +77,10 @@ get_growth_rates <- function(df_data, var_gr, ws) {
 }
 
 plate_file_to_compute_gr <- function(df_data, plate_file){
-  if (!is.null(plate_file)) {
+  if (!is.null(plate_file) && !plate_file %in% df_data$plate_filename) {
+    stop("The plate file name does not exist.")
+  }
+  if (!is.null(plate_file) && plate_file %in% df_data$plate_filename) {
     df_data <- df_data[df_data[["plate_filename"]] == plate_file, ]
     return(df_data)
   }
