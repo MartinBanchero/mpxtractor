@@ -180,8 +180,8 @@ head(df_combine)
 
 ## Learn more
 
-To get started, first read `vignette("mpxtractor")`. Then read more about the specific package component that you want to apply.
+To get started, first read `vignette("Introduction_to_mpxtractor")`. Then read more about the specific package components that you want to apply.
 
-***** For data wrangling and layout files, read `vignette("wrangling_and_layout_functions")`.
+* For data wrangling and layout files, read `vignette("wrangling_and_layout_functions")`.
 * For plotting functions, read `vignette("plotting_functions")`
 * For auxiliary functions read `vignette("Auxiliary_functions")`
