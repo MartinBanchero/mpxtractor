@@ -17,3 +17,13 @@ E,milk,milk,milk,milk,milk_sup,milk_sup,milk_sup,milk_sup,filtered_milk_sup,filt
 F,milk,milk,milk,milk,milk_sup,milk_sup,milk_sup,milk_sup,filtered_milk_sup,filtered_milk_sup,filtered_milk_sup,filtered_milk_sup
 G,milk,milk,milk,milk,milk_sup,milk_sup,milk_sup,milk_sup,filtered_milk_sup,filtered_milk_sup,filtered_milk_sup,filtered_milk_sup
 H,milk,milk,milk,milk,milk_sup,milk_sup,milk_sup,milk_sup,filtered_milk_sup,filtered_milk_sup,filtered_milk_sup,filtered_milk_sup
+,,,,,,,,,,,,
+Concentration,1,2,3,4,5,6,7,8,9,10,11,12
+A,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+B,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+C,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+D,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+E,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+F,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+G,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
+H,100,20,4,0.8,0.16,0.032,0.0064,0.00128,0.000256,5.12E-05,1.024E-05,0
