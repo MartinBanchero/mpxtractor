@@ -110,6 +110,7 @@ generate_platemap <- function(platemap_df, var_shape, var_colour, plate_title) {
     ggplot2::geom_point(ggplot2::aes_string(
       shape = var_shape, colour = var_colour,
     ), size = 3) +
+    #ggplot2::geom_text(ggplot2::aes(label = `Concentration`), size = 2, fontface = "bold") +
     ggplot2::theme(
       legend.box = "vertical",
       legend.position = "bottom",
