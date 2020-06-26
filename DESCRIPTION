@@ -11,7 +11,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    quantmod(>= 0.4.17),
+    zoo (>= 1.8.8),
     tidyverse (>= 1.3.0),
     ggplot2 (>= 3.2.1),
     signal (>= 0.7.6),
