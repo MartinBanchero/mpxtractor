@@ -11,19 +11,19 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    zoo (>= 1.8.8),
     tidyverse (>= 1.3.0),
     ggplot2 (>= 3.2.1),
     signal (>= 0.7.6),
     plyr (>= 1.8.5),
     purrr (>= 0.3.3),
-    imputeTS (>= 3.0),
     viridis (>= 0.5.1),
     Rdpack (>= 0.11.1),
     tidyr (>= 1.0.2),
     rlang (>= 0.4.5),
     stringr (>= 1.4.0),
-    dplyr (>= 0.8.4)
+    dplyr (>= 0.8.4),
+    imputeTS (>= 3.0),
+    zoo (>= 1.8.8)
 RdMacros: Rdpack
 RoxygenNote: 7.1.0
 Suggests: 
