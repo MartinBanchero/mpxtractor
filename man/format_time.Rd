@@ -21,7 +21,10 @@ hours or minutes.
 }
 \examples{
 #Load example dataframe
-data(df_spectramax_outdata_1)
+data_file <- system.file("extdata",
+"test_spectramax_data_1.txt",
+package = "mpxtractor")
+df_spectramax_outdata_1 <- mpxtractor::read_spectramax_data(data_file)
 
 # format time
 df <- mpxtractor::format_time(df_spectramax_outdata_1)
