@@ -16,7 +16,7 @@
 #' @section Warning:
 #' Note that the time should be a time series, if the time series is broken the
 #' growth rates are not calculated and the process stops.
-#' @rawNamespace import(quantmod, except = as.zoo.data.frame)
+#' @rawNamespace import(zoo, except = as.zoo.data.frame)
 #' @importFrom rlang .data
 #' @export
 #'
