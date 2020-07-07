@@ -6,6 +6,7 @@
 #' @param platemap_df dataframe structure similar to read_layout_files() output
 #' @param var_shape Assign shape to represent one variable
 #' @param var_colour Assign colour to other variable
+#' @param add_conc This argument is optional, TRUE to add concentration.
 #' @param plate_title This argument is optional, add the title.
 #'
 #' @return Returns a plot that represents the microplate with the given layout.
@@ -32,7 +33,7 @@
 #' plot_plate
 #'
 # Main function
-plot_layout_dataframe <- function(platemap_df, var_shape, var_colour, plate_title) {
+plot_layout_dataframe <- function(platemap_df, var_shape, var_colour, add_conc=NULL, plate_title = NULL) {
   platemap_df <- dplyr::mutate(platemap_df,
     Row = as.numeric(match(
       toupper(substr(.data$Wells, 1, 1)),
@@ -46,5 +47,15 @@ plot_layout_dataframe <- function(platemap_df, var_shape, var_colour, plate_titl
     stop("You must use attributes for var_shape with less than 7 different factors.")
   }
 
-  generate_platemap(platemap_df, var_shape, var_colour, plate_title)
+  title <- check_title(plate_title)
+  plate <- generate_platemap(platemap_df, var_shape, var_colour)
+
+  if (!is.null(add_conc) && add_conc) {
+    check_col_concentration(platemap_df)
+    concentration <- add_concentration(platemap_df)
+    plate_with_conc <- plate + concentration + title
+    return(plate_with_conc)
+  }
+  plate + title
+
 }

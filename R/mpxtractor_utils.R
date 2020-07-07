@@ -92,3 +92,17 @@ check_one_file_provided <- function(file) {
     ), call. = FALSE)
   }
 }
+
+
+check_layout_file_path <- function(file) {
+  if (is.null(file) || !file.exists(file)) {
+    stop(paste0("Sorry, can't find your file '", file, "'."),
+         call. = FALSE
+    )
+  }
+  if (!(grepl("[Cc][Ss][Vv]$", file))) {
+    stop(paste0("Sorry, '", file, "'doesn't have a proper .csv file extension."),
+         call. = FALSE
+    )
+  }
+}

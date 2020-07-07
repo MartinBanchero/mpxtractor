@@ -6,6 +6,7 @@
 #' @param file The path to a proper .csv layout file.
 #' @param var_shape Assign shape to represent one variable
 #' @param var_colour Assign colour to other variable
+#' @param add_conc This argument is optional, TRUE to add concentration.
 #' @param plate_title This argument is optional, add the title.
 #'
 #' @return Returns a plot that represents the microplate with the given layout.
@@ -28,7 +29,7 @@
 #'
 #' # Data is store as a tibble
 #' plot_plate <- plot_layout_file(
-#'   file = file_path, var_shape = "basic", var_colour = "condition",
+#'   file = file_path, var_shape = "basic", var_colour = "condition", add_conc = TRUE,
 #'   plate_title = "My experiment"
 #' )
 #'
@@ -36,14 +37,8 @@
 #' plot_plate
 #'
 # Main function
-plot_layout_file <- function(file, var_shape, var_colour, plate_title = NULL) {
-  #defined <- rm(list = ls(pattern = "plate_title"))
-  list_arg <- ls()
-  defined <- list_arg[-2]
-  passed <- names(as.list(match.call())[-1])
-  if (any(!defined %in% passed)) {
-    stop(paste("missing values for argument", paste(setdiff(defined, passed), collapse = ", ")))
-  }
+plot_layout_file <- function(file, var_shape = NULL, var_colour = NULL, add_conc = FALSE, plate_title = NULL) {
+  check_arguments_layout(file, var_shape, var_colour)
 
   NUMBER_FACTORS <- 6 # number of shapes available to use
   platemap_df <- platemap_for_ggplot(file)
@@ -52,13 +47,27 @@ plot_layout_file <- function(file, var_shape, var_colour, plate_title = NULL) {
     stop("You must use attributes for var_shape with less than 7 different factors.")
   }
 
-  generate_platemap(
-    platemap_df,
-    var_shape,
-    var_colour,
-    plate_title
-  )
+  title <- check_title(plate_title)
+  plate <- generate_platemap(platemap_df, var_shape, var_colour)
+
+
+  if (!is.null(add_conc) && add_conc) {
+   check_col_concentration(platemap_df)
+   concentration <- add_concentration(platemap_df)
+   plate_with_conc <- plate + concentration + title
+   return(plate_with_conc)
+  }
+  plate + title
+
 }
+
+check_arguments_layout <- function(file, var_shape, var_colour){
+  check_layout_file_path(file)
+    if (is.null(var_shape) && is.null(var_colour)) {
+    stop("At least one of both, var_shape or var_colour must to be specified.")
+  }
+}
+
 
 # Generate dataframe from layout file to make the plots.
 #
@@ -93,7 +102,7 @@ platemap_for_ggplot <- function(file) {
 # to be plotted by color. And as an option the plate_title
 #
 # The function return a plot
-generate_platemap <- function(platemap_df, var_shape, var_colour, plate_title) {
+generate_platemap <- function(platemap_df, var_shape, var_colour) {
   n_col <- length(unique(platemap_df$Column))
   n_row <- length(unique(platemap_df$Row))
   # Make the background plot
@@ -101,25 +110,24 @@ generate_platemap <- function(platemap_df, var_shape, var_colour, plate_title) {
     ggplot2::geom_point(
       data = expand.grid(seq(1, n_col), seq(1, n_row)),
       ggplot2::aes(x = .data$Var1, y = .data$Var2),
-      color = "grey39", fill = "white", shape = 21, size = 5
+      color = "grey39", fill = "white", shape = 21, size = 1
     ) +
-    ggplot2::scale_y_reverse(breaks = seq(1, n_row), labels = LETTERS[1:n_row]) +
-    ggplot2::scale_x_continuous(breaks = seq(1, n_col), position = "top") +
-    ggplot2::labs(title = plate_title) +
+    ggplot2::coord_fixed(ratio = 2/3) +
+    ggplot2::scale_y_reverse(breaks = seq(1, n_row ), expand = c(0.1, 0.1), labels = LETTERS[1:n_row]) +
+    ggplot2::scale_x_continuous(breaks = seq(1, n_col ), position = "top") +
     # Plot the variables over the background plot
     ggplot2::geom_point(ggplot2::aes_string(
       shape = var_shape, colour = var_colour,
     ), size = 3) +
-    #ggplot2::geom_text(ggplot2::aes(label = `Concentration`), size = 2, fontface = "bold") +
     ggplot2::theme(
       legend.box = "vertical",
       legend.position = "bottom",
-      legend.title = ggplot2::element_text(size = 10),
-      legend.text = ggplot2::element_text(size = 8),
+      legend.title = ggplot2::element_text(size = 7),
+      legend.text = ggplot2::element_text(size = 5),
       legend.key.size = ggplot2::unit(0.001, "cm"),
       legend.key.width = ggplot2::unit(0.7, "cm"),
-      plot.margin = ggplot2::unit(c(1, 1, 1, 1), "cm"),
-      text = ggplot2::element_text(size = 12),
+      plot.margin = ggplot2::unit(c(1, 0, 1, 0), "cm"),
+      text = ggplot2::element_text(size = 10),
       axis.text.x = ggplot2::element_text(angle = 0, hjust = 0.5),
       panel.border = ggplot2::element_rect(
         colour = "black",
@@ -129,3 +137,28 @@ generate_platemap <- function(platemap_df, var_shape, var_colour, plate_title) {
     ) +
     ggplot2::scale_colour_viridis_d()
 }
+
+add_concentration <- function(platemap_df){
+  concentration <- ggplot2::geom_text(
+    ggplot2::aes(label = .data$Concentration),
+    position = ggplot2::position_nudge(y = -0.5),
+    size = 2, fontface = "bold"
+   )
+  return(concentration)
+}
+
+
+check_col_concentration <- function(platemap_df){
+  boolean_col_names <- stringr::str_detect(colnames(platemap_df), "(?i)concentration")
+  if (!any(boolean_col_names)) {
+    stop("No concentration values found.")
+  }
+}
+
+check_title <- function(plate_title){
+  if (!is.null(plate_title)) {
+    title <- ggplot2::labs(title = plate_title)
+   return(title)
+  }
+}
+
