@@ -1,5 +1,5 @@
 ---
-title: "Brief introduction to `mpxtractor`"
+title: "Introduction to mpxtractor"
 author: "Martin Banchero"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -7,7 +7,7 @@ fig_caption: yes
 bibliography: CITES.bib
 link-citations: yes
 vignette: >
-  %\VignetteIndexEntry{Introduction_to_mpxtractor}
+  %\VignetteIndexEntry{Introduction to mpxtractor}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

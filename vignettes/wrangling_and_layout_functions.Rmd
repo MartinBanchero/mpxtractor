@@ -1,5 +1,5 @@
 ---
-title: "Data wrangling functions"
+title: "wrangling_and_layout_functions"
 author: "Martin Banchero"
 date: '`r Sys.Date()`'
 output: rmarkdown::html_vignette

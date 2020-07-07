@@ -7,7 +7,7 @@ fig_caption: yes
 bibliography: CITES.bib
 link-citations: yes
 vignette: >
-  %\VignetteIndexEntry{Auxyliary functions}
+  %\VignetteIndexEntry{Auxiliary functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -33,8 +33,10 @@ As a part of `mpxtractor` some functions that are present in `wrangling function
 This fuction transform the attribute **Time** from hh:mm:ss to time in hours.
 
 ```{r echo=FALSE}
-data(df_spectramax_outdata_1)
-data_spectra <- head(df_spectramax_outdata_1)
+file <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpxtractor")
+
+df_spectramax_outdata <- mpxtractor::read_spectramax_data(file)
+data_spectra <- head(df_spectramax_outdata)
 
 htmlTable::htmlTable(as.matrix(data_spectra), caption = "**Table 1:** Shows a capture of the data with the time in hh:mm:ss format.")
 ```

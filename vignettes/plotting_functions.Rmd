@@ -114,9 +114,14 @@ there are few considerations that must to be addressed.
 - **Very Important:** In order to obtained the growth rates the time series has to be complete. This means that if there are different timesteps inside the attribute **Time** savgolfil() is not going to work. In the case that this happen the time series has to be correct before use this function. Note that in FluorStar machines this happens quite often. See table 1
 
 ```{r echo = FALSE}
-data(df_fluorstar_fluorescence_outdata)
-cols <- with(df_fluorstar_fluorescence_outdata, ifelse(Time == "00:02:00", 'magenta', 'white'))
-table1 <- head(df_fluorstar_fluorescence_outdata)
+file <- system.file("extdata",
+                     "test_fluorstar_fluorescence_data.txt",
+                     package = "mpxtractor")
+df_fl  <- mpxtractor::read_fluorstar_data(file)
+
+
+cols <- with(df_fl, ifelse(Time == "00:02:00", 'magenta', 'white'))
+table1 <- head(df_fl)
 
 htmlTable::htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1:** Shown in magenta the row containing the time value that breaks the time series")
 ```
