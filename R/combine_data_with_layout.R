@@ -23,7 +23,10 @@
 #' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 #' package = "mpxtractor")
 #'
-#' data(df_spectramax_outdata_1)
+#' data_file <- system.file("extdata",
+#' "test_spectramax_data_1.txt",
+#' package = "mpxtractor")
+#' df_spectramax_outdata_1 <- mpxtractor::read_spectramax_data(data_file)
 #'
 #' # Data is store as a tibble
 #' data_layout <- combine_data_with_layout(
