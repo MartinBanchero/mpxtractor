@@ -4,7 +4,13 @@
 \alias{plot_layout_file}
 \title{Function to plot layout files.}
 \usage{
-plot_layout_file(file, var_shape, var_colour, plate_title = NULL)
+plot_layout_file(
+  file,
+  var_shape = NULL,
+  var_colour = NULL,
+  add_conc = FALSE,
+  plate_title = NULL
+)
 }
 \arguments{
 \item{file}{The path to a proper .csv layout file.}
@@ -12,6 +18,8 @@ plot_layout_file(file, var_shape, var_colour, plate_title = NULL)
 \item{var_shape}{Assign shape to represent one variable}
 
 \item{var_colour}{Assign colour to other variable}
+
+\item{add_conc}{This argument is optional, TRUE to add concentration.}
 
 \item{plate_title}{This argument is optional, add the title.}
 }
@@ -37,7 +45,7 @@ file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
 
 # Data is store as a tibble
 plot_plate <- plot_layout_file(
-  file = file_path, var_shape = "basic", var_colour = "condition",
+  file = file_path, var_shape = "basic", var_colour = "condition", add_conc = TRUE,
   plate_title = "My experiment"
 )
 

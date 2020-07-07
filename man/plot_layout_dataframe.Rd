@@ -4,7 +4,13 @@
 \alias{plot_layout_dataframe}
 \title{Function to plot layout dataframes}
 \usage{
-plot_layout_dataframe(platemap_df, var_shape, var_colour, plate_title)
+plot_layout_dataframe(
+  platemap_df,
+  var_shape,
+  var_colour,
+  add_conc = NULL,
+  plate_title = NULL
+)
 }
 \arguments{
 \item{platemap_df}{dataframe structure similar to read_layout_files() output}
@@ -12,6 +18,8 @@ plot_layout_dataframe(platemap_df, var_shape, var_colour, plate_title)
 \item{var_shape}{Assign shape to represent one variable}
 
 \item{var_colour}{Assign colour to other variable}
+
+\item{add_conc}{This argument is optional, TRUE to add concentration.}
 
 \item{plate_title}{This argument is optional, add the title.}
 }
