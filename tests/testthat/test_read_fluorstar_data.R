@@ -7,7 +7,7 @@ test_that("Check correct dataframe, attributes, dimensions and attributes class"
   #outdata_1 <- system.file("data", "df_fluorstar_fluorescence_outdata.rda", package = "mpxtractor")
   #load(outdata_1)
   #rm(df_fluorstar_fluorescence_outdata)
-  mpxtractor::df_fluorstar_fluorescence_outdata
+  #mpxtractor::df_fluorstar_fluorescence_outdata
   # Check both dataframes
   expect_identical(df_fluorstar_fluorescence, df_fluorstar_fluorescence_outdata)
   # check attirbutes

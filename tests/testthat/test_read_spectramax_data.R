@@ -6,7 +6,7 @@ test_that("Check correct dataframe, attributes, dimensions and attributes class"
 
   #outdata_1 <- system.file("data", "df_spectramax_outdata_1.rda", package = "mpxtractor")
   #load(outdata_1)
-  mpxtractor::df_spectramax_outdata
+  #mpxtractor::df_spectramax_outdata
   # Check both dataframes
   expect_identical(df_spectramax, df_spectramax_outdata)
   # check attirbutes

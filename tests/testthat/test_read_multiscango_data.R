@@ -7,13 +7,13 @@ test_that("Check correct dataframe, attributes, dimensions and attributes class"
 
   #outdata_1 <- system.file("data", "df_multiscango_outdata_1.rda", package = "mpxtractor")
   #load(outdata_1)
-  data(df_multiscango_outdata_1)
+  #mpxtractor::df_multiscango_outdata
   #Check both dataframes
-  expect_identical(df_multiscango, df_multiscango_outdata_1)
+  expect_identical(df_multiscango, df_multiscango_outdata)
   #check attirbutes
-  expect_identical(attributes(df_multiscango), attributes(df_multiscango_outdata_1))
+  expect_identical(attributes(df_multiscango), attributes(df_multiscango_outdata))
   #check dimension
-  expect_identical(dim(df_multiscango), dim(df_multiscango_outdata_1))
+  expect_identical(dim(df_multiscango), dim(df_multiscango_outdata))
   #check class
-  expect_identical(sapply(df_multiscango, class), sapply(df_multiscango_outdata_1, class))
+  expect_identical(sapply(df_multiscango, class), sapply(df_multiscango_outdata, class))
 })
