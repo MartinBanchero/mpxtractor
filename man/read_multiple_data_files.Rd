@@ -7,6 +7,7 @@
 read_multiple_data_files(
   reader_type,
   time_interval = NULL,
+  input_type = NULL,
   dirFiles = NULL,
   file_pattern = NULL,
   filesname = NULL,
@@ -16,7 +17,10 @@ read_multiple_data_files(
 \arguments{
 \item{reader_type}{to specified the type of reader machine}
 
-\item{time_interval}{used only if the input is multiscango
+\item{time_interval}{used only if the input is multiscango and table output format}
+
+\item{input_type}{specified if the input file of multiscan is in table or list format.
+
  \code{read_multiple_data_files} returns a dataframe with the data in
 the raw files as dataframe.}
 

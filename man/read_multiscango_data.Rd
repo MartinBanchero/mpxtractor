@@ -4,21 +4,28 @@
 \alias{read_multiscango_data}
 \title{Function specific to read output files (.txt) produced by multisccanGo readers.}
 \usage{
-read_multiscango_data(file, time_interval)
+read_multiscango_data(file, time_interval = NULL, input_type)
 }
 \arguments{
 \item{file}{The path to a proper .txt file formatted by the multiscanGO machine.}
 
-\item{time_interval}{the time interval at which the measurements are done in min.}
+\item{time_interval}{the time interval between measurements. This parameter is
+needed only for files formatted by the multiscango machine option table.}
+
+\item{input_type}{specified if the input file of multiscan is in table or list format.}
 }
 \value{
-Returns a tibble data frame whith four columns. The first column is
+Returns a tibble data frame for both multiscan formats, table or list.
+ In the case of table format, returns four columns. The first column is
 "Wells" this contain the names for each well (A01, A02..). The second column
 represent "Reading" at which the measurements were done, The third column is
 "Measurement", this is the value measured for each "Reading".
+In the case of list format returns the same columns plus the column time in
+hh:mm:ss, column name Abs is change to Measurement, and `Meas.time[s]` to
+Meas.time.sec.
 }
 \description{
-This function recive one output file from multiscanGO microplate reader and
+This function receive one output file from multiscanGO microplate reader and
 generate a tibble dataframe.
 }
 \section{\code{file} format}{
@@ -37,7 +44,7 @@ file_path <- system.file("extdata", "test_multiscango_data_1.txt",
 
 # Data is store as a tibble
 data <- read_multiscango_data(
-  file = file_path, time_interval = "2 min"
+  file = file_path, time_interval = "2 min", input_type = "table"
 )
 
 # Now data is tidy
