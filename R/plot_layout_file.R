@@ -8,6 +8,7 @@
 #' @param var_colour Assign colour to other variable
 #' @param add_conc This argument is optional, TRUE to add concentration.
 #' @param plate_title This argument is optional, add the title.
+#' @param output_filename The name of the output file followed by propoer extension, ie. .png
 #'
 #' @return Returns a plot that represents the microplate with the given layout.
 #' The plot shows in the x-axis the number of columns and in the y-axis the
@@ -37,27 +38,54 @@
 #' plot_plate
 #'
 # Main function
-plot_layout_file <- function(file, var_shape = NULL, var_colour = NULL, add_conc = FALSE, plate_title = NULL) {
+plot_layout_file <- function(file, var_shape = NULL,
+                             var_colour = NULL,
+                             add_conc = FALSE,
+                             plate_title = NULL,
+                             output_filename) {
   check_arguments_layout(file, var_shape, var_colour)
 
   NUMBER_FACTORS <- 6 # number of shapes available to use
   platemap_df <- platemap_for_ggplot(file)
 
-   if (length(unique(platemap_df[[var_shape]])) > NUMBER_FACTORS) {
+
+  if (length(unique(platemap_df[[var_shape]])) > NUMBER_FACTORS) {
     stop("You must use attributes for var_shape with less than 7 different factors.")
   }
 
   title <- check_title(plate_title)
   plate <- generate_platemap(platemap_df, var_shape, var_colour)
 
-
   if (!is.null(add_conc) && add_conc) {
-   check_col_concentration(platemap_df)
-   concentration <- add_concentration(platemap_df)
-   plate_with_conc <- plate + concentration + title
-   return(plate_with_conc)
+    check_col_concentration(platemap_df)
+    concentration <- add_concentration(platemap_df)
+    plate_plot <- plate + concentration + title
+
+  }else {
+    plate_plot <- plate + title
+
   }
-  plate + title
+
+   if (length(unique(platemap_df$Wells)) == 96) {
+    width <- 15 # cm
+    height <- 10 # cm
+    ggplot2::ggsave(
+      filename = output_filename,
+      plot = plate_plot,
+      width = width,
+      height = height,
+      units = "cm")
+
+  } else if (length(unique(platemap_df$Wells)) == 384) {
+  width <- 23 # cm
+  height <- 15 # cm
+  }
+  ggplot2::ggsave(
+    filename = output_filename,
+    plot = plate_plot,
+    width = width,
+    height = height,
+    units = "cm")
 
 }
 
@@ -140,7 +168,7 @@ generate_platemap <- function(platemap_df, var_shape, var_colour) {
 
 add_concentration <- function(platemap_df){
   concentration <- ggplot2::geom_text(
-    ggplot2::aes(label = .data$Concentration),
+    ggplot2::aes(label = .data$concentration),
     position = ggplot2::position_nudge(y = -0.5),
     size = 2, fontface = "bold"
    )
@@ -161,4 +189,5 @@ check_title <- function(plate_title){
    return(title)
   }
 }
+
 
