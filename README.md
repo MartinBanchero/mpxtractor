@@ -16,7 +16,7 @@ This package is divided by two sets of functions
 **1.** Function to wrangling the data in raw files, this functions are explained in 
 detail in vignette `wrangling_and_layout_functions` along side with some examples.
 
-**2.** Functions to plot layout files and growth curves, the vignette `plotting_functions` exlain how they work and some details.
+**2.** Functions to plot layout files and growth curves, the vignette `plotting_functions` explain how they work and some details.
 
 
 ## Installation 
@@ -50,7 +50,7 @@ head(df_layout)
 #> 6 A06   sample milk_sup
 ```
 
-Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function that provide a visualization of our experimental design. For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout design over the microplate give an easy way to check wether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` and the `Medium` conditions over the microplate.  
+Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function that provide a visualization of our experimental design. For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout design over the microplate give an easy way to check whether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` and the `Medium` conditions over the microplate.  
 
 
 ```r
