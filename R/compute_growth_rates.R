@@ -2,7 +2,7 @@
 #'
 #' This function takes a dataframe with the raw data and the information from the
 #' layout file and calculate growth rate (mu) using Savitzky and Golay filter(savgol).
-#' Here the first derivative is given in the parameter m. And plynomial degree p = 1
+#' Here the first derivative is given in the parameter m. And polynomial degree p = 1
 #'
 #' @param df_data Is a dataframe that combines data files with layout files
 #' @param var_gr This the attribute to be used to calculate growth rates
@@ -10,7 +10,7 @@
 #' @param plate_file the name of the plate to be use to calculate the growth rates.
 #'
 #'
-#' @return Returns the input dataframe with the column conaining the growth rates.
+#' @return Returns the input dataframe with the column containing the growth rates.
 #'
 #'
 #' @section Warning:
@@ -38,7 +38,8 @@ compute_growth_rates <- function(df_data, var_gr, ws, plate_file = NULL) {
   df_data <- check_Na_Inf_in_var_gr(df_data, var_gr)
   check_is_multi_plate(df_data, plate_file)
   df_data <- plate_file_to_compute_gr(df_data, plate_file)
-  df_data <- format_time(df_data)
+  #df_data <- format_time(df_data)
+  df_data$Time <- get_time_in_hh(df_data$Time)
   df_data <- check_time_series(df_data)
   df_data_gr <- get_growth_rates(df_data, var_gr, ws)
   return(df_data_gr)

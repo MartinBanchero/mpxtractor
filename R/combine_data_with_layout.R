@@ -11,12 +11,13 @@
 #'
 #' @param df_data dataframe tidy
 #' @param reader_type string with the name of one the reader machines
-#' @param dir_layout_files specified the ddirectory in which gather the files
+#' @param dir_layout_files specified the directory in which gather the files
 #' @param layout_file_pattern specified pattern to match the file names
 #' @param layout_files name of layout files
 #' @param layout_file_name optional argument to assign name to plates
 #'
 #'
+#' @importFrom rlang .data
 #'
 #' @export
 #' @examples
@@ -59,9 +60,9 @@ combine_data_with_layout <- function(df_data, reader_type , dir_layout_files = N
   if (length(files_layout) != length(layout_file_name)) {
     stop("files and plate_names must have the same length.")
   }
-  list_of_data_frames <- Map(f = function(file, plate_name) {
+  list_of_data_frames <- Map(f = function(file_layout, plate_name) {
     tryCatch(expr = {
-      p <- add_plate_file(df_data, file, well_ids_column = "Wells")
+      p <- add_plate_file(df_data, file_layout, well_ids_column = "Wells")
       p$layout_file <- plate_name
       p
     }, error = function(e) {
@@ -72,6 +73,7 @@ combine_data_with_layout <- function(df_data, reader_type , dir_layout_files = N
   ## ADD functions to combine each type
   df_result <- reader_df_format(list_of_data_frames, reader_type)
   df_result
+
 }
 
 
@@ -120,10 +122,10 @@ join_fluorstar_and_layout <- function(list_of_data_frames) {
 reader_df_format <- function(list_of_data_frames, reader_type) {
   if (toupper(reader_type) == toupper("spectramax")) {
     dfr <- join_spectramax_and_layout(list_of_data_frames) # One function for each machine
-    if (!is.null(.data$plate_filename)) {
-      dfr_time <- format_time(dfr)# Time to hs to avoid time to be sort alphabetically
-      dfr_time <- dplyr::group_by(dfr_time, .data$Wells, .data$plate_filename)
-      dfr_time <- dplyr::arrange(dfr_time, .data$Time, .by_group = TRUE)
+    if ("plate_filename" %in% colnames(dfr)) {
+      dfr_time <- format_time(dfr, time_format = "hours")# Time to hs to avoid time to be sort alphabetically
+      dfr_time <- dplyr::group_by(dfr_time, .data$plate_filename)
+      dfr_time <- dplyr::arrange(dfr_time, .data$Wells, .data$Time, .by_group = TRUE)
       dfr_time <- get_time_hhmmss(dfr_time)
       return(dfr_time)
     }
@@ -131,7 +133,7 @@ reader_df_format <- function(list_of_data_frames, reader_type) {
   }
   if (toupper(reader_type) == toupper("multiscango")) {
     dfr <- join_multiscango_and_layout(list_of_data_frames) # One function for each machine
-    if (!is.null(.data$plate_filename)) {
+    if ("plate_filename" %in% colnames(dfr)) {
       dfr <- dplyr::group_by(dfr, .data$Wells, .data$plate_filename)
       dfr <- dplyr::arrange(dfr, .data$Reading, .by_group = TRUE)
       return(dfr)
@@ -140,8 +142,8 @@ reader_df_format <- function(list_of_data_frames, reader_type) {
   }
   if (toupper(reader_type) == toupper("fluorStar")) {
     dfr <- join_fluorstar_and_layout(list_of_data_frames) # One function for each machine
-    if (!is.null(.data$plate_filename)) {#If there is more than one data file in the df
-      dfr_time <- format_time(dfr)# Time to hs to avoid time to be sort alphabetically
+    if ("plate_filename" %in% colnames(dfr)) {#If there is more than one data file in the df
+      dfr_time <- format_time(dfr, time_format = "hours")# Time to hs to avoid time to be sort alphabetically
       dfr_time <- dplyr::group_by(dfr_time, .data$Wells, .data$plate_filename)
       dfr_time <- dplyr::arrange(dfr_time, .data$Time, .by_group = TRUE)
       dfr_time <- get_time_hhmmss(dfr_time)

@@ -154,6 +154,9 @@ check_time_interval <- function(tp) {
   if (!is.null(tp) && !any(grepl("min", tp))) {
     stop("time interval should be in minutes")
   }
+  if (stringr::str_detect(tp, "\\," , negate = FALSE)) {
+  stop("The decimal separator should be a point not a comma.")
+  }
 }
 
 add_column_time <- function(df, time_interval) {

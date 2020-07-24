@@ -24,7 +24,7 @@ combine_subplots_backgr <- function(df_sub_plots_well, exp_title, var_to_col) {
     ggplot2::theme_classic() +
     ggplot2::theme(panel.border = ggplot2::element_rect("black",
       fill = NA,
-      size = 2
+      size = 1
     ), ) +
     ggplot2::scale_x_continuous(
       breaks = seq(1, n_col),
