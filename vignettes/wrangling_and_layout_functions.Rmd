@@ -21,10 +21,10 @@ knitr::opts_chunk$set(collapse = TRUE,comment = "#>")
 ```
 
 ## Overview
-The `mpxtractor` contain one function for each type of micro plate reader machine. Each  of this functions are disgn to wrangle the raw data produced for this machines, this are: *read_spectramax_data()*, *read_multiscango_data()* and *read_fluorstar_data()*. In addition to this the function *read_multiple_files()* is used to combine more than one output file into one tidy data frame. 
+The `mpxtractor` contain one function for each type of micro plate reader machine. Each  of this functions are design to wrangle the raw data produced for this machines, this are: *read_spectramax_data()*, *read_multiscango_data()* and *read_fluorstar_data()*. In addition to this the function *read_multiple_files()* is used to combine more than one output file into one tidy data frame. 
 To simplify the number of tasks that the user have to apply before load the
 data in R, all this wrangling functions receive a file with .txt extension. This allows
-to  avoid different issues realted to file formats, like .csv, .xlsx or versions. This is simplified by using only .txt files.
+to  avoid different issues realated to file formats, like .csv, .xlsx or versions. This is simplified by using only .txt files.
 
 In addition to data wrangling functions, `mpxtractor` provide functions to deal with
 layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy data frame that combine the output of one wrangling function with the layout files.
@@ -36,10 +36,10 @@ test data.
  
 ### 1.1 read_spectramax_data()
 This function is specific to read output files (.txt) produced by spectraMax readers.
-Recive one raw file and generate a tibble dataframe.
+Receive one raw file and generate a tibble dataframe.
 The file is the path to a proper .txt file formatted by the spectraMax machine.
 The returned tibble data frame show four columns. The first column is
-"Wells" this containe the names for each well (A01, A02..). The second column
+"Wells" this contained the names for each well (A01, A02..). The second column
 represent "Time" at wich the measurements were done, the format is in hh:mm:ss.
 The third column is "Temperature", this is the temperature at which the
 experiment was performed. The fourth column contain the measured values.
@@ -57,7 +57,7 @@ head(data_spectramax)
 
 ### 1.2 read_multiscango_data()
 This function is specific to read output files (.txt) produced by multiscanGO readers.
-Recive one raw file and generate a tibble dataframe and takes a time point which is given as argument.
+Receive one raw file and generate a tibble dataframe and takes a time point which is given as argument.
 The file is the path to a proper .txt file formatted by the multiscanGO machine.
 The returned tibble data frame show four columns. The first column is
 "Wells" this contain the names for each well (A01, A02..). The second column
@@ -72,8 +72,14 @@ very important to know the time between readings to use it to generate the attri
 Below is shown a toy example about how to use this function.
 
 ```{r}
-file_path <- system.file("extdata", "test_multiscango_data_1.txt", package = "mpxtractor")
-data_multiscan <- mpxtractor::read_multiscango_data(file = file_path, time_interval = "2.5 min" )
+file_path <- system.file("extdata",
+  "test_multiscango_data_1.txt",
+  package = "mpxtractor"
+)
+data_multiscan <- mpxtractor::read_multiscango_data(
+  file = file_path,
+  time_interval = "2.5 min", input_type = "table"
+)
 head(data_multiscan)
 ```
 
@@ -81,9 +87,9 @@ head(data_multiscan)
 
 ### 1.3 read_fluorstar_data()
 This function is specific to read output files (.txt) produced by fluorStar readers.
-Recive one raw file and generate a tibble dataframe.
+Receive one raw file and generate a tibble dataframe.
 The file is the path to a proper .txt file formatted by the fluorStar machine.
-The first column is "Wells" this containe the names for each well (A01, A02..). The second column represent "Sample" which identified the wells, this part of the standard output
+The first column is "Wells" this contained the names for each well (A01, A02..). The second column represent "Sample" which identified the wells, this part of the standard output
 of fluorStar machines.
 The third column is "Time", that represents the timestep at which the machine measures. The fourth column contain the measured values. Depending on the experiment, this can be fluorescence, absorbance between others.
 
@@ -123,7 +129,7 @@ This function is similar to the function read_plate() from `plater` package @pla
 The first column is "Wells" this contain the names for each well (A01, A02..). The rest of the attributes represent the different conditions.
 
 ```{r}
-file_path <- system.file("extdata", "test_spectraMax_layout_1.csv", package = "mpxtractor")
+file_path <- system.file("extdata", "test_spectramax_layout_1.csv", package = "mpxtractor")
 df_layout_data <- mpxtractor::read_layout_file(file = file_path)
 
 head(df_layout_data)

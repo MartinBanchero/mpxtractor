@@ -27,10 +27,10 @@ knitr::opts_chunk$set(
 
 
 ## Overview 
-As a part of `mpxtractor` some functions that are present in `wrangling functions` or `plotting functions` can be used independently. Here are explained some auxilary functions that can be used separately.
+As a part of `mpxtractor` some functions that are present in `wrangling functions` or `plotting functions` can be used independently. Here are explained some auxiliary functions that can be used separately.
 
 ## 1. format_time()
-This fuction transform the attribute **Time** from hh:mm:ss to time in hours.
+This function transform the attribute **Time** from hh:mm:ss to time in hours.
 
 ```{r echo=FALSE}
 file <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpxtractor")
@@ -59,7 +59,7 @@ the data with the time in hours (left) and in minutes (right).")
 
 
 ## 2. compute_growth_rates()
-This function can be handy when one dataset is avilable and we want to do a quick calculation of growth curves. 
+This function can be handy when one dataset is available and we want to do a quick calculation of growth curves. 
 ### Example:
 In this example the data is transform in the same way used in the example in 
 the vignette `plotting_functions`. The background is subtracted followed by the log transform.
@@ -83,7 +83,7 @@ head(df_sp)
 ```
 
 ### 2.2 Background correction and log transform
-Here we correct by the minimun measurement followed by the logarithmic transformation.
+Here we correct by the minimum measurement followed by the logarithmic transformation.
 
 ```{r}
 # Get the minimun measurement for each well
@@ -110,7 +110,7 @@ Some insights about this function:
   
   **Data imputation:**
     
- * If the attribute used to calculate growth rates contain Inf/-Inf values this are tranformed to `NAs` and impute using k=1, this means that one value to the right and one to the left are used to calculate the mean of that missing value.
+ * If the attribute used to calculate growth rates contain Inf/-Inf values this are transformed to `NAs` and impute using k=1, this means that one value to the right and one to the left are used to calculate the mean of that missing value.
     
  * In the case that there more than one `NA` the function scan both sides until it finds the next value.
   
@@ -124,7 +124,7 @@ Some insights about this function:
     - The growth rates are calculated by wells.
   
   
-Is very important to note that the difference between time points must be equal for all them. Otherwise the time series is not complete. Remeber the example with
+Is very important to note that the difference between time points must be equal for all them. Otherwise the time series is not complete. Remember the example with
 fluorstar machines.
 
 ```{r}
