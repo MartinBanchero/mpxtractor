@@ -9,7 +9,8 @@ plot_layout_file(
   var_shape = NULL,
   var_colour = NULL,
   add_conc = FALSE,
-  plate_title = NULL
+  plate_title = NULL,
+  output_filename
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ plot_layout_file(
 \item{add_conc}{This argument is optional, TRUE to add concentration.}
 
 \item{plate_title}{This argument is optional, add the title.}
+
+\item{output_filename}{The name of the output file followed by propoer extension, ie. .png}
 }
 \value{
 Returns a plot that represents the microplate with the given layout.

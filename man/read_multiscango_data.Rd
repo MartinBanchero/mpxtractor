@@ -10,7 +10,7 @@ read_multiscango_data(file, time_interval = NULL, input_type)
 \item{file}{The path to a proper .txt file formatted by the multiscanGO machine.}
 
 \item{time_interval}{the time interval between measurements. This parameter is
-needed only for files formatted by the multiscango machine option table.}
+needed only for files formatted by the multiscango machine output option table.}
 
 \item{input_type}{specified if the input file of multiscan is in table or list format.}
 }

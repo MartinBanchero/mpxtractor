@@ -16,12 +16,12 @@ compute_growth_rates(df_data, var_gr, ws, plate_file = NULL)
 \item{plate_file}{the name of the plate to be use to calculate the growth rates.}
 }
 \value{
-Returns the input dataframe with the column conaining the growth rates.
+Returns the input dataframe with the column containing the growth rates.
 }
 \description{
 This function takes a dataframe with the raw data and the information from the
 layout file and calculate growth rate (mu) using Savitzky and Golay filter(savgol).
-Here the first derivative is given in the parameter m. And plynomial degree p = 1
+Here the first derivative is given in the parameter m. And polynomial degree p = 1
 }
 \section{Warning}{
 

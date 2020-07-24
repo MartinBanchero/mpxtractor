@@ -24,7 +24,7 @@ plot_gr_microplate(
 
 \item{cond_to_col}{The condition from the layout to color}
 
-\item{plate_file}{plate file to be use to compute growth rates}
+\item{plate_file}{plate file to be use to compute growth rates in case of multiple files.}
 }
 \value{
 Returns the background plot which is the microplate frame and over this

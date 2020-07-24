@@ -10,16 +10,16 @@ read_fluorstar_data(file)
 \item{file}{The path to a proper .txt file formatted by the fluorStar machine.}
 }
 \value{
-Returns a tibble data frame whith four columns. The first column is
+Returns a tibble data frame with four columns. The first column is
 "Wells" this containe the names for each well (A01, A02..). The second column
 represent "Sample" which identified the wells, this part of the standard output
 of fluorStar machines.
 The third column is "Time", that represents the timestep at which the machine
-measures. The fourth column contain the measured values. Depending on the experiment,
+measures. The fourth column contained the measured values. Depending on the experiment,
 this can be fluorescence, absorbance between others.
 }
 \description{
-This function recive one output file from fluorStar microplate reader and
+This function receive one output file from fluorStar microplate reader and
 generate a tibble dataframe.
 }
 \examples{

@@ -18,7 +18,7 @@ combine_data_with_layout(
 
 \item{reader_type}{string with the name of one the reader machines}
 
-\item{dir_layout_files}{specified the ddirectory in which gather the files}
+\item{dir_layout_files}{specified the directory in which gather the files}
 
 \item{layout_file_pattern}{specified pattern to match the file names}
 

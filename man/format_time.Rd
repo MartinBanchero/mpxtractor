@@ -9,7 +9,7 @@ format_time(df_data, time_format = NULL)
 \arguments{
 \item{df_data}{dataframe}
 
-\item{time_format}{which is a character to indicate
+\item{time_format}{character value "hours" or "minutes" to indicate
 whether the the format is in hours or in minutes.}
 }
 \value{
