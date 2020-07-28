@@ -28,13 +28,13 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.align = "center", fig
 It is well known for anyone performing experiments that involved microplate readers
 that the analysis of the raw data can be tedious and time consuming. Several 
 of this microplate reader machines include software to alleviate this problem but
-many times are not very handy. Although several good R packages exists many of them are design to solve specific problems lossing generability. For example some features from @plater were used to build `mpxtractor`.  To clarify, `mpxtractor` can process
+many times shows a lack of standarization. Although several good R packages exists many of them are design to solve specific problems lossing generability. For example some features from @plater were used to build `mpxtractor`.  To clarify, `mpxtractor` can process
 raw data from three different microplate reader machines, SpectraMax, MultiscanGO and
 FluorStar.
 
 For the reasons mentioned above is why `mpxtractor` can help to reduce the time to process the raw data into tidy dataframes, combine layout files
 with tidy data. Also, `mpxtractor` provides features to visualize growth curves 
-and layout files over a microplate frame. The latter can be printed to be use in
+and layout files over a microplate shape. The latter can be printed to be use in
 the lab during the set ups of experiments. 
 
 
@@ -53,11 +53,11 @@ detail in vignette `wrangling_and_layout_functions` along side with some example
 Lets suppose we want to perform an experiment to measure growth rates under different type of sugars. The first step is to design the layout and 
 generate the layout file. Using `mpxtractor` we can plot the layout file.  or load 
 it into a tidy dataframe.
-Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function to have a visualization of our experimental design For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout design over the microplate is more easy to check whether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `Basic` and the `presugar` conditions over the microplate.  
+Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function to have a visualization of our experimental design For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout design over the microplate is more easy to check whether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` containing control or sample experiment while `condition` contain the type of sugar to be used in the experiment.
 
 ```{r }
 
-layout_file <- system.file("extdata", "test_spectramax_layout.csv", package = "mpxtractor")
+layout_file <- system.file("extdata", "test_layout_file.csv", package = "mpxtractor")
 
 mpxtractor::plot_layout_file(file = layout_file, var_shape = "basic", var_colour = "condition", add_conc = TRUE, output_filename = "spectramax_layout.png" )
 ```
@@ -67,9 +67,15 @@ knitr::include_graphics('spectramax_layout.png')
 ```
 
 
-As you can see in Fig.1 only two conditions can be add to this visualization, one given the shape (in this case Basic) and one the color(presugar).
-As we observed above we have several conditions, `Basic`, `presugar`,`secondsugar`
-and `replicate`. For example we can join conditions and obtain a more broad visualization. 
+As you can see in Fig.1 only two conditions can be add to this visualization, one given the shape (in this case basic) and one the color(condition).
+Is possible to load the layout file into a tidy data frame using read_layout_file(). 
+```{r}
+layout_file <- system.file("extdata", "test_layout_file.csv", package = "mpxtractor")
+df_layout <- mpxtractor::read_layout_file(file = layout_file)
+head(df_layout)
+```
+As we observed above we have several variables, `basic`,`condition`, `strain`and `concentration`.
+For example we can join conditions and obtain a more broad visualization. 
 
 ```{r , fig.width = 7, fig.height = 8 ,out.width = "100%", out.height = "100%", fig.cap="**Figure 2:** Showing *basic* that contain control or sample, and presugar and replicate after been merge into one column."}
 # We have all the layout information in a tidy dataframe obtained from before.
