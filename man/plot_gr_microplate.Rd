@@ -47,6 +47,7 @@ growth rates are not calculated and the process stop.
 }
 
 \examples{
+\dontrun{
 # Get the data file path
 file_path_sp <- system.file(
  "extdata",
@@ -77,7 +78,7 @@ microplateplot <- mpxtractor::plot_gr_microplate(
  ws = "2hs",
  cond_to_col = "condition",
  output_filename = "growth_rates_test.png")
-
+}
 #Check vignette **plotting_functions()** for more information.
 
 }
