@@ -26,6 +26,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Get the data file path
 #' file_path_sp <- system.file(
 #'  "extdata",
@@ -56,7 +57,7 @@
 #'  ws = "2hs",
 #'  cond_to_col = "condition",
 #'  output_filename = "growth_rates_test.png")
-#'
+#' }
 #' #Check vignette **plotting_functions()** for more information.
 #'
 # Main function
