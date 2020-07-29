@@ -10,7 +10,7 @@
 #' @param ws is the windowsize in hours
 #' @param cond_to_col The condition from the layout to color
 #' @param plate_file plate file to be use to compute growth rates in case of multiple files.
-#'
+#' @param output_filename The name of the output file followed by proper extension, ie. .png
 #'
 #' @return Returns the background plot which is the microplate frame and over this
 #' the plot of growth rates in each well.
@@ -39,7 +39,7 @@
 #'  )
 #'  # get the path to layout file
 #' file_path_layout <- system.file(
-#'  "extdata", "test_spectraMax_layout_1.csv",
+#'  "extdata", "test_layout_file.csv",
 #'  package = "mpxtractor"
 #' )
 #' # combine raw data with layout scheme
@@ -54,13 +54,14 @@
 #'  var_gr = "Measurement",
 #'  exp_title = "Spectramax experiment",
 #'  ws = "2hs",
-#'  cond_to_col = "condition")
+#'  cond_to_col = "condition",
+#'  output_filename = "growth_rates_test.png")
 #'
 #' #Check vignette **plotting_functions()** for more information.
 #'
 # Main function
 plot_gr_microplate <- function(df_data, var_gr, exp_title = NULL,
-                               ws, cond_to_col, plate_file = NULL) {
+                               ws, cond_to_col, plate_file = NULL, output_filename) {
   # Check input
   if (!is.data.frame(df_data)) stop("df_data should be a dataframe")
   check_variables(df_data, var_gr, cond_to_col)
@@ -73,7 +74,8 @@ plot_gr_microplate <- function(df_data, var_gr, exp_title = NULL,
   df_sub_plots_well <- subplots_with_coordinates(df_sub_plots_well)
   df_sub_plots_well <- subplots_annotated(df_sub_plots_well, df_data_gr)
   all_wells_plot <- combine_subplots_backgr(df_sub_plots_well, exp_title, cond_to_col)
-  all_wells_plot
+  save_plot(df_data, all_wells_plot, output_filename)
+
 }
 
 
@@ -105,4 +107,23 @@ factor_to_color <- function(sp_data_layout, cond_to_col) {
     levels = unique(sp_data_layout[[cond_to_col]])
   )
   return(sp_data_layout)
+}
+
+save_plot <- function(df_data, all_wells_plot, output_filename ){
+  if (length(unique(df_data$Wells)) == 96) {
+    ggplot2::ggsave(
+      filename = output_filename,
+      plot = all_wells_plot,
+      width = 15,
+      height = 10,
+      units = "cm")
+
+  } else if (length(unique(df_data$Wells)) == 384) {
+    ggplot2::ggsave(
+      filename = output_filename,
+      plot = all_wells_plot,
+      width = 50,
+      height = 30,
+      units = "cm")
+  }
 }

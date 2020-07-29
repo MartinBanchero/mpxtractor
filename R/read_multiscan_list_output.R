@@ -11,7 +11,8 @@
 #' in addition to this one column that contained time in hh:mm:ss format.
 #'
 #' @importFrom rlang .data
-#'
+#' @importFrom stats median
+#' @importFrom utils type.convert
 #'
 read_multiscan_list_output <- function(file) {
   raw_lines <- readLines(file)
@@ -200,7 +201,7 @@ convert_seconds_to_hhmmss <- function(df) {
   )
 
   df_result[["Time"]] <- round(df_result[["Time"]],digits = 2)
-  df_result[["Time"]] <- as.character(hms::as.hms(df_result[["Time"]] ) )
+  df_result[["Time"]] <- as.character(hms::as_hms(df_result[["Time"]] ) )
   df_result <- dplyr::select(df_result, -c(.data$Diff, .data$interval))
 
   df_result <- dplyr::relocate(

@@ -19,21 +19,33 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
+#' file_path <- system.file("extdata", "test_layout_file.csv",
 #'   package = "mpxtractor"
 #' )
 #'
 #' # Data is store as a tibble
-#' plot_plate <- plot_layout_file(
-#'   file = file_path, var_shape = "basic", var_colour = "condition",
+#'   df_plot_plate <- read_layout_file( file = file_path)
+#'
+#'   plot_plate <- plot_layout_dataframe(
+#'   df_plot_plate,
+#'   var_shape = "basic",
+#'   var_colour = "condition",
 #'   plate_title = "My experiment"
 #' )
+#'
+#'
+#'
+#'
 #'
 #' # Show the plot
 #' plot_plate
 #'
 # Main function
-plot_layout_dataframe <- function(platemap_df, var_shape, var_colour, add_conc=NULL, plate_title = NULL) {
+plot_layout_dataframe <- function(platemap_df,
+                                  var_shape,
+                                  var_colour,
+                                  add_conc = NULL,
+                                  plate_title = NULL) {
   platemap_df <- dplyr::mutate(platemap_df,
     Row = as.numeric(match(
       toupper(substr(.data$Wells, 1, 1)),
@@ -57,5 +69,4 @@ plot_layout_dataframe <- function(platemap_df, var_shape, var_colour, add_conc=N
     return(plate_with_conc)
   }
   plate + title
-
 }

@@ -21,11 +21,11 @@
 #'
 #' @export
 #' @examples
-#' file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
+#' file_path <- system.file("extdata", "test_layout_file.csv",
 #' package = "mpxtractor")
 #'
 #' data_file <- system.file("extdata",
-#' "test_spectramax_data_1.txt",
+#' "test_gr_spectramax.txt",
 #' package = "mpxtractor")
 #' df_spectramax_outdata_1 <- mpxtractor::read_spectramax_data(data_file)
 #'
