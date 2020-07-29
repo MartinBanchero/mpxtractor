@@ -23,6 +23,7 @@ Imports:
     stringr (>= 1.4.0),
     dplyr (>= 0.8.4),
     imputeTS (>= 3.0),
+    hms (>= 0.5.3),
     zoo (>= 1.8.8)
 RdMacros: Rdpack
 RoxygenNote: 7.1.0
