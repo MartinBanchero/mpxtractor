@@ -33,15 +33,23 @@ This function recive dataframe similar to the output from read_layout_files()
 and generate a plot that represents the designed layout of the microplate.
 }
 \examples{
-file_path <- system.file("extdata", "test_spectraMax_layout_1.csv",
+file_path <- system.file("extdata", "test_layout_file.csv",
   package = "mpxtractor"
 )
 
 # Data is store as a tibble
-plot_plate <- plot_layout_file(
-  file = file_path, var_shape = "basic", var_colour = "condition",
+  df_plot_plate <- read_layout_file( file = file_path)
+
+  plot_plate <- plot_layout_dataframe(
+  df_plot_plate,
+  var_shape = "basic",
+  var_colour = "condition",
   plate_title = "My experiment"
 )
+
+
+
+
 
 # Show the plot
 plot_plate

@@ -10,7 +10,8 @@ plot_gr_microplate(
   exp_title = NULL,
   ws,
   cond_to_col,
-  plate_file = NULL
+  plate_file = NULL,
+  output_filename
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ plot_gr_microplate(
 \item{cond_to_col}{The condition from the layout to color}
 
 \item{plate_file}{plate file to be use to compute growth rates in case of multiple files.}
+
+\item{output_filename}{The name of the output file followed by proper extension, ie. .png}
 }
 \value{
 Returns the background plot which is the microplate frame and over this
@@ -57,7 +60,7 @@ df_sp <- mpxtractor::read_spectramax_data(
  )
  # get the path to layout file
 file_path_layout <- system.file(
- "extdata", "test_spectraMax_layout_1.csv",
+ "extdata", "test_layout_file.csv",
  package = "mpxtractor"
 )
 # combine raw data with layout scheme
@@ -72,7 +75,8 @@ microplateplot <- mpxtractor::plot_gr_microplate(
  var_gr = "Measurement",
  exp_title = "Spectramax experiment",
  ws = "2hs",
- cond_to_col = "condition")
+ cond_to_col = "condition",
+ output_filename = "growth_rates_test.png")
 
 #Check vignette **plotting_functions()** for more information.
 
