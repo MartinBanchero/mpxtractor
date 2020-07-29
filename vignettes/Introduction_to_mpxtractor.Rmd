@@ -55,7 +55,7 @@ generate the layout file. Using `mpxtractor` we can plot the layout file.  or lo
 it into a tidy dataframe.
 Now we want to set the microplates and run the experiment in the lab, for this we can use the `plot_layout_file()` function to have a visualization of our experimental design For example, to avoid edge effects due to temperature, evaporation, etc. the wells around the perimeter of the plate might be more sensitive to this effects, visualizing the layout design over the microplate is more easy to check whether the control or the samples are well positioned in the plate. In **Fig.1** is shown the `basic` containing control or sample experiment while `condition` contain the type of sugar to be used in the experiment.
 
-```{r }
+```{r , eval=FALSE}
 
 layout_file <- system.file("extdata", "test_layout_file.csv", package = "mpxtractor")
 
@@ -70,8 +70,14 @@ knitr::include_graphics('spectramax_layout.png')
 As you can see in Fig.1 only two conditions can be add to this visualization, one given the shape (in this case basic) and one the color(condition).
 Is possible to load the layout file into a tidy data frame using read_layout_file(). 
 ```{r}
-layout_file <- system.file("extdata", "test_layout_file.csv", package = "mpxtractor")
+layout_file <- system.file(
+  "extdata",
+  "test_layout_file.csv",
+  package = "mpxtractor"
+)
+
 df_layout <- mpxtractor::read_layout_file(file = layout_file)
+
 head(df_layout)
 ```
 As we observed above we have several variables, `basic`,`condition`, `strain`and `concentration`.
@@ -80,7 +86,15 @@ For example we can join conditions and obtain a more broad visualization.
 ```{r , fig.width = 7, fig.height = 8 ,out.width = "100%", out.height = "100%", fig.cap="**Figure 2:** Showing *basic* that contain control or sample, and presugar and replicate after been merge into one column."}
 # We have all the layout information in a tidy dataframe obtained from before.
 df_layout <- mpxtractor::read_layout_file(file = layout_file)
-head(df_layout)
+
+df_unite <- tidyr::unite(
+  df_layout,
+  basic_strain,
+  -c(Wells, condition, concentration)
+)
+
+head(df_unite)
+
 ```
 
 ## Data wrangling
@@ -92,7 +106,7 @@ case we going to use `read_multiscango_data()` (see vignette `wrangling_and_layo
 **Note:** This function take as argument time point to build the time series. In the example below the *time_point* (reading) is 2 minutes.
 
 ```{r}
-file <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpxtractor")
+file <- system.file("extdata", "test_gr_spectramax.txt", package = "mpxtractor")
 
 # Extract the data stored in the files into a data frame using proper wrangling function
 df_spmax <- mpxtractor::read_spectramax_data(file = file)
@@ -105,15 +119,22 @@ Now let's suppose we want to repeat the experiment under the same conditions. In
 
 ```{r}
 # Path to files
-file1 <- system.file("extdata", "test_gr_spectramax.txt", package = "mpxtractor")
+file1 <- system.file("extdata",
+  "test_gr_spectramax.txt",
+  package = "mpxtractor"
+)
 
-file2 <- system.file("extdata", "test_spectramax_data_2.txt", package = "mpxtractor")
+file2 <- system.file("extdata",
+  "test_spectramax_data_2.txt",
+  package = "mpxtractor"
+)
 
 df_two_files <- mpxtractor::read_multiple_data_files(
-  reader_type = "spectramax", 
-  filesname = c(file1,file2), 
+  reader_type = "spectramax",
+  filesname = c(file1, file2),
   plate_names = c("plate_1", "plate_2")
-  )
+)
+
 head(df_two_files)
 tail(df_two_files)
 
@@ -124,7 +145,7 @@ At this point we have two measurements under the same layout design. Now we want
 #get the path to layout file
 file_layout <- system.file(
   "extdata",
-  "test_spectramax_layout.csv",
+  "test_layout_file.csv",
   package = "mpxtractor"
 )
 
@@ -138,25 +159,19 @@ df
 ```
 
 
-```{r, eval = TRUE, fig.width = 10, fig.height = 7 ,out.width = "100%", out.height = "100%"}
+```{r, eval = FALSE, fig.width = 10, fig.height = 7 ,out.width = "100%", out.height = "100%"}
 plt <- mpxtractor::plot_gr_microplate(
   df_data = df, 
   cond_to_col = "condition", 
   var_gr = "Measurement",  
   ws = "2 hs", 
-  plate_file = "plate_1")
+  plate_file = "plate_1", output_filename = "growth_rates.png")
 
-ggplot2::ggsave(filename = "test_vignette.png", plot = plt, width = 50, height = 30, units = "cm")
 ```
 
-**Note:** To improve visualization the output of `plot_gr_microplate()` can be save 
-into a png file using the command below.
-```{r, eval = FALSE}
-ggplot2::ggsave(filename = "test_multi.png", plot = plt, width = 50, height = 30, units = "cm")
-````
 
 ```{r ,echo=FALSE, out.width ='100%', fig.show="hold", fig.cap="**Figure 3:** Representation over a microplate frame of growth rates for each well. Note that in this case the attribute *presugar* was chosen to be coloured."}
-knitr::include_graphics('gr_multiscango_test.png')
+knitr::include_graphics('growth_rates.png')
 ```
 
 ## References

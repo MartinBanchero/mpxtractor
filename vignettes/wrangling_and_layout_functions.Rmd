@@ -48,7 +48,11 @@ Below is shown a toy example about how to use this function. Note that measureme
 represent the values of OD600 in this case.
 
 ```{r}
-file_path <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpxtractor")
+file_path <- system.file(
+  "extdata",
+  "test_gr_spectramax.txt",
+  package = "mpxtractor"
+)
 
 data_spectramax <- mpxtractor::read_spectramax_data(file = file_path)
 
@@ -78,7 +82,8 @@ file_path <- system.file("extdata",
 )
 data_multiscan <- mpxtractor::read_multiscango_data(
   file = file_path,
-  time_interval = "2.5 min", input_type = "table"
+  time_interval = "2.5 min",
+  input_type = "table"
 )
 head(data_multiscan)
 ```
@@ -97,8 +102,14 @@ Below is shown a toy example about how to use this function. Note that in this e
 fluorescence was measured.
 
 ```{r}
-file_path <- system.file("extdata", "test_fluorstar_fluorescence_data.txt", package = "mpxtractor")
+file_path <- system.file(
+  "extdata", 
+  "test_fluorstar_fluorescence_data.txt", 
+  package = "mpxtractor"
+  )
+
 data_fluorstar <- mpxtractor::read_fluorstar_data(file = file_path)
+
 head(data_fluorstar)
 ```
 
@@ -107,13 +118,17 @@ head(data_fluorstar)
 
 
 ```{r}
-
-file_path <- system.file("extdata", c("test_spectramax_data_1.txt", "test_spectramax_data_2.txt"),
-  package = "mpxtractor", mustWork = TRUE
+file_path <- system.file(
+  "extdata",
+  c("test_gr_spectramax.txt", "test_spectramax_data_2.txt"),
+  package = "mpxtractor",
+  mustWork = TRUE
 )
 
 data_multiple_spectramax <- mpxtractor::read_multiple_data_files(
-  reader_type = "spectramax", filesname = file_path, plate_names = c("plate_1", "plate_2")
+  reader_type = "spectramax",
+  filesname = file_path,
+  plate_names = c("plate_1", "plate_2")
 )
 
 head(data_multiple_spectramax)
@@ -129,7 +144,12 @@ This function is similar to the function read_plate() from `plater` package @pla
 The first column is "Wells" this contain the names for each well (A01, A02..). The rest of the attributes represent the different conditions.
 
 ```{r}
-file_path <- system.file("extdata", "test_spectramax_layout_1.csv", package = "mpxtractor")
+file_path <- system.file(
+  "extdata",
+  "test_layout_file.csv",
+  package = "mpxtractor"
+)
+
 df_layout_data <- mpxtractor::read_layout_file(file = file_path)
 
 head(df_layout_data)
@@ -143,13 +163,18 @@ Note that more than one layout file can be given.
 
 ```{r}
 # generate data
-file_path <- system.file("extdata", "test_spectramax_data_1.txt", package = "mpxtractor")
+file_path <- system.file(
+  "extdata", 
+  "test_gr_spectramax.txt", 
+  package = "mpxtractor"
+  )
+
 data_spectramax <- mpxtractor::read_spectramax_data(file = file_path)
 
 # path to layout file
 layout_file_path <- system.file(
   "extdata", 
-  "test_spectraMax_layout_1.csv",
+  "test_layout_file.csv",
   package = "mpxtractor"
   )
 
