@@ -1,4 +1,5 @@
-{: style="text-align: justify" }
+<p align="justify">
+
 <img src="man/figures/logompxtractor.png" width = 100, align="right">
 
 # mpxtractor 
@@ -173,3 +174,4 @@ To get started, first read `vignette("Introduction_to_mpxtractor")`. Then read m
 * For data wrangling and layout files, read `vignette("wrangling_and_layout_functions")`.
 * For plotting functions, read `vignette("plotting_functions")`
 * For auxiliary functions read `vignette("Auxiliary_functions")`
+<p>
