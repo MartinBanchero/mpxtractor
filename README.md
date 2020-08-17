@@ -1,8 +1,8 @@
 <img src="man/figures/logompxtractor.png" width = 100, align="right">
 
-<div align="center">
+
 # mpxtractor 
-</div>
+
 
 **An R package to extract data from plate reader output raw files into a tidy data frame. Plot layout files and plot growth rates over microplate frame.**
 
