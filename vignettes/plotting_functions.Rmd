@@ -30,7 +30,7 @@ In the next sections both functions are explained and one example is provided fo
 each function.
 
 ## 1. **plot_layout_file()** 
-This function can take several arguments in order to improve the flexibility of the function. The first argument is a .csv layout with the proper format(check .csv files in folder inst/extdata). The following arguments are the features that are required to identify the different conditions, like var_shape and var_colour. 
+This function can take several arguments in order to improve the flexibility. The first argument is a .csv layout with the proper format(check .csv files in folder inst/extdata). The following arguments are the features that are required to identify the different conditions, like var_shape and var_colour. 
 
 **Important remarks:** Note that in order to obtain a better visualization the argument
 var_shape should contain less than six different factors. While var_color has no limits.
@@ -57,16 +57,14 @@ plot <- mpxtractor::plot_layout_file(
 
 
 ## 2. **plot_gr_microplate()**
-The main objective of this function is to obtain one quick overview of the 
-experiment performed in one microplate calculating the growth rates in each well.
-There are a few number of steps that must be followed in order to make this function
+The main objective of this function is to obtain one quick overview of the experiment performed in one microplate calculating the growth rates in each well.
+There are a few numbers of steps that must be followed to make this function
 run smoothly. 
 
 ### 2.1 Set the input dataframe
-This is a very important step, here we combine the raw data with the information 
-stored in the layout files. This can be done easily using the *wrangling functions*
-of `mpxtractor`. The first step consist in stored the data stored in the files
-into a dataframe, using the corresponding function depending of the type of machine
+This is a very important step, here we combine the raw data with the information stored in the layout files. This can be done easily using the *wrangling functions*
+of `mpxtractor`. The first step consists of stored the data stored in the files
+into a data frame, using the corresponding function depending on the type of machine
 that generated the data. This can be *read_spectramax_data()*, *read_multiscango_data()*
 or *read_fluorstar_data()*. In the following example read_spectramax_data() is used.
 
@@ -86,9 +84,9 @@ head(df_sp)
 ```
 
 ### 2.2 Combine data with layout scheme
-In this step the data frame obtained above is combined with the layout scheme, 
-using *df_data_combine()* is possible to performed this action in a simple way.
-In the example below one layout file is used to be combined with the dataframe
+In this step, the data frame obtained above is combined with the layout scheme, 
+using *df_data_combine()* is possible to perform this action simply.
+In the example below one layout file is used to be combined with the data frame
 with raw data.
 
 ```{r}
@@ -109,10 +107,9 @@ head(df_data_combine)
 
 
 ### 2.3 Plot growth rates over microplate frame
-Once all the data is stored in the data frame the function can be use. However 
-there are few considerations that must to be addressed. 
+Once all the data is stored in the data frame the function can be used. However few considerations must be addressed. 
 
-- **Very Important:** In order to obtained the growth rates the time series has to be complete. This means that if there are different timesteps inside the attribute **Time** savgolfil() is not going to work. In the case that this happen the time series has to be correct before use this function. Note that in FluorStar machines this happens quite often. See table 1
+- **Very Important:** To obtained the growth rates the time series has to be complete. This means that if there are different timesteps inside the attribute **Time** savgolfil() is not going to work. In the case that this happens the time series has to be correct before use this function. Note that in FluorStar machines this happens quite often. See table 1.
 
 ```{r echo = FALSE}
 file <- system.file("extdata",
@@ -127,12 +124,10 @@ table1 <- head(df_fl)
 htmlTable::htmlTable(as.matrix(table1), col.rgroup = cols, caption = "**Table 1:** Shown in magenta the row containing the time value that breaks the time series")
 ```
 
-
-
-- The argument **var_gr** indicates which attribute in the data frame is used to calculate the growth rates. It is important to apply transformations to this attribute before use the function i.e apply background correction or log transformation. One possible approach is shown
+- The argument **var_gr** indicates which attribute in the data frame is used to calculate the growth rates. It is important to apply transformations to this attribute before using the function i.e apply background correction or log transformation. One possible approach is shown
 below.
 
-- The argument **ws** is a character, this is because the number to be used is follow by the string *hs* to remain the user the units of the argument.
+- The argument **ws** is a character, this is because the number to be used is followed by the string *hs* to remain the user the units of the argument.
 
 ```{r}
 # Get the minimun measurement for each well
@@ -155,8 +150,9 @@ head(df_corrected)
 
 
 ### Ready to plot
-After the few step explained before the function *plot_gr_microplate()* can be 
-used to calculate growth rates and displayed over the microplate frame. This last function is inspired in @subplots.
+
+After the few steps explained before the function *plot_gr_microplate()* can be used to calculate growth rates and displayed over the microplate frame. This last function is inspired in @subplots.
+
 ```{r, eval=FALSE}
 microplateplot <- mpxtractor::plot_gr_microplate(
   df_data = df_corrected,

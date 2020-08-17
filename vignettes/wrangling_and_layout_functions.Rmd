@@ -27,9 +27,9 @@ knitr::opts_chunk$set(collapse = TRUE,comment = "#>")
 ```
 
 ## Overview
-The `mpxtractor` contain one function for each type of micro plate reader machine. Each  of this functions are design to wrangle the raw data produced for this machines, this are: *read_spectramax_data()*, *read_multiscango_data()* and *read_fluorstar_data()*. In addition to this the function *read_multiple_files()* is used to combine more than one output file into one tidy data frame. 
+The `mpxtractor` package contain several functions to wrangling raw data from  three different types of micro plate reader machines. This machines are SpectraMax, MulstiscanGO and FluorStar. This functions are: *read_spectramax_data()*, *read_multiscango_data()* and *read_fluorstar_data()*. In addition to this the function *read_multiple_files()* is used to combine more than one output file into one tidy data frame. 
 To simplify the number of tasks that the user has to apply before loading the
-data in R, all this wrangling functions receive a file with .txt extension. This to avoid different issues related to file formats, like .csv, .xlsx, or different versions. This is simplified by using only .txt files.
+data into R, all this wrangling functions receive a file with .txt extension. This to avoid different issues related to file formats, like .csv, .xlsx. This is simplified by using only .txt files.
 
 In addition to data wrangling functions, `mpxtractor` provides functions to deal with
 layout files like *read_layout_file()* and *combine_data_with_layout()* which generate a tidy data frame that combines the output of one wrangling function with the layout files.
@@ -62,13 +62,14 @@ head(data_spectramax)
 ```
 
 ### 1.2 read_multiscango_data()
-This function is specific to read two different output files from Multiscango readers. The format of the outputs are, table and list and the files must be in a .txt file format.
+This function is specific to read two different output files from Multiscango readers. The format of the outputs are, *table* and *list* and the files must be in a .txt file format.
 
 #### 1.2.1 Raw files in table format
-Receive one raw file and generate a tibble data frame and takes a time point which is given as an argument. The file is the path to a proper .txt file formatted by the multiscanGO machine. The returned tibble data frame show four columns. The first column is “Wells” this contains the names for each well (A01, A02..). The second column represent “Time”, this column is generated using the argument time_point, the third column is “Reading”, shows the number of reading, and the fourth is “Measurement”, this is the value measured for each “Reading”. If there are NA’s present in the “Measurement” column the row containing this NA’s is removed.
+The raw output files with table format do not include time intervals in the metadata, for this reason, the time point is given as an argument.
+The returned tibble data frame show four columns. The first column is “Wells” this contains the names for each well (A01, A02..). The second column represent “Time”, this column is generated using the argument time_point, the third column is “Reading”, shows the number of reading, and the fourth is “Measurement”, this is the value measured for each “Reading”. If there are NA’s present in the “Measurement” column the row containing this NA’s is removed.
 
-**Important:** The time point given as an argument generates the time series, is 
-very important to know the time between readings to use it to generate the attribute
+**Important:** The time point given as an argument generates the time series. Is 
+very important to know the time between readings to use it as argument to generate the attribute
 `Time` in the tidy data frame.
 
 Below is shown a toy example about how to use this function.
@@ -87,7 +88,7 @@ head(data_multiscan)
 ```
 
 #### 1.2.2 Raw files in list format
-In this format, the raw data is more similar to a data frame. This file contains more information than the "table" format, for example, contain the time, this is the reason that the argument time_interval is not needed.
+In this format, the raw data is more similar to a data frame. This file contains more information than the "table" format, for example between others contain time intervals, this is the reason that the argument time_interval is not needed in this case.
 
 ```{r}
 file_path <- system.file("extdata",
@@ -103,8 +104,6 @@ head(data_multiscan_lst)
 
 
 
-
-
 ### 1.3 read_fluorstar_data()
 This function is specific to read output files (.txt) produced by fluorStar readers.
 Receive one raw file and generate a tibble dataframe.
@@ -113,8 +112,7 @@ The first column is "Wells" this contained the names for each well (A01, A02..).
 of fluorStar machines.
 The third column is "Time", that represents the timestep at which the machine measures. The fourth column contain the measured values. Depending on the experiment, this can be fluorescence, absorbance between others.
 
-Below is shown a toy example about how to use this function. Note that in this example
-fluorescence was measured.
+Below is shown a toy example about how to use this function. Note that in this example was measured fluorescence.
 
 ```{r}
 file_path <- system.file(
@@ -130,7 +128,9 @@ head(data_fluorstar)
 
 
 ### 1.4 read_multiple_files()
+This funtion take more than one file as input. The tipe of reader machine has to be given as argument. The argument plate_names is optional and is the name for each of the files read.
 
+In the toy example below the raw files from SpectraMax are used.
 
 ```{r}
 file_path <- system.file(
@@ -151,11 +151,11 @@ tail(data_multiple_spectramax)
 ```
 
 ## 2. Functions to read layout files
-In this section are described the functions to extract information from the experimental design into a dataframe. Also, combine this information with tidy dataframes generated by the wrangling functions.
+In this section are described the functions to extract information from the experimental design files into a dataframe. Also, combine this information with tidy dataframes generated by the wrangling functions explained before.
 
 ### 2.1 read_layout_files()
 This function recive a layout file properly formatted. To get a better understanding of "properly formatted" check the files with .csv extension in "/inst/extdata".
-This function is similar to the function read_plate() from `plater` package @plater  with some modifications.
+This function is similar to the function read_plate() from `plater` package @plater  with small modifications.
 The first column is "Wells" this contain the names for each well (A01, A02..). The rest of the attributes represent the different conditions.
 
 ```{r}
@@ -207,6 +207,7 @@ tail(data_layout)
 
 
 ## References
+
 
 
 
