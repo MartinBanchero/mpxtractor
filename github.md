@@ -104,7 +104,7 @@ plot <- mpxtractor::plot_layout_file(
 
 <div class="figure" style="text-align: center">
 
-<img src="layout_visualization.png" alt="**Figure 2:** Representation over a microplate frame of growth rates for each well. Note that in this case the attribute *condition* was chosen to be coloured." width="100%" />
+<img src="man/figures/layout_visualization.png" alt="**Figure 2:** Representation over a microplate frame of growth rates for each well. Note that in this case the attribute *condition* was chosen to be coloured." width="100%" />
 
 <p class="caption">
 
@@ -263,7 +263,7 @@ mpxtractor::plot_gr_microplate(df_fl,
 )
 ```
 
-<img src="../Master_VU_Mayor/mpxtractor/fluorstar.png" width="70%" style="display: block; margin: auto;" />
+<img src="man/figures/fluorstar.png" width="70%" style="display: block; margin: auto;" />
 
 ## Learn more
 
