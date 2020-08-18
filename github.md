@@ -263,7 +263,9 @@ mpxtractor::plot_gr_microplate(df_fl,
 )
 ```
 
+<div class="figure" style="text-align: center">
 <img src="man/figures/fluorstar.png" width="70%" style="display: block; margin: auto;" />
+<p class="caption">
 
 ## Learn more
 
