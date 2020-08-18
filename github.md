@@ -262,10 +262,17 @@ mpxtractor::plot_gr_microplate(df_fl,
   output_filename = "fluorstar.png"
 )
 ```
-
 <div class="figure" style="text-align: center">
+
 <img src="man/figures/fluorstar.png" width="70%" style="display: block; margin: auto;" />
+
 <p class="caption">
+
+**Figure 2:** Representation over a microplate frame of growth rates for
+each well. Note that in this case the attribute *condition* was chosen
+to be coloured.
+</p>
+</div>
 
 ## Learn more
 
