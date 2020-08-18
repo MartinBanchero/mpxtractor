@@ -1,4 +1,4 @@
-<p style="text-align: justify;"> 
+<p align="center">
 <img src="man/figures/logompxtractor.png" width = 100, align="right">
 
 # mpxtractor 
