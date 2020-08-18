@@ -30,8 +30,8 @@ with tidy data. Also, mpxtractor provides features to visualize growth
 curves and layout files over a microplate frame. The latter can be
 printed to be used in the lab during the set up of experiments.
 
-## Features of `mpxtractor` This package is divided by two sets of
-functions
+## Features of `mpxtractor` 
+This package is divided by two sets of functions:
 
 **1.** Function to wrangling the data in raw files, this functions are
 explained in detail in vignette `wrangling_and_layout_functions` along
