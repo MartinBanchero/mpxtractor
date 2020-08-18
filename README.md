@@ -52,7 +52,7 @@ devtools::install_github("MartinBanchero/mpxtractor")
 
 ### Example
 
-#### Layout design and visualization
+#### Layout design file and visualization
 
 Lets suppose we want to perform an experiment to measure growth rates
 under different type of sugars. The first step is to design the layout.
