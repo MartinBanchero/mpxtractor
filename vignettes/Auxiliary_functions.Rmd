@@ -1,6 +1,6 @@
 ---
 title: "Auxiliary functions"
-author: "Vignette Author"
+author: "Martin Banchero"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 fig_caption: yes
