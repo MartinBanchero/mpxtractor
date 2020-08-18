@@ -11,7 +11,6 @@ The main function of mpxtractor is to provide a simple method that can process r
 
 For the reasons mentioned above is why mpxtractor can help to reduce the time to process the raw data into tidy data frames, combine layout files with tidy data. Also, mpxtractor provides features to visualize growth curves and layout files over a microplate frame. The latter can be printed to be used in the lab during the set up of experiments.
 
-</div>
 
 ## Features of `mpxtractor` 
 This package is divided by two sets of functions
@@ -177,3 +176,6 @@ To get started, first read `vignette("Introduction_to_mpxtractor")`. Then read m
 * For data wrangling and layout files, read `vignette("wrangling_and_layout_functions")`.
 * For plotting functions, read `vignette("plotting_functions")`
 * For auxiliary functions read `vignette("Auxiliary_functions")`
+
+</div>
+
