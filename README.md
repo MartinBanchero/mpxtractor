@@ -1,11 +1,10 @@
 <img src="man/figures/logompxtractor.png" width = 100, align="right">
-
+<p align="justify">
 
 # mpxtractor 
 
 
 **An R package to extract data from plate reader output raw files into a tidy data frame. Plot layout files and plot growth rates over microplate frame.**
-<div style="text-align: justify"> 
 
 
 The main function of mpxtractor is to provide a simple method that can process raw data from microplate readers like SpectraMax, FluorStar, and MultiscanGO and apply different methods to it. This package generates tidy data frames, this data can be combined with layout files, and then growth rates are calculated and plot over a microplate frame. This is a critical point in several research lines performing experiments using microplate reader machines mainly due to the time that takes to clean and sort the raw data into a tidy format. Also, the features of this package allow detecting which wells present faulty data e.g wells not filled correctly. Another feature of mpxtractor is that it allows plotting the layout file over a microplate frame, this is very useful because it is easy to visualize the layout, this is handy in the lab to set the experiment. This package main contribution is orientated to save time and get fast into data analysis.
@@ -177,4 +176,4 @@ To get started, first read `vignette("Introduction_to_mpxtractor")`. Then read m
 * For data wrangling and layout files, read `vignette("wrangling_and_layout_functions")`.
 * For plotting functions, read `vignette("plotting_functions")`
 * For auxiliary functions read `vignette("Auxiliary_functions")`
-</div>
+</p>
