@@ -103,16 +103,12 @@ plot <- mpxtractor::plot_layout_file(
 ```
 
 <div class="figure" style="text-align: center">
-
 <img src="man/figures/layout_visualization.png" alt="**Figure 1:** " width="100%" />
-
 <p class="caption">
 
-**Figure 1:** Representation over a microplate mimic of the design file.
+**Figure 1:** Representation over a microplate mimic of the design file. In this case the medium was chosen to be colored.
 to be coloured.
-
 </p>
-
 </div>
 
 ### Data wrangling
