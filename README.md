@@ -2,10 +2,7 @@
 <img src="man/figures/logompxtractor.png" width = 100, align="right">
 
 # mpxtractor
-
-**An R package to extract data from plate reader output raw files into a
-tidy data frame. Plot layout files and plot growth rates over microplate
-frame.**
+**mpxtractor: A flexible R package to process data from different plate reader machines.**
 
 <div align="justify">
 
