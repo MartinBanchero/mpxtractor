@@ -259,9 +259,8 @@ mpxtractor::plot_gr_microplate(df_fl,
 </p>
 
 <p class="caption">
-
-**Figure 2:** Representation over a microplate frame of growth rates for
-each well. Note that in this case the attribute *Medium* was chosen
+ 
+**Figure 2:** Representation of growth rate curves per well mimicking a plate-shaped format. Note that in this case the attribute *Medium* was chosen
 to be coloured.
   
 </p>
