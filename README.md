@@ -9,7 +9,7 @@
 The main function of mpxtractor is to provide a simple method that can
 process raw data from microplate readers like SpectraMax, FluorStar, and
 MultiscanGO and apply different methods to it. This package generates
-tidy data frames, this data can be combined with layout files, and then
+tidy tibble objects, this data can be combined with layout files, and then
 growth rates are calculated and plot over a microplate frame. This is a
 critical point in several research lines performing experiments using
 microplate reader machines mainly due to the time that takes to clean
