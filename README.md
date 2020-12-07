@@ -37,7 +37,7 @@ This package is divided by two sets of functions:
 explained in detail in vignette `wrangling_and_layout_functions` along
 side with some examples.
 
-**2.** Functions to plot layout files and growth curves, the vignette
+**2.** Functions to plot layout files and growth rates, the vignette
 `plotting_functions` explain how they work and some details.
 
 ## Installation
