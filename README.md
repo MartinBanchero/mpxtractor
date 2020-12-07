@@ -215,7 +215,7 @@ head(df_combine)
 #> # … with 1 more variable: layout_file <chr>
 ```
 
-### Visualization of growth curves
+### Visualization of growth rates
 The last step is to calculate and plot the growth curves for each well. 
 ``` r
 file1 <- system.file("extdata",
