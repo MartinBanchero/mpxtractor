@@ -115,8 +115,8 @@ save_plot <- function(df_data, all_wells_plot, output_filename ){
     ggplot2::ggsave(
       filename = output_filename,
       plot = all_wells_plot,
-      width = 15,
-      height = 10,
+      width = 22,
+      height = 17,
       units = "cm")
 
   } else if (length(unique(df_data$Wells)) == 384) {
