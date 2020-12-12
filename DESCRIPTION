@@ -1,7 +1,7 @@
 Package: mpxtractor
 Type: Package
 Title: Process microplate reader output files into a tidy dataframe
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: person("Martin", "Banchero", email = "martinbbanchero@gmail.com", role = c("aut", "cre"))
 URL: https://github.com/MartinBanchero/mpxtractor
 BugReports: https://github.com/MartinBanchero/mpxtractor/issues
@@ -26,7 +26,7 @@ Imports:
     hms (>= 0.5.3),
     zoo (>= 1.8.8)
 RdMacros: Rdpack
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
